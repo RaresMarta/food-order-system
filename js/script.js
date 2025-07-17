@@ -21,7 +21,7 @@ if (storedItems) {
   displayedFoodItems = JSON.parse(storedItems);
 } else {
   // If no items in local storage, use the global foodItems from constants.js
-  displayedFoodItems = JSON.parse(JSON.stringify(foodItems));
+  displayedFoodItems = JSON.parse(JSON.stringify(window.foodItems));
   // Save default items to local storage
   localStorage.setItem(FOOD_ITEMS_STORAGE_KEY, JSON.stringify(displayedFoodItems));
 }

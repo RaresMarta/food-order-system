@@ -17,16 +17,28 @@ let editingItemId = null;
 
 // Initialize the dashboard
 function initDashboard() {
-  // Always use the global foodItems from constants.js as the baseline
-  resetToBaseline();
+  // Load items from local storage or use the global window.foodItems as baseline
+  const storedItems = localStorage.getItem(FOOD_ITEMS_STORAGE_KEY);
+  if (storedItems) {
+    foodItems = JSON.parse(storedItems);
+  } else {
+    resetToBaseline();
+  }
+  
   renderFoodTable();
   setupEventListeners();
 }
 
 // Reset to baseline items from constants.js
 function resetToBaseline() {
-  // Use the global foodItems from constants.js
-  foodItems = JSON.parse(JSON.stringify(window.foodItems));
+  // Check if window.foodItems exists and is an array
+  if (window.foodItems && Array.isArray(window.foodItems)) {
+    foodItems = JSON.parse(JSON.stringify(window.foodItems));
+  } else {
+    console.error('Error: window.foodItems is not available. Make sure constants.js is loaded properly.');
+    // Fallback to empty array or default items if needed
+    foodItems = [];
+  }
   
   // Save to local storage to ensure consistency with the main page
   saveFoodItems();
@@ -88,14 +100,14 @@ function setupEventListeners() {
   foodForm.addEventListener('submit', handleFormSubmit);
   clearFormButton.addEventListener('click', clearForm);
   
-  // Add reset button to the page
-  const dashboardContainer = document.querySelector('.dashboard-container');
-  const resetButton = document.createElement('div');
-  resetButton.className = 'reset-container';
-  resetButton.innerHTML = `
-    <button class="btn btn-primary" id="reset-to-baseline">Reset to Default Items</button>
-  `;
-  dashboardContainer.insertBefore(resetButton, dashboardContainer.firstChild);
+  // Add reset button to the form buttons
+  const formButtons = document.querySelector('.form-buttons');
+  const resetButton = document.createElement('button');
+  resetButton.type = 'button';
+  resetButton.className = 'btn btn-reset';
+  resetButton.id = 'reset-to-baseline';
+  resetButton.textContent = 'Reset to Default Items';
+  formButtons.appendChild(resetButton);
   
   // Add event listener to the reset button
   document.getElementById('reset-to-baseline').addEventListener('click', function() {

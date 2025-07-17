@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard - Eureka Caffe</title>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 
 <body>
@@ -15,7 +15,7 @@
     <div class="content-wrapper">
       <div class="logo">
         <div class="coffee-icon-container">
-          <img src="assets/coffee-icon-svgrepo-com.svg" alt="Coffee cup" class="coffee-icon">
+          <img src="../assets/coffee-icon-svgrepo-com.svg" alt="Coffee cup" class="coffee-icon">
         </div>
         <span>EUREKA<br>CAFFE</span>
       </div>
@@ -54,7 +54,7 @@
       <div class="dashboard-form">
         <h2>Add New Food Item</h2>
         <form id="food-form">
-          <div class="form-group">
+          <div class="form-group"> 
             <label for="food-name">Name</label>
             <input type="text" id="food-name" required>
           </div>
@@ -110,7 +110,16 @@
     </section>
   </div>
 
-  <script src="constants.js"></script>
-  <script src="dashboard.js"></script>
+  <!-- Load constants.js first -->
+  <script src="../js/constants.js"></script>
+  <script>
+    // Verify constants.js is loaded properly
+    console.log('Constants loaded:', window.foodItems ? 'Yes' : 'No');
+    if (window.foodItems) {
+      console.log('Number of food items:', window.foodItems.length);
+    }
+  </script>
+  <!-- Then load dashboard.js -->
+  <script src="../js/dashboard.js"></script>
 </body>
 </html> 

@@ -136,6 +136,15 @@
     background-color: #3498db;
     color: $white;
   }
+  
+  &.btn-reset {
+    background-color: #3498db;
+    color: $white;
+    
+    &:hover {
+      background-color: darken(#3498db, 10%);
+    }
+  }
 }
 
 // Table section
