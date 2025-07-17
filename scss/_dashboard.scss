@@ -1,0 +1,206 @@
+@use "variables" as *;
+
+// Dashboard specific styles
+.dashboard-hero {
+  height: 40vh; // Smaller hero for dashboard
+  
+  .background {
+    background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80');
+  }
+}
+
+// Reset button container
+.reset-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: $gap-md;
+  
+  button {
+    background-color: #3498db;
+    color: $white;
+    
+    &:hover {
+      background-color: darken(#3498db, 10%);
+    }
+  }
+}
+
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap-lg;
+  padding: $gap-lg 0;
+  
+  @media (min-width: 992px) {
+    flex-wrap: nowrap;
+  }
+}
+
+// Form section
+.dashboard-form {
+  flex: 1;
+  min-width: 300px;
+  background-color: $white;
+  border-radius: $radius-md;
+  padding: $gap-lg;
+  box-shadow: $card-shadow;
+  
+  h2 {
+    margin-bottom: $gap-lg;
+    color: $text-color;
+    font-weight: 700;
+    font-size: 1.5rem;
+    border-bottom: 2px solid $light-gray;
+    padding-bottom: $gap-sm;
+  }
+}
+
+.form-group {
+  margin-bottom: $gap-md;
+  
+  label {
+    display: block;
+    margin-bottom: $gap-sm;
+    font-weight: 600;
+    color: $text-color;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid $light-gray;
+    border-radius: $radius-sm;
+    font-family: $body-font;
+    font-size: 1rem;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+  }
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: $gap-sm;
+  
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: $primary-color;
+  }
+  
+  label {
+    margin-bottom: 0;
+    display: inline;
+  }
+}
+
+.form-buttons {
+  display: flex;
+  gap: $gap-md;
+  margin-top: $gap-lg;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: $radius-sm;
+  font-family: $body-font;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: $light-gray;
+  color: $text-color;
+  
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+  
+  &.btn-primary {
+    background-color: $primary-color;
+    color: $white;
+  }
+  
+  &.btn-danger {
+    background-color: #e74c3c;
+    color: $white;
+  }
+  
+  &.btn-edit {
+    background-color: #3498db;
+    color: $white;
+  }
+}
+
+// Table section
+.dashboard-table {
+  flex: 2;
+  min-width: 300px;
+  background-color: $white;
+  border-radius: $radius-md;
+  padding: $gap-lg;
+  box-shadow: $card-shadow;
+  
+  h2 {
+    margin-bottom: $gap-lg;
+    color: $text-color;
+    font-weight: 700;
+    font-size: 1.5rem;
+    border-bottom: 2px solid $light-gray;
+    padding-bottom: $gap-sm;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid $light-gray;
+  }
+  
+  th {
+    background-color: $filter-bg;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: $letter-spacing;
+  }
+  
+  tr:hover {
+    background-color: rgba($light-gray, 0.3);
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    
+    button {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// Empty state
+.empty-state {
+  text-align: center;
+  padding: $gap-lg;
+  color: #888;
+  
+  p {
+    margin-bottom: $gap-md;
+  }
+} 
