@@ -6,6 +6,7 @@ const foodPriceInput = document.getElementById('food-price');
 const foodVegetarianInput = document.getElementById('food-vegetarian');
 const foodImageInput = document.getElementById('food-image');
 const clearFormButton = document.getElementById('clear-form');
+const resetItemsButton = document.getElementById('reset-to-baseline');
 const foodTableBody = document.getElementById('food-table-body');
 
 // Local Storage Key
@@ -15,41 +16,34 @@ const FOOD_ITEMS_STORAGE_KEY = 'eurekaCaffeMenuItems';
 let foodItems = [];
 let editingItemId = null;
 
-// Initialize the dashboard
 function initDashboard() {
-  // Load items from local storage or use the global window.foodItems as baseline
   const storedItems = localStorage.getItem(FOOD_ITEMS_STORAGE_KEY);
+
   if (storedItems) {
     foodItems = JSON.parse(storedItems);
-  } else {
-    resetToBaseline();
+  } else { 
+    resetToBaseline(); 
   }
   
   renderFoodTable();
   setupEventListeners();
 }
 
-// Reset to baseline items from constants.js
 function resetToBaseline() {
-  // Check if window.foodItems exists and is an array
   if (window.foodItems && Array.isArray(window.foodItems)) {
     foodItems = JSON.parse(JSON.stringify(window.foodItems));
   } else {
-    console.error('Error: window.foodItems is not available. Make sure constants.js is loaded properly.');
-    // Fallback to empty array or default items if needed
+    console.error('Error: window.foodItems is not available.');
     foodItems = [];
   }
-  
-  // Save to local storage to ensure consistency with the main page
   saveFoodItems();
 }
 
-// Save food items to local storage
 function saveFoodItems() {
+  // Save food items to local storage to ensure consistency with the main page
   localStorage.setItem(FOOD_ITEMS_STORAGE_KEY, JSON.stringify(foodItems));
 }
 
-// Render the food items table
 function renderFoodTable() {
   foodTableBody.innerHTML = '';
   
@@ -85,7 +79,6 @@ function renderFoodTable() {
     foodTableBody.appendChild(row);
   });
   
-  // Add event listeners to the action buttons
   document.querySelectorAll('.edit-item').forEach(button => {
     button.addEventListener('click', handleEditItem);
   });
@@ -95,22 +88,10 @@ function renderFoodTable() {
   });
 }
 
-// Set up event listeners
 function setupEventListeners() {
   foodForm.addEventListener('submit', handleFormSubmit);
   clearFormButton.addEventListener('click', clearForm);
-  
-  // Add reset button to the form buttons
-  const formButtons = document.querySelector('.form-buttons');
-  const resetButton = document.createElement('button');
-  resetButton.type = 'button';
-  resetButton.className = 'btn btn-reset';
-  resetButton.id = 'reset-to-baseline';
-  resetButton.textContent = 'Reset to Default Items';
-  formButtons.appendChild(resetButton);
-  
-  // Add event listener to the reset button
-  document.getElementById('reset-to-baseline').addEventListener('click', function() {
+  resetItemsButton.addEventListener('click', function() {
     if (confirm('Are you sure you want to reset all items to defaults? This will remove any custom items you\'ve added.')) {
       resetToBaseline();
       renderFoodTable();
@@ -118,10 +99,8 @@ function setupEventListeners() {
   });
 }
 
-// Handle form submission
 function handleFormSubmit(e) {
   e.preventDefault();
-  
   const name = foodNameInput.value.trim();
   const category = foodCategoryInput.value.trim();
   const price = parseFloat(foodPriceInput.value);
@@ -170,7 +149,6 @@ function handleFormSubmit(e) {
   clearForm();
 }
 
-// Handle edit item button click
 function handleEditItem(e) {
   const itemId = parseInt(e.target.dataset.id);
   const item = foodItems.find(item => item.id === itemId);
@@ -184,7 +162,7 @@ function handleEditItem(e) {
     foodVegetarianInput.checked = item.vegetarian;
     foodImageInput.value = item.img;
     
-    // Change submit button text
+    // Button text "submit" -> "update"
     const submitButton = foodForm.querySelector('button[type="submit"]');
     submitButton.textContent = 'Update Item';
     
@@ -193,7 +171,6 @@ function handleEditItem(e) {
   }
 }
 
-// Handle delete item button click
 function handleDeleteItem(e) {
   const itemId = parseInt(e.target.dataset.id);
   
@@ -204,7 +181,6 @@ function handleDeleteItem(e) {
   }
 }
 
-// Clear the form
 function clearForm() {
   foodForm.reset();
   editingItemId = null;

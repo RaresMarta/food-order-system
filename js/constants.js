@@ -1,6 +1,6 @@
 // Default food items data
 window.foodItems = [
-	{ 
+  {
     id: 1, 
     name: "Pasta Carbonara", 
     category: "Second courses", 
