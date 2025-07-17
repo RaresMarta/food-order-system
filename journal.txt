@@ -1,0 +1,2 @@
+- looking for a way to not push .css files and render styling at the same timt
+- found potential solution: create a script that generates css from sass while /css folder remains in .gitignore

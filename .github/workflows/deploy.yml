@@ -31,6 +31,11 @@ jobs:
         mkdir -p css
         sass scss/style.scss css/style.css
 
+    - name: Check compiled CSS
+      run: |
+        file css/style.css
+        cat css/style.css
+
     - name: Setup Pages
       uses: actions/configure-pages@v5
 
