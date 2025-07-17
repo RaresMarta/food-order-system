@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard - Eureka Caffe</title>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css" />
+  <base href="/food-order-system/">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
@@ -15,17 +16,17 @@
     <div class="content-wrapper">
       <div class="logo">
         <div class="coffee-icon-container">
-          <img src="../assets/coffee-icon-svgrepo-com.svg" alt="Coffee cup" class="coffee-icon">
+          <img src="assets/coffee-icon-svgrepo-com.svg" alt="Coffee cup" class="coffee-icon">
         </div>
         <span>EUREKA<br>CAFFE</span>
       </div>
       <ul class="nav-links">
-        <li><a href="/food-order-system/index.html">HOME</a></li>
+        <li><a href="index.html">HOME</a></li>
         <li><a href="#">ABOUT</a></li>
         <li class="has-dropdown">
           <a href="#">SERVICE</a>
           <ul class="nav-dropdown">
-            <li><a href="/food-order-system/index.html/pages/dashboard.html" class="active">DASHBOARD</a></li>
+            <li><a href="pages/dashboard.html" class="active">DASHBOARD</a></li>
           </ul>
         </li>
         <li><a href="#">BLOG</a></li>
@@ -106,16 +107,7 @@
     </section>
   </div>
 
-  <!-- Load constants.js first -->
-  <script src="../js/constants.js"></script>
-  <script>
-    // Verify constants.js is loaded properly
-    console.log('Constants loaded:', window.foodItems ? 'Yes' : 'No');
-    if (window.foodItems) {
-      console.log('Number of food items:', window.foodItems.length);
-    }
-  </script>
-  <!-- Then load dashboard.js -->
-  <script src="../js/dashboard.js"></script>
+  <script src="js/constants.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html> 
