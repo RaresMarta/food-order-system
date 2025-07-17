@@ -27,7 +27,9 @@ jobs:
       run: npm install -g sass
 
     - name: Compile SCSS to CSS
-      run: sass scss/style.scss css/style.css
+      run: |
+        mkdir -p css
+        sass scss/style.scss css/style.css
 
     - name: Setup Pages
       uses: actions/configure-pages@v5
