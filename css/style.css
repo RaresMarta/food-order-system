@@ -1,6 +1,6 @@
 @charset "UTF-8";
 :root {
-  --primary-color: #ff9800;
+  --primary-color: #dec054;
 }
 
 .navbar {
@@ -132,11 +132,11 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #ff9800;
+  background-color: #dec054;
 }
 
 .hero {
-  height: 70vh;
+  height: 64vh;
   position: relative;
   display: flex;
   justify-content: center;
@@ -177,12 +177,15 @@
 .hero .hero-content h1 {
   font-size: 3.2rem;
   margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 .hero .hero-content p {
-  font-size: 1.1rem;
+  font-family: "Georgia", "Garamond", "Palatino Linotype", serif;
+  font-size: 1rem;
   line-height: 1.6;
   margin-top: 2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 .hero .hero-content .divider {
   display: flex;
@@ -192,17 +195,20 @@
   margin: 0.5rem 0;
 }
 .hero .hero-content .divider .divider-line {
+  flex: 1;
   background-image: url("../assets/squigly-line.svg");
   background-repeat: repeat-x;
   background-size: auto 100%; /* or set exact height */
-  height: 8px;
+  height: 5px;
   width: 100%; /* stretch across parent */
 }
 .hero .hero-content .divider .divider-icon {
-  background-image: url("assets/icons8-spoon-and-fork-64.png");
-  width: 24px;
-  height: 24px;
-  margin: 0 0.5rem;
+  display: inline-block;
+  width: 30px; /* or whatever your icon’s size is */
+  height: 30px;
+  background: url("../assets/icons8-spoon-and-fork-64.png") no-repeat center;
+  background-size: contain;
+  filter: invert(100%) brightness(150%);
 }
 
 .filter-bar {
@@ -264,8 +270,8 @@
   width: 0.6em;
   height: 0.6em;
   pointer-events: none;
-  border-right: 2px solid #ff9800;
-  border-bottom: 2px solid #ff9800;
+  border-right: 2px solid #dec054;
+  border-bottom: 2px solid #dec054;
   transform: translateY(-70%) rotate(45deg);
   transition: transform 0.2s;
 }
@@ -322,7 +328,7 @@
 
 #vegetarian-dropdown input[type=checkbox] {
   margin: 0;
-  accent-color: #ff9800;
+  accent-color: #dec054;
 }
 
 /* Vegetarian label styling */
@@ -428,7 +434,7 @@
   top: 50%;
   transform: translateY(-50%);
   height: 4px;
-  background: #ff9800;
+  background: #dec054;
   border-radius: 2px;
 }
 
@@ -441,7 +447,7 @@
   width: 15px;
   height: 15px;
   background: #fff;
-  border: 2px solid #ff9800;
+  border: 2px solid #dec054;
   border-radius: 50%;
   pointer-events: none;
 }
@@ -502,14 +508,235 @@
   text-transform: uppercase;
 }
 .food-card strong {
-  color: #ff9800;
+  color: #dec054;
   font-size: 1.1rem;
   font-weight: 700;
   margin-top: 0.5rem;
 }
 
+:root {
+  --primary-color: #dec054;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: 2rem;
+}
+.navbar .content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+}
+.navbar .logo .coffee-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 0.2rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.navbar .logo .coffee-icon-container .coffee-icon {
+  width: 18px;
+  height: 18px;
+}
+.navbar .logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.navbar .logo span {
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+.navbar .nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+.navbar .nav-links li {
+  position: relative;
+  /* Dropdown styling */
+}
+.navbar .nav-links li:not(:last-child)::after {
+  content: "•";
+  position: absolute;
+  right: calc(-2rem / 2);
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+}
+.navbar .nav-links li.has-dropdown {
+  position: relative;
+}
+.navbar .nav-links li.has-dropdown:hover .nav-dropdown {
+  transform: scaleY(1);
+  opacity: 1;
+}
+.navbar .nav-links li.has-dropdown .nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border-radius: 0;
+  min-width: 160px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  z-index: 10;
+  margin-top: 0;
+  padding: 0;
+  list-style: none;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0;
+}
+.navbar .nav-links li.has-dropdown .nav-dropdown li {
+  padding: 0;
+  margin: 0;
+}
+.navbar .nav-links li.has-dropdown .nav-dropdown li::after {
+  display: none;
+}
+.navbar .nav-links li.has-dropdown .nav-dropdown li a {
+  color: #333;
+  display: block;
+  padding: 0.7rem 1rem;
+}
+.navbar .nav-links li.has-dropdown .nav-dropdown li a:hover {
+  background-color: #ffe0b2;
+}
+.navbar .nav-links li.has-dropdown .nav-dropdown li a::after {
+  display: none;
+}
+.navbar .nav-links li.has-dropdown .nav-dropdown li a.active {
+  background-color: #ffe0b2;
+  font-weight: 700;
+}
+.navbar .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 550px;
+  letter-spacing: 0.08em;
+  position: relative;
+  padding: 0.5rem 0.5rem;
+}
+.navbar .nav-links a.active::after, .navbar .nav-links a:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #dec054;
+}
+
+.hero, .dashboard-hero {
+  height: 64vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+}
+.hero .background, .dashboard-hero .background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+  transform: scale(1.1); /* Prevent blur edges from showing */
+  z-index: 0; /* Changed from -1 to 0 */
+}
+.hero::before, .dashboard-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+.hero .hero-content, .dashboard-hero .hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  padding: 0 2rem;
+}
+.hero .hero-content h1, .dashboard-hero .hero-content h1 {
+  font-size: 3.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.hero .hero-content p, .dashboard-hero .hero-content p {
+  font-family: "Georgia", "Garamond", "Palatino Linotype", serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-top: 2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.hero .hero-content .divider, .dashboard-hero .hero-content .divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.hero .hero-content .divider .divider-line, .dashboard-hero .hero-content .divider .divider-line {
+  flex: 1;
+  background-image: url("../assets/squigly-line.svg");
+  background-repeat: repeat-x;
+  background-size: auto 100%; /* or set exact height */
+  height: 5px;
+  width: 100%; /* stretch across parent */
+}
+.hero .hero-content .divider .divider-icon, .dashboard-hero .hero-content .divider .divider-icon {
+  display: inline-block;
+  width: 30px; /* or whatever your icon’s size is */
+  height: 30px;
+  background: url("../assets/icons8-spoon-and-fork-64.png") no-repeat center;
+  background-size: contain;
+  filter: invert(100%) brightness(150%);
+}
+
 .dashboard-hero {
-  height: 40vh;
+  height: 45vh;
+}
+.dashboard-hero .hero-content {
+  margin-top: 4rem;
+}
+.dashboard-hero .hero-content h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 .dashboard-hero .background {
   background-image: url("https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80");
@@ -579,8 +806,8 @@
 .form-group input[type=text]:focus,
 .form-group input[type=number]:focus {
   outline: none;
-  border-color: #ff9800;
-  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+  border-color: #dec054;
+  box-shadow: 0 0 0 2px rgba(222, 192, 84, 0.2);
 }
 
 .checkbox-group {
@@ -591,7 +818,7 @@
 .checkbox-group input[type=checkbox] {
   width: 18px;
   height: 18px;
-  accent-color: #ff9800;
+  accent-color: #dec054;
 }
 .checkbox-group label {
   margin-bottom: 0;
@@ -620,7 +847,7 @@
   transform: translateY(-2px);
 }
 .btn.btn-primary {
-  background-color: #ff9800;
+  background-color: #dec054;
   color: #fff;
 }
 .btn.btn-danger {
@@ -630,6 +857,13 @@
 .btn.btn-edit {
   background-color: #3498db;
   color: #fff;
+}
+.btn.btn-reset {
+  background-color: #3498db;
+  color: #fff;
+}
+.btn.btn-reset:hover {
+  background-color: rgb(33.1380753138, 125.1882845188, 186.8619246862);
 }
 
 .dashboard-table {
