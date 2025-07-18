@@ -1,2 +1,5 @@
-/css/*
-!css/.gitkeep
+# Ignore generated CSS completely
+css/
+
+# Ignore the deployment folder (created only in CI)
+_site/
