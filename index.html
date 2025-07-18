@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Eureka Caffe</title>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-  <base href="/food-order-system/">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -14,14 +13,14 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="content-wrapper">
-      <div class="logo">
+      <a href="index.html" class="logo">
         <div class="coffee-icon-container">
           <img src="assets/coffee-icon-svgrepo-com.svg" alt="Coffee cup" class="coffee-icon">
         </div>
         <span>EUREKA<br>CAFFE</span>
-      </div>
+      </a>
       <ul class="nav-links">
-        <li><a href="/food-order-system/index.html">HOME</a></li>
+        <li><a href="index.html">HOME</a></li>
         <li><a href="#">ABOUT</a></li>
         <li class="has-dropdown">
           <a href="#">SERVICE</a>
@@ -50,16 +49,17 @@
     </div>
   </section>
 
+  <!-- Filter bar -->
   <section class="filter-bar">
     <div class="content-wrapper filter-bar-content">
       <div class="filter-left">
-        <!-- Filter Category -->
+        <!-- Category filter -->
         <div class="custom-dropdown" id="category-dropdown">
           <div class="dropdown-label">Category</div>
           <ul class="dropdown-options"></ul>
         </div>
 
-        <!-- Sort Price -->
+        <!-- Price sort -->
         <div class="custom-dropdown" id="sort-dropdown">
           <div class="dropdown-label">Sorting</div>
           <ul class="dropdown-options">
@@ -69,7 +69,7 @@
           </ul>
         </div>
 
-        <!-- Filter Vegeterian -->
+        <!-- Vegeterian filter -->
         <div class="custom-dropdown" id="vegetarian-dropdown">
           <div class="dropdown-label">Vegetarian</div>
           <ul class="dropdown-options">
@@ -83,9 +83,9 @@
         </div>
       </div>
 
-      <!-- Filter Price -->
+      <!-- Price slider -->
       <div class="price-range-container">
-        <div class="price-label">Price</div>  
+        <div class="price-label">Price</div>
         <div class="price-slider-wrapper">
           <span class="min-price"></span>
           <div class="slider-container">

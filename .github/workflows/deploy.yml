@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
     - name: Checkout code
@@ -31,11 +32,6 @@ jobs:
         mkdir -p css
         sass scss/style.scss css/style.css
 
-    - name: Check compiled CSS
-      run: |
-        file css/style.css
-        cat css/style.css
-
     - name: Setup Pages
       uses: actions/configure-pages@v5
 
@@ -45,4 +41,5 @@ jobs:
         path: .
 
     - name: Deploy to GitHub Pages
+      id: deployment
       uses: actions/deploy-pages@v4

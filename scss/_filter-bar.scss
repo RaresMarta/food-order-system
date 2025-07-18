@@ -55,7 +55,7 @@
   content: "";
   position: absolute;
   right: 0;
-  top: 50%;
+  top: 40%;
   width: 0.6em;
   height: 0.6em;
   pointer-events: none;
@@ -85,9 +85,7 @@
   text-transform: none;
   list-style: none;
   padding: 0;
-  /* Add padding to top to bridge the gap */
   padding-top: 0.3em;
-  /* Move up to compensate for padding */
   margin-top: 0;
 }
 
