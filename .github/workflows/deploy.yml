@@ -35,7 +35,7 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v5
 
-    - name: Create deploy folder
+    - name: Create deploy folder (_site)
       run: |
         mkdir -p _site/css
         cp css/style.css _site/css/style.css
