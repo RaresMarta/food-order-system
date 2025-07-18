@@ -224,6 +224,10 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.85rem;
+  position: sticky;
+  top: 0; /* distance from the top of the viewport */
+  z-index: 20; /* sit above content as you scroll */
+  background: #fff; /* match your page background */
 }
 
 .filter-bar-content {
