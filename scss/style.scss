@@ -1,0 +1,42 @@
+@use "variables" as *;
+@use "header" as *;
+@use "filter-bar";
+@use "food-grid";
+@use "dashboard";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $body-font;
+  color: $text-color;
+  background: #fdfdfd;
+  line-height: 1.5;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $container-padding;
+}
+
+.content-wrapper {
+  max-width: $content-width;
+  margin: 0 auto;
+  padding: $content-padding;
+  width: 100%;
+}

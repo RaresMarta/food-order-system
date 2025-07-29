@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eureka Caffe</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="content-wrapper">
+      <a href="index.html" class="logo">
+        <div class="coffee-icon-container">
+          <img src="assets/coffee-icon-svgrepo-com.svg" alt="Coffee cup" class="coffee-icon">
+        </div>
+        <span>EUREKA<br>CAFFE</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="#">ABOUT</a></li>
+        <li class="has-dropdown">
+          <a href="#">SERVICE</a>
+          <ul class="nav-dropdown">
+            <li><a href="pages/dashboard.html">DASHBOARD</a></li>
+          </ul>
+        </li>
+        <li><a href="#">BLOG</a></li>
+        <li><a href="#">CONTACTS</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="background"></div>
+    <div class="hero-content">
+      <h1>Ordering food</h1>
+      <div class="divider">
+        <span class="divider-line"></span>
+        <span class="divider-icon"></span>
+        <span class="divider-line"></span>
+      </div>
+      <p>Delicious meals, crafted with care and delivered to your door.<br>
+        Eureka Caffe - simple, satisfying, and just one order away.</p>
+    </div>
+  </section>
+
+  <!-- Filter bar -->
+  <section class="filter-bar">
+    <div class="content-wrapper filter-bar-content">
+      <div class="filter-left">
+        <!-- Category filter -->
+        <div class="custom-dropdown" id="category-dropdown">
+          <div class="dropdown-label">Category</div>
+          <ul class="dropdown-options"></ul>
+        </div>
+
+        <!-- Price sort -->
+        <div class="custom-dropdown" id="sort-dropdown">
+          <div class="dropdown-label">Sorting</div>
+          <ul class="dropdown-options">
+            <li data-value="default">Default</li>
+            <li data-value="asc">Price: Low to High</li>
+            <li data-value="desc">Price: High to Low</li>
+          </ul>
+        </div>
+
+        <!-- Vegeterian filter -->
+        <div class="custom-dropdown" id="vegetarian-dropdown">
+          <div class="dropdown-label">Vegetarian</div>
+          <ul class="dropdown-options">
+            <li>
+              <label class="vegetarian-label">
+                <input type="checkbox" id="vegetarian-toggle" />
+                <span>Show Only</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Price slider -->
+      <div class="price-range-container">
+        <div class="price-label">Price</div>
+        <div class="price-slider-wrapper">
+          <span class="min-price"></span>
+          <div class="slider-container">
+            <input type="range" id="price-range-min" min="0" max="100" value="0" />
+            <input type="range" id="price-range-max" min="0" max="100" value="100" />
+            <div class="slider-track"></div>
+            <div class="slider-range"></div>
+            <div class="slider-thumb left"></div>
+            <div class="slider-thumb right"></div>
+          </div>
+          <span class="max-price"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-wrapper">
+    <section id="food-grid" class="food-grid"></section>
+  </div>
+
+  <script src="js/constants.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
