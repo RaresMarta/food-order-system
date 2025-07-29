@@ -1,0 +1,67 @@
+/ Navbar
+%nav.navbar
+  .content-wrapper
+    = link_to root_path, class: "logo" do
+      .coffee-icon-container
+        = image_tag("coffee-icon-svgrepo-com.svg", alt: "Coffee cup", class: "coffee-icon")
+      %span
+        EUREKA
+        %br
+        CAFFE
+    %ul.nav-links
+      %li= link_to "HOME", root_path
+      %li= link_to "ABOUT", "#"
+      %li.has-dropdown
+        = link_to "SERVICE", "#"
+        %ul.nav-dropdown
+          %li= link_to "DASHBOARD", dashboard_path, class: "active"
+      %li= link_to "BLOG", "#"
+      %li= link_to "CONTACTS", "#"
+
+/ Hero Section (smaller for dashboard)
+%section.dashboard-hero
+  .background
+  .hero-content
+    %h1 Food Management Dashboard
+    %p Add, edit, or remove food items from your menu. Changes will be saved to your browser's local storage.
+
+.content-wrapper
+  %section.dashboard-container
+    / Food Item Form
+    .dashboard-form
+      %h2 Add New Food Item
+      %form#food-form
+        .form-group
+          %label{ for: "food-name" } Name
+          %input{ type: "text", id: "food-name", required: true }
+        .form-group
+          %label{ for: "food-category" } Category
+          %input{ type: "text", id: "food-category", required: true }
+        .form-group
+          %label{ for: "food-price" } Price ($)
+          %input{ type: "number", id: "food-price", min: 0, step: 0.01, required: true }
+        .form-group.checkbox-group
+          %input{ type: "checkbox", id: "food-vegetarian" }
+          %label{ for: "food-vegetarian" } Vegetarian
+        .form-group
+          %label{ for: "food-image" } Image URL
+          %input{ type: "text", id: "food-image", required: true }
+        .form-buttons
+          %button.btn.btn-primary{ type: "submit" } Add Item
+          %button.btn{ type: "button", id: "clear-form" } Clear Form
+          %button.btn.btn-reset{ type: "button", id: "reset-to-baseline" } Reset to Default Items
+    / Food Items Table
+    .dashboard-table
+      %h2 Manage Food Items
+      .table-container
+        %table#food-table
+          %thead
+            %tr
+              %th ID
+              %th Name
+              %th Category
+              %th Price
+              %th Vegetarian
+              %th Actions
+          %tbody#food-table-body
+            / Food items will be added here dynamically

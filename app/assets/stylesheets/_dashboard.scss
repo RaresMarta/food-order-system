@@ -1,5 +1,5 @@
-@use "variables" as *;
-@use 'header';
+@import "variables";
+@import 'header';
 
 // Dashboard specific styles
 .dashboard-hero {
