@@ -1,38 +1,28 @@
 import { Controller } from "@hotwired/stimulus"
-import "../constants"
 
-export default class extends Controller {
+export default class DashboardController extends Controller {
+  static targets = [
+    "form", "name", "category", "price", "vegetarian", "image",
+    "clearButton", "resetButton", "tableBody", "submitButton"
+  ]
+
   connect() {
-    console.log("Dashboard Stimulus controller connected");
-
-    this.foodForm = document.getElementById('food-form');
-    this.foodNameInput = document.getElementById('food-name');
-    this.foodCategoryInput = document.getElementById('food-category');
-    this.foodPriceInput = document.getElementById('food-price');
-    this.foodVegetarianInput = document.getElementById('food-vegetarian');
-    this.foodImageInput = document.getElementById('food-image');
-    this.clearFormButton = document.getElementById('clear-form');
-    this.resetItemsButton = document.getElementById('reset-to-baseline');
-    this.foodTableBody = document.getElementById('food-table-body');
-
-    this.FOOD_ITEMS_STORAGE_KEY = 'eurekaCaffeMenuItems';
+    console.log("✅ Stimulus dashboard controller connected");
     this.foodItems = [];
     this.editingItemId = null;
-
     this.initDashboard();
   }
 
-  initDashboard() {
-    const storedItems = localStorage.getItem(this.FOOD_ITEMS_STORAGE_KEY);
-
-    if (storedItems) {
-      this.foodItems = JSON.parse(storedItems);
-    } else {
-      this.resetToBaseline();
+  async initDashboard() {
+    try {
+      let resp = await fetch("/food_items", { credentials: "same-origin" });
+      if (!resp.ok) throw new Error(await resp.text());
+      this.foodItems = await resp.json();
+    } catch (e) {
+      console.error("Couldn't load food items:", e);
+      this.foodItems = [];
     }
-
     this.renderFoodTable();
-    this.setupEventListeners();
   }
 
   resetToBaseline() {
@@ -42,6 +32,7 @@ export default class extends Controller {
       this.foodItems = [];
     }
     this.saveFoodItems();
+    this.renderFoodTable();
   }
 
   saveFoodItems() {
@@ -49,17 +40,17 @@ export default class extends Controller {
   }
 
   renderFoodTable() {
-    this.foodTableBody.innerHTML = '';
+    this.tableBodyTarget.innerHTML = '';
+
     if (this.foodItems.length === 0) {
       const emptyRow = document.createElement('tr');
       emptyRow.innerHTML = `
-        <td colspan="6" class="empty-state">
+        <td colspan="7" class="empty-state">
           <p>No food items found.</p>
-          <button class="btn btn-primary" id="add-default-items">Add Default Items</button>
+          <button class="btn btn-primary" data-action="click->dashboard#resetToBaseline">Add Default Items</button>
         </td>
       `;
-      this.foodTableBody.appendChild(emptyRow);
-      document.getElementById('add-default-items').addEventListener('click', this.resetToBaseline.bind(this));
+      this.tableBodyTarget.appendChild(emptyRow);
       return;
     }
 
@@ -71,115 +62,98 @@ export default class extends Controller {
         <td>${item.category}</td>
         <td>$${item.price.toFixed(2)}</td>
         <td>${item.vegetarian ? 'Yes' : 'No'}</td>
+        <td>
+          ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" style="height:50px"/>` : ''}
+        </td>
         <td class="action-buttons">
-          <button class="btn btn-edit edit-item" data-id="${item.id}">Edit</button>
-          <button class="btn btn-danger delete-item" data-id="${item.id}">Delete</button>
+          <button class="btn btn-edit" data-id="${item.id}" data-action="click->dashboard#handleEditItem">Edit</button>
+          <button class="btn btn-danger" data-id="${item.id}" data-action="click->dashboard#handleDeleteItem">Delete</button>
         </td>
       `;
-      this.foodTableBody.appendChild(row);
-    });
-
-    document.querySelectorAll('.edit-item').forEach(button => {
-      button.addEventListener('click', this.handleEditItem.bind(this));
-    });
-
-    document.querySelectorAll('.delete-item').forEach(button => {
-      button.addEventListener('click', this.handleDeleteItem.bind(this));
+      this.tableBodyTarget.appendChild(row);
     });
   }
 
-  setupEventListeners() {
-    this.foodForm.addEventListener('submit', this.handleFormSubmit.bind(this));
-    this.clearFormButton.addEventListener('click', this.clearForm.bind(this));
-    this.resetItemsButton.addEventListener('click', () => {
-      if (confirm('Are you sure you want to reset all items to defaults? This will remove any custom items you\'ve added.')) {
-        this.resetToBaseline();
-        this.renderFoodTable();
-      }
-    });
-  }
-
-  handleFormSubmit(e) {
+  async handleFormSubmit(e) {
     e.preventDefault();
-    const name = this.foodNameInput.value.trim();
-    const category = this.foodCategoryInput.value.trim();
-    const price = parseFloat(this.foodPriceInput.value);
-    const vegetarian = this.foodVegetarianInput.checked;
-    const imageUrl = this.foodImageInput.value.trim();
 
-    if (!name || !category || isNaN(price) || !imageUrl) {
-      alert('Please fill in all required fields');
-      return;
+    const formData = new FormData();
+    formData.append("food_item[name]", this.nameTarget.value);
+    formData.append("food_item[category]", this.categoryTarget.value);
+    formData.append("food_item[price]", this.priceTarget.value);
+    formData.append("food_item[vegetarian]", this.vegetarianTarget.checked);
+    if (this.imageTarget.files[0]) {
+      formData.append("food_item[image]", this.imageTarget.files[0]);
     }
 
+    let url = "/food_items";
+    let method = "POST";
     if (this.editingItemId) {
-      const index = this.foodItems.findIndex(item => item.id === this.editingItemId);
-      if (index !== -1) {
-        this.foodItems[index] = {
-          ...this.foodItems[index],
-          name,
-          category,
-          price,
-          vegetarian,
-          img: imageUrl
-        };
-      }
-      this.editingItemId = null;
-    } else {
-      const newId = this.foodItems.length > 0
-        ? Math.max(...this.foodItems.map(item => item.id)) + 1
-        : 1;
-
-      const newItem = {
-        id: newId,
-        name,
-        category,
-        price,
-        vegetarian,
-        img: imageUrl
-      };
-
-      this.foodItems.push(newItem);
+      url = `/food_items/${this.editingItemId}`;
+      method = "PATCH";
     }
 
-    this.saveFoodItems();
-    this.renderFoodTable();
-    this.clearForm();
+    try {
+      const resp = await fetch(url, {
+        method,
+        body: formData,
+        credentials: "same-origin"
+      });
+
+      if (!resp.ok) throw await resp.json();
+      const item = await resp.json();
+
+      if (this.editingItemId) {
+        this.foodItems = this.foodItems.map(i => i.id === item.id ? item : i);
+      } else {
+        this.foodItems.push(item);
+      }
+
+      this.editingItemId = null;
+      this.clearForm();
+      this.renderFoodTable();
+    } catch (err) {
+      console.error("Save failed:", err);
+      alert("Could not save food item: " + (err.errors || err));
+    }
   }
 
   handleEditItem(e) {
-    const itemId = parseInt(e.target.dataset.id);
-    const item = this.foodItems.find(item => item.id === itemId);
+    const id = e.target.dataset.id;
+    const item = this.foodItems.find(item => item.id === id);
+    if (!item) return;
 
-    if (item) {
-      this.editingItemId = itemId;
-
-      this.foodNameInput.value = item.name;
-      this.foodCategoryInput.value = item.category;
-      this.foodPriceInput.value = item.price;
-      this.foodVegetarianInput.checked = item.vegetarian;
-      this.foodImageInput.value = item.img;
-
-      const submitButton = this.foodForm.querySelector('button[type="submit"]');
-      submitButton.textContent = 'Update Item';
-      this.foodForm.scrollIntoView({ behavior: 'smooth' });
-    }
+    this.editingItemId = id;
+    this.nameTarget.value = item.name;
+    this.categoryTarget.value = item.category;
+    this.priceTarget.value = item.price;
+    this.vegetarianTarget.checked = item.vegetarian;
+    this.submitButtonTarget.textContent = 'Update Item';
+    this.formTarget.scrollIntoView({ behavior: 'smooth' });
   }
 
-  handleDeleteItem(e) {
-    const itemId = parseInt(e.target.dataset.id);
+  async handleDeleteItem(e) {
+    const id = e.target.dataset.id;
+    if (!confirm("Are you sure?")) return;
 
-    if (confirm('Are you sure you want to delete this item?')) {
-      this.foodItems = this.foodItems.filter(item => item.id !== itemId);
-      this.saveFoodItems();
+    try {
+      let resp = await fetch(`/food_items/${id}`, {
+        method: "DELETE",
+        credentials: "same-origin"
+      });
+      if (!resp.ok) throw await resp.text();
+
+      this.foodItems = this.foodItems.filter(i => i.id != id);
       this.renderFoodTable();
+    } catch (e) {
+      console.error("Delete failed:", e);
+      alert("Could not delete item");
     }
   }
 
   clearForm() {
-    this.foodForm.reset();
+    this.formTarget.reset();
     this.editingItemId = null;
-    const submitButton = this.foodForm.querySelector('button[type="submit"]');
-    submitButton.textContent = 'Add Item';
+    this.submitButtonTarget.textContent = 'Add Item';
   }
 }

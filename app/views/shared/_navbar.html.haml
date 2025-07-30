@@ -1,0 +1,18 @@
+%nav.navbar
+  .content-wrapper
+    = link_to root_path, class: "logo" do
+      .coffee-icon-container
+        = image_tag("coffee-icon-svgrepo-com.svg", alt: "Coffee cup", class: "coffee-icon")
+      %span
+        EUREKA
+        %br
+        CAFFE
+    %ul.nav-links
+      %li= link_to "HOME", root_path
+      %li= link_to "ABOUT", "#"
+      %li.has-dropdown
+        = link_to "SERVICE", "#"
+        %ul.nav-dropdown
+          %li= link_to "DASHBOARD", dashboard_path
+      %li= link_to "BLOG", "#"
+      %li= link_to "CONTACTS", "#"

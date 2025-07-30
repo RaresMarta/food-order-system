@@ -1,159 +1,135 @@
 import { Controller } from "@hotwired/stimulus"
-import "../constants" // provides window.foodItems
 
 export default class extends Controller {
+  static targets = [
+    "grid", "category", "sort", "veg",
+    "min", "max", "minLabel", "maxLabel",
+    "sliderRange", "thumbLeft", "thumbRight"
+  ]
+
   connect() {
-    console.log("Home page controller connected");
+    console.log("✅ Home controller connected")
 
-    this.FOOD_ITEMS_STORAGE_KEY = 'eurekaCaffeMenuItems';
-    this.selectedCategory = "All";
-    this.selectedSort = "default";
+    this.items = Array.isArray(window.foodItems) ? window.foodItems : []
 
-    this.getElements();
-    this.initFoodItems();
-    this.populateCategoryDropdown();
-    this.renderGrid(this.displayedFoodItems);
-    this.setupListeners();
-    this.setupPriceRangeSlider();
+    this.minLabelTarget.textContent = this.minTarget.value
+    this.maxLabelTarget.textContent = this.maxTarget.value
+
+    this.enforceGap("min")
+    this.enforceGap("max")
+    this.updateSliderUI()
+    this.applyFilters()
   }
 
-  getElements() {
-    this.grid = document.getElementById("food-grid");
-    this.categoryDropdown = document.getElementById("category-dropdown");
-    this.sortDropdown = document.getElementById("sort-dropdown");
-    this.vegetarianToggle = document.getElementById("vegetarian-toggle");
-    this.priceRangeMin = document.getElementById("price-range-min");
-    this.priceRangeMax = document.getElementById("price-range-max");
-    this.minPriceLabel = document.querySelector(".min-price");
-    this.maxPriceLabel = document.querySelector(".max-price");
-    this.sliderRange = document.querySelector(".slider-range");
-    this.thumbLeft = document.querySelector(".slider-thumb.left");
-    this.thumbRight = document.querySelector(".slider-thumb.right");
+  filterChanged(event) {
+    this.minLabelTarget.textContent = this.minTarget.value
+    this.maxLabelTarget.textContent = this.maxTarget.value
+
+    if (event?.target === this.minTarget) {
+      this.enforceGap("min")
+    } else if (event?.target === this.maxTarget) {
+      this.enforceGap("max")
+    }
+
+    this.updateSliderUI()
+    this.applyFilters(event)
   }
 
-  initFoodItems() {
-    const storedItems = localStorage.getItem(this.FOOD_ITEMS_STORAGE_KEY);
-    if (storedItems) {
-      this.displayedFoodItems = JSON.parse(storedItems);
-    } else {
-      this.displayedFoodItems = JSON.parse(JSON.stringify(window.foodItems));
-      localStorage.setItem(this.FOOD_ITEMS_STORAGE_KEY, JSON.stringify(this.displayedFoodItems));
+
+  enforceGap(source) {
+    const gap = 10
+    let min = parseInt(this.minTarget.value)
+    let max = parseInt(this.maxTarget.value)
+
+    if (max - min < gap) {
+      if (source === "min") {
+        min = max - gap
+        this.minTarget.value = min
+        this.minLabelTarget.textContent = min
+      } else if (source === "max") {
+        max = min + gap
+        this.maxTarget.value = max
+        this.maxLabelTarget.textContent = max
+      }
     }
   }
 
-  populateCategoryDropdown() {
-    const categories = ["All", ...new Set(this.displayedFoodItems.map(item => item.category))];
-    const categoryList = this.categoryDropdown.querySelector(".dropdown-options");
+  updateSliderUI() {
+    const min = parseFloat(this.minTarget.value)
+    const max = parseFloat(this.maxTarget.value)
+    const rangeMin = parseFloat(this.minTarget.min)
+    const rangeMax = parseFloat(this.maxTarget.max)
 
-    categoryList.innerHTML = "";
-    categories.forEach(category => {
-      const li = document.createElement("li");
-      li.textContent = category;
-      categoryList.appendChild(li);
-    });
+    const minPercent = ((min - rangeMin) / (rangeMax - rangeMin)) * 100
+    const maxPercent = ((max - rangeMin) / (rangeMax - rangeMin)) * 100
 
-    categoryList.addEventListener("click", (e) => {
-      if (e.target.tagName === "LI") {
-        this.selectedCategory = e.target.textContent;
-        this.applyFilters();
-      }
-    });
+    this.sliderRangeTarget.style.left = `${minPercent}%`
+    this.sliderRangeTarget.style.right = `${100 - maxPercent}%`
+    this.thumbLeftTarget.style.left = `${minPercent}%`
+    this.thumbRightTarget.style.left = `${maxPercent}%`
   }
 
-  setupListeners() {
-    this.sortDropdown.addEventListener("click", (e) => {
-      if (e.target.tagName === "LI") {
-        this.selectedSort = e.target.getAttribute("data-value") || "default";
-        this.applyFilters();
+  applyFilters(event) {
+    if (event && event.target.tagName === "LI") {
+      const dropdown = event.target.closest(".custom-dropdown")
+      const label = dropdown.querySelector(".dropdown-label")
+
+      if (dropdown.id === "category-dropdown") {
+        label.textContent = event.target.textContent.trim()
+      } else if (dropdown.id === "sort-dropdown") {
+        label.textContent = event.target.textContent.trim()
       }
-    });
+    }
 
-    this.vegetarianToggle.addEventListener("change", () => this.applyFilters());
-  }
+    const selectedCategory = this.categoryTarget.querySelector(".dropdown-label").textContent.trim()
+    const selectedSort     = this.sortTarget.querySelector(".dropdown-label").textContent.trim()
+    const minPrice         = parseFloat(this.minTarget.value)
+    const maxPrice         = parseFloat(this.maxTarget.value)
+    const onlyVeg          = this.vegTarget.checked
 
-  setupPriceRangeSlider() {
-    if (this.displayedFoodItems.length === 0) return;
+    let items = [...this.items]
 
-    const prices = this.displayedFoodItems.map(item => item.price);
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
+    // Category filter
+    if (selectedCategory !== "All" && selectedCategory !== "Category") {
+      items = items.filter(i => i.category === selectedCategory)
+    }
 
-    this.priceRangeMin.min = minPrice;
-    this.priceRangeMax.min = minPrice;
-    this.priceRangeMin.max = maxPrice;
-    this.priceRangeMax.max = maxPrice;
-    this.priceRangeMin.value = minPrice;
-    this.priceRangeMax.value = maxPrice;
+    // Sorting
+    if (selectedSort === "Price: Low to High") {
+      items.sort((a, b) => a.price - b.price)
+    } else if (selectedSort === "Price: High to Low") {
+      items.sort((a, b) => b.price - a.price)
+    }
 
-    this.minPriceLabel.textContent = `$${minPrice}`;
-    this.maxPriceLabel.textContent = `$${maxPrice}`;
-    this.updateSliderRangeUI();
+    // Vegetarian filter
+    if (onlyVeg) {
+      items = items.filter(i => i.vegetarian)
+    }
 
-    const minGap = 5;
-    this.priceRangeMin.addEventListener("input", () => {
-      if (parseInt(this.priceRangeMax.value) - parseInt(this.priceRangeMin.value) < minGap) {
-        this.priceRangeMin.value = parseInt(this.priceRangeMax.value) - minGap;
-      }
-      this.minPriceLabel.textContent = `$${this.priceRangeMin.value}`;
-      this.updateSliderRangeUI();
-      this.applyFilters();
-    });
+    // Price filter
+    items = items.filter(i => i.price >= minPrice && i.price <= maxPrice)
 
-    this.priceRangeMax.addEventListener("input", () => {
-      if (parseInt(this.priceRangeMax.value) - parseInt(this.priceRangeMin.value) < minGap) {
-        this.priceRangeMax.value = parseInt(this.priceRangeMin.value) + minGap;
-      }
-      this.maxPriceLabel.textContent = `$${this.priceRangeMax.value}`;
-      this.updateSliderRangeUI();
-      this.applyFilters();
-    });
-  }
-
-  updateSliderRangeUI() {
-    const minVal = parseInt(this.priceRangeMin.value);
-    const maxVal = parseInt(this.priceRangeMax.value);
-    const range = this.priceRangeMax.max - this.priceRangeMin.min;
-
-    const minPercent = ((minVal - this.priceRangeMin.min) / range) * 100;
-    const maxPercent = ((maxVal - this.priceRangeMin.min) / range) * 100;
-
-    this.sliderRange.style.left = minPercent + "%";
-    this.sliderRange.style.right = (100 - maxPercent) + "%";
-    this.thumbLeft.style.left = minPercent + "%";
-    this.thumbRight.style.left = maxPercent + "%";
-  }
-
-  applyFilters() {
-    const isVegetarian = this.vegetarianToggle.checked;
-    const minPrice = parseInt(this.priceRangeMin.value);
-    const maxPrice = parseInt(this.priceRangeMax.value);
-
-    let filtered = this.displayedFoodItems.filter(item =>
-      (this.selectedCategory === "All" || item.category === this.selectedCategory) &&
-      (!isVegetarian || item.vegetarian) &&
-      item.price >= minPrice &&
-      item.price <= maxPrice
-    );
-
-    if (this.selectedSort === "asc") filtered.sort((a, b) => a.price - b.price);
-    else if (this.selectedSort === "desc") filtered.sort((a, b) => b.price - a.price);
-
-    this.renderGrid(filtered);
+    this.renderGrid(items)
   }
 
   renderGrid(items) {
-    this.grid.innerHTML = "";
+    this.gridTarget.innerHTML = ""
 
-    items.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "food-card";
+    if (items.length === 0) {
+      this.gridTarget.innerHTML = "<p>No items match your filters.</p>"
+      return
+    }
+
+    for (const item of items) {
+      const card = document.createElement("div")
+      card.className = "food-card"
       card.innerHTML = `
         <img src="${item.img}" alt="${item.name}" />
         <h3>${item.name}</h3>
         <p>${item.category}</p>
         <strong>$${item.price.toFixed(2)}</strong>
-      `;
-      this.grid.appendChild(card);
-    });
+      `
+      this.gridTarget.appendChild(card)
+    }
   }
 }

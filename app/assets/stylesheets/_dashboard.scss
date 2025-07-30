@@ -29,11 +29,11 @@
   margin-bottom: $gap-md;
 
   button {
-    background-color: #3498db;
+    background-color: $btn-reset;
     color: $white;
 
     &:hover {
-      background-color: darken(#3498db, 10%);
+      background-color: darken($btn-reset, 20%);
     }
   }
 }
@@ -140,21 +140,21 @@
   }
 
   &.btn-danger {
-    background-color: #e74c3c;
+    background-color: $btn-danger;
     color: $white;
   }
 
   &.btn-edit {
-    background-color: #3498db;
+    background-color: $btn-edit;
     color: $white;
   }
 
   &.btn-reset {
-    background-color: #3498db;
+    background-color: $btn-reset;
     color: $white;
 
     &:hover {
-      background-color: darken(#3498db, 10%);
+      background-color: darken($btn-reset, 10%);
     }
   }
 }

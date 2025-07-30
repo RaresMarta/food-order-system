@@ -14,10 +14,9 @@
   font-size: 0.85rem;
 
   position: sticky;
-  top: 0;              /* distance from the top of the viewport */
-  z-index: 20;         /* sit above content as you scroll */
+  top: 0;
+  z-index: 20;
 }
-
 
 .filter-bar-content {
   display: flex;
@@ -26,7 +25,7 @@
   width: 100%;
 }
 
-.filter-left {
+.dropdowns-container {
   display: flex;
   align-items: center;
   gap: $gap-lg;
@@ -159,6 +158,17 @@
   min-width: 35px; /* Ensure consistent width */
   display: inline-block;
   text-align: center;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 /* Slider track container */

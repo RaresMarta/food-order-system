@@ -15,5 +15,5 @@
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_importmap_tags
   %body
-    %div{"data-controller" => "hello"}
+    = render "shared/navbar"
     = yield
