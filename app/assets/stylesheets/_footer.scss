@@ -1,0 +1,45 @@
+@import "variables";
+
+footer.site-footer {
+  background: $primary-color;
+  color: $secondary-color;
+  padding: $gap-lg 0 $gap-lg 0;
+  text-align: center;
+  font-size: 1rem;
+  box-shadow: 0 -2px 8px $dropdown-shadow;
+
+  .footer-content {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .footer-nav {
+    margin-top: 0.5rem;
+    a {
+      color: $text-color;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      &:hover {
+        color: $white;
+        text-decoration: underline;
+      }
+    }
+    .footer-separator {
+      color: #888;
+      margin: 0 0.3rem;
+      font-weight: bold;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+}

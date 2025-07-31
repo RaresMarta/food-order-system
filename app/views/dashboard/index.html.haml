@@ -1,50 +1,60 @@
-/ Hero Section (smaller for dashboard)
-%section.dashboard-hero
-  .background
-  .hero-content
-    %h1 Food Management Dashboard
-    %p Add, edit, or remove food items from your menu.
+%div{ data: { controller: "dashboard" } }
+  / Hero Section (smaller for dashboard)
+  %section.dashboard-hero
+    .background
+    .hero-content
+      %h1 Food Management Dashboard
+      %p Add, edit, or remove food items from your menu.
 
-.content-wrapper
-  %section.dashboard-container{ data: { controller: "dashboard" } }
-    .dashboard-form
-      %h2 Add New Food Item
+  .content-wrapper
+    %section.dashboard-container
+      .dashboard-form
+        %h2 Add New Food Item
 
-      %form#food-form{
-        enctype: "multipart/form-data",
-        data: { action: "submit->dashboard#handleFormSubmit", turbo: "false" }
-      }
-        .form-group
-          %label{ for: "food-name" } Name
-          %input{ type: "text", id: "food-name", required: true, data: { dashboard_target: "name" } }
-        .form-group
-          %label{ for: "food-category" } Category
-          %input{ type: "text", id: "food-category", required: true, data: { dashboard_target: "category" } }
-        .form-group
-          %label{ for: "food-price" } Price ($)
-          %input{ type: "number", id: "food-price", min: 0, step: 0.01, required: true, data: { dashboard_target: "price" } }
-        .form-group.checkbox-group
-          %input{ type: "checkbox", id: "food-vegetarian", data: { dashboard_target: "vegetarian" } }
-          %label{ for: "food-vegetarian" } Vegetarian
-        .form-group
-          %label{ for: "food-image" } Image
-          %input{ type: "file", id: "food-image", accept: "image/*", data: { dashboard_target: "image" } }
-        .form-buttons
-          %button.btn.btn-primary{ type: "submit", data: { dashboard_target: "submitButton" } } Add Item
-          %button.btn{ type: "button", data: { action: "click->dashboard#clearForm", dashboard_target: "clearButton" } } Clear Form
-          %button.btn.btn-reset{ type: "button", data: { action: "click->dashboard#resetToBaseline", dashboard_target: "resetButton" } } Reset to Default Items
+        %form#food-form{
+          enctype: "multipart/form-data",
+          data: { action: "submit->dashboard#handleFormSubmit", turbo: "false", dashboard_target: "form" }
+        }
+          .form-group
+            %label{ for: "food-name" } Name
+            %input{ type: "text", id: "food-name", required: true, data: { dashboard_target: "name" } }
+          .form-group
+            %label{ for: "food-category" } Category
+            %select#food-category{
+              required: true,
+              data: { dashboard_target: "category" }
+            }
+              %option{ value: "entrees" } Entrees
+              %option{ value: "main-courses" } Main courses
+              %option{ value: "second-courses" } Second courses
+              %option{ value: "salads" } Salads
+              %option{ value: "pizza" } Pizza
+              %option{ value: "desserts" } Desserts
+          .form-group
+            %label{ for: "food-price" } Price ($)
+            %input{ type: "number", id: "food-price", min: 0, step: 0.01, required: true, data: { dashboard_target: "price" } }
+          .form-group.checkbox-group
+            %input{ type: "checkbox", id: "food-vegetarian", data: { dashboard_target: "vegetarian" } }
+            %label{ for: "food-vegetarian" } Vegetarian
+          .form-group
+            %label{ for: "food-image" } Image
+            %input{ type: "file", id: "food-image", accept: "image/*", data: { dashboard_target: "image" } }
+          .form-buttons
+            %button.btn.btn-primary{ type: "submit", data: { dashboard_target: "submitButton" } } Add Item
+            %button.btn{ type: "button", data: { action: "click->dashboard#clearForm", dashboard_target: "clearButton" } } Clear Form
+            %button.btn.btn-reset{ type: "button", data: { action: "click->dashboard#resetToBaseline", dashboard_target: "resetButton" } } Reset to Default Items
 
-    .dashboard-table
-      %h2 Manage Food Items
-      .table-container
-        %table
-          %thead
-            %tr
-              %th ID
-              %th Name
-              %th Category
-              %th Price
-              %th Vegetarian
-              %th Image
-              %th Actions
-          %tbody{ data: { dashboard_target: "tableBody" } }
+      .dashboard-table
+        %h2 Manage Food Items
+        .table-container
+          %table
+            %thead
+              %tr
+                %th ID
+                %th Name
+                %th Category
+                %th Price
+                %th Vegetarian
+                %th Image
+                %th Actions
+            %tbody{ data: { dashboard_target: "tableBody" } }

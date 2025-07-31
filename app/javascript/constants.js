@@ -1,4 +1,3 @@
-// Default food items data
 window.foodItems = [
   {
     id: 1,

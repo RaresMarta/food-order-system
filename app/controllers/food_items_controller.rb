@@ -5,7 +5,7 @@ class FoodItemsController < ApplicationController
 
   # GET /food_items
   def index
-    render json: FoodItem.all.map { |fi| food_item_json(fi) }
+    render json: FoodItem.all.map { |item| food_item_json(item) }
   end
 
   # GET /food_items/:id

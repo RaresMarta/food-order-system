@@ -42,17 +42,7 @@ export default class DashboardController extends Controller {
   renderFoodTable() {
     this.tableBodyTarget.innerHTML = '';
 
-    if (this.foodItems.length === 0) {
-      const emptyRow = document.createElement('tr');
-      emptyRow.innerHTML = `
-        <td colspan="7" class="empty-state">
-          <p>No food items found.</p>
-          <button class="btn btn-primary" data-action="click->dashboard#resetToBaseline">Add Default Items</button>
-        </td>
-      `;
-      this.tableBodyTarget.appendChild(emptyRow);
-      return;
-    }
+    if (this.foodItems.length === 0) return;
 
     this.foodItems.forEach(item => {
       const row = document.createElement('tr');

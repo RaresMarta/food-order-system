@@ -8,17 +8,26 @@ export default class extends Controller {
   ]
 
   connect() {
-    console.log("✅ Home controller connected")
+    console.log("✅ Home controller connected");
+    this.items = [];
+    this.initHomepage();
+  }
 
-    this.items = Array.isArray(window.foodItems) ? window.foodItems : []
-
-    this.minLabelTarget.textContent = this.minTarget.value
-    this.maxLabelTarget.textContent = this.maxTarget.value
-
-    this.enforceGap("min")
-    this.enforceGap("max")
-    this.updateSliderUI()
-    this.applyFilters()
+  async initHomepage() {
+    try {
+      const resp = await fetch("/food_items", { credentials: "same-origin" });
+      if (!resp.ok) throw new Error(await resp.text());
+      this.items = await resp.json();
+    } catch (e) {
+      console.error("Couldn't load food items:", e);
+      this.items = [];
+    }
+    this.minLabelTarget.textContent = this.minTarget.value;
+    this.maxLabelTarget.textContent = this.maxTarget.value;
+    this.enforceGap("min");
+    this.enforceGap("max");
+    this.updateSliderUI();
+    this.applyFilters();
   }
 
   filterChanged(event) {
@@ -114,17 +123,11 @@ export default class extends Controller {
 
   renderGrid(items) {
     this.gridTarget.innerHTML = ""
-
-    if (items.length === 0) {
-      this.gridTarget.innerHTML = "<p>No items match your filters.</p>"
-      return
-    }
-
     for (const item of items) {
       const card = document.createElement("div")
       card.className = "food-card"
       card.innerHTML = `
-        <img src="${item.img}" alt="${item.name}" />
+        <img src="${item.image_url || '/default-food.png'}" alt="${item.name}" />
         <h3>${item.name}</h3>
         <p>${item.category}</p>
         <strong>$${item.price.toFixed(2)}</strong>
