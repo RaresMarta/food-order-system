@@ -2,8 +2,8 @@
   .footer-content
     %p © #{Time.current.year} Eureka Caffe. All rights reserved.
     %nav.footer-nav
-      %a{ href: "/" } Home
+      = link_to "Home", root_path
       |
-      %a{ href: "/dashboard" } Dashboard
+      = link_to "Dashboard", dashboard_path
       |
       %a{ href: "https://github.com/RaresMarta/food-order-system/tree/rails-migration", target: "_blank" } GitHub
