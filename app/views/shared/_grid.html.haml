@@ -1,10 +1,13 @@
-- food_items.each do |item|
-  .food-card
-    - if item.image.attached?
-      = image_tag url_for(item.image), alt: item.name
-    - else
-      = image_tag 'default-food.jpg', alt: 'Default food image'
-    %h3= item.name
-    %p= number_to_currency(item.price)
-    %p= item.category
-
+- if food_items.any?
+  - food_items.each do |item|
+    .food-card
+      .image-wrapper
+        = image_tag(item.image.attached? ? url_for(item.image) : 'default-food.jpg', alt: item.name)
+      .food-name= item.name
+      .food-price= number_to_currency(item.price)
+      .food-category= item.category
+- else
+  .no-results
+    .no-results-content
+      %h3 No items found
+      %p Try adjusting your filters or search criteria

@@ -10,7 +10,9 @@ class FoodItem < ApplicationRecord
   }
 
   scope :price_between, ->(min, max) {
-    where(price: (min || 0)..(max || 100))
+    min_val = min.present? ? min.to_f : 0
+    max_val = max.present? ? max.to_f : 100
+    where(price: min_val..max_val) if min_val <= max_val
   }
 
   scope :sorted_by_price, ->(order) {
@@ -18,10 +20,15 @@ class FoodItem < ApplicationRecord
   }
 
   def self.filtered(params)
-    FoodItem
-      .filter_by_category(params[:category])
-      .vegetarian_only(params[:vegetarian])
-      .price_between(params[:min], params[:max])
-      .sorted_by_price(params[:sort])
+    Rails.logger.info "Filtering with params: #{params.inspect}"
+
+    result = FoodItem.all
+    result = result.filter_by_category(params[:category]) if params[:category].present?
+    result = result.vegetarian_only(params[:vegetarian]) if params[:vegetarian].present?
+    result = result.price_between(params[:min], params[:max]) if params[:min].present? || params[:max].present?
+    result = result.sorted_by_price(params[:sort]) if params[:sort].present? && params[:sort] != "default"
+
+    Rails.logger.info "Filtered result count: #{result.count}"
+    result
   end
 end

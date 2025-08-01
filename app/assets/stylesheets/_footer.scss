@@ -1,8 +1,8 @@
 @import "variables";
 
 footer.site-footer {
-  background: $primary-color;
-  color: $secondary-color;
+  background: $text-color;
+  color: $primary-color;
   padding: $gap-lg 0 $gap-lg 0;
   text-align: center;
   font-size: 1rem;
@@ -20,15 +20,11 @@ footer.site-footer {
   .footer-nav {
     margin-top: 0.5rem;
     a {
-      color: $text-color;
+      color: $white;
       text-decoration: none;
       margin: 0 0.5rem;
       font-weight: 500;
       transition: color 0.2s;
-      &:hover {
-        color: $white;
-        text-decoration: underline;
-      }
     }
     .footer-separator {
       color: #888;

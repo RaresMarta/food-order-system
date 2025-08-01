@@ -31,11 +31,6 @@
   gap: $gap-lg;
 }
 
-.filter-right {
-  display: flex;
-  align-items: center;
-}
-
 .custom-dropdown {
   display: flex;
   align-items: center;
@@ -46,39 +41,28 @@
 }
 
 .dropdown-label {
-  padding-right: 1.5em;
   position: relative;
+  padding-right: 1.5em;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: $letter-spacing;
-  color: #777;
+  color: $filter-label;
   display: flex;
   align-items: center;
+  gap: 0.25em;
 }
 
-.custom-dropdown::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid $primary-color;
-  transform: translateY(-50%);
-  transition: transform 0.2s ease;
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+  margin-left: 0;
+  flex-shrink: 0;
 }
 
-.custom-dropdown.active::after {
-  border-top: none;
-  border-bottom: 5px solid $primary-color;
-  transform: translateY(-50%) rotate(180deg);
+.custom-dropdown:hover .dropdown-arrow {
+  transform: rotate(180deg);
 }
 
 .dropdown-options {
-  display: none;
   position: absolute;
   left: 0;
   top: calc(100% + 5px);
@@ -94,13 +78,14 @@
   padding: 0.5rem 0;
   margin: 0;
   opacity: 0;
+  visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.2s ease;
 }
 
-.custom-dropdown.active .dropdown-options {
-  display: block;
+.custom-dropdown:hover .dropdown-options {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
 }
 
@@ -117,33 +102,19 @@
   background: $dropdown-hover;
 }
 
-/* Vegetarian dropdown specific styles */
-#vegetarian-dropdown .dropdown-options li {
-  padding: 0.5em 1em;
-}
-
-#vegetarian-dropdown input[type="checkbox"] {
-  margin: 0;
-  accent-color: $primary-color;
-}
-
-/* Vegetarian label styling */
-.vegetarian-label {
-  display: flex;
-  align-items: center;
-  gap: $gap-sm;
-  cursor: pointer;
-  width: 100%;
+.dropdown-options li.active {
+  background: $dropdown-hover;
+  font-weight: 600;
 }
 
 /* Price range styles */
 .price-range-container {
   display: flex;
   align-items: center;
-  gap: 1rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #777;
+  color: $filter-label;
+  gap: 0.5rem;
 }
 
 .price-label {
@@ -160,20 +131,9 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: #333;
-  min-width: 35px; /* Ensure consistent width */
+  min-width: 35px;
   display: inline-block;
   text-align: center;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
 }
 
 /* Slider track container */

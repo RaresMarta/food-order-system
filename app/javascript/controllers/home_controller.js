@@ -2,32 +2,21 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = [
-    "grid", "category", "sort", "veg",
+    "form", "grid",
     "min", "max", "minLabel", "maxLabel",
     "sliderRange", "thumbLeft", "thumbRight"
   ]
 
   connect() {
-    console.log("✅ Home controller connected");
-    this.items = [];
     this.initHomepage();
   }
 
-  async initHomepage() {
-    try {
-      const resp = await fetch("/food_items", { credentials: "same-origin" });
-      if (!resp.ok) throw new Error(await resp.text());
-      this.items = await resp.json();
-    } catch (e) {
-      console.error("Couldn't load food items:", e);
-      this.items = [];
-    }
+  initHomepage() {
     this.minLabelTarget.textContent = this.minTarget.value;
     this.maxLabelTarget.textContent = this.maxTarget.value;
     this.enforceGap("min");
     this.enforceGap("max");
     this.updateSliderUI();
-    this.applyFilters();
   }
 
   filterChanged(event) {
@@ -41,9 +30,24 @@ export default class extends Controller {
     }
 
     this.updateSliderUI()
-    this.applyFilters(event)
+    this.submitForm()
   }
 
+  submitForm() {
+    if (this.submitTimeout) clearTimeout(this.submitTimeout)
+    this.submitTimeout = setTimeout(() => {
+      if (this.hasFormTarget) {
+        console.log("Form target found, submitting")
+        const scrollPosition = window.pageYOffset
+        this.formTarget.requestSubmit()
+        setTimeout(() => {
+          window.scrollTo(0, scrollPosition)
+        }, 50)
+      } else {
+        console.error("No form target found!")
+      }
+    }, 300)
+  }
 
   enforceGap(source) {
     const gap = 10
@@ -76,63 +80,5 @@ export default class extends Controller {
     this.sliderRangeTarget.style.right = `${100 - maxPercent}%`
     this.thumbLeftTarget.style.left = `${minPercent}%`
     this.thumbRightTarget.style.left = `${maxPercent}%`
-  }
-
-  applyFilters(event) {
-    if (event && event.target.tagName === "LI") {
-      const dropdown = event.target.closest(".custom-dropdown")
-      const label = dropdown.querySelector(".dropdown-label")
-
-      if (dropdown.id === "category-dropdown") {
-        label.textContent = event.target.textContent.trim()
-      } else if (dropdown.id === "sort-dropdown") {
-        label.textContent = event.target.textContent.trim()
-      }
-    }
-
-    const selectedCategory = this.categoryTarget.querySelector(".dropdown-label").textContent.trim()
-    const selectedSort     = this.sortTarget.querySelector(".dropdown-label").textContent.trim()
-    const minPrice         = parseFloat(this.minTarget.value)
-    const maxPrice         = parseFloat(this.maxTarget.value)
-    const onlyVeg          = this.vegTarget.checked
-
-    let items = [...this.items]
-
-    // Category filter
-    if (selectedCategory !== "All" && selectedCategory !== "Category") {
-      items = items.filter(i => i.category === selectedCategory)
-    }
-
-    // Sorting
-    if (selectedSort === "Price: Low to High") {
-      items.sort((a, b) => a.price - b.price)
-    } else if (selectedSort === "Price: High to Low") {
-      items.sort((a, b) => b.price - a.price)
-    }
-
-    // Vegetarian filter
-    if (onlyVeg) {
-      items = items.filter(i => i.vegetarian)
-    }
-
-    // Price filter
-    items = items.filter(i => i.price >= minPrice && i.price <= maxPrice)
-
-    this.renderGrid(items)
-  }
-
-  renderGrid(items) {
-    this.gridTarget.innerHTML = ""
-    for (const item of items) {
-      const card = document.createElement("div")
-      card.className = "food-card"
-      card.innerHTML = `
-        <img src="${item.image_url || '/default-food.png'}" alt="${item.name}" />
-        <h3>${item.name}</h3>
-        <p>${item.category}</p>
-        <strong>$${item.price.toFixed(2)}</strong>
-      `
-      this.gridTarget.appendChild(card)
-    }
   }
 }
