@@ -1,0 +1,10 @@
+- food_items.each do |item|
+  .food-card
+    - if item.image.attached?
+      = image_tag url_for(item.image), alt: item.name
+    - else
+      = image_tag 'default-food.jpg', alt: 'Default food image'
+    %h3= item.name
+    %p= number_to_currency(item.price)
+    %p= item.category
+

@@ -42,7 +42,6 @@
   justify-content: center;
   position: relative;
   user-select: none;
-  padding-bottom: 0.3em;
   cursor: pointer;
 }
 
@@ -53,50 +52,56 @@
   text-transform: uppercase;
   letter-spacing: $letter-spacing;
   color: #777;
+  display: flex;
+  align-items: center;
 }
 
 .custom-dropdown::after {
   content: "";
   position: absolute;
   right: 0;
-  top: 40%;
-  width: 0.6em;
-  height: 0.6em;
+  top: 50%;
+  width: 0;
+  height: 0;
   pointer-events: none;
-  border-right: 2px solid $primary-color;
-  border-bottom: 2px solid $primary-color;
-  transform: translateY(-70%) rotate(45deg);
-  transition: transform 0.2s;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid $primary-color;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
 }
 
-.custom-dropdown:hover::after {
-  transform: translateY(-30%) rotate(-135deg);
+.custom-dropdown.active::after {
+  border-top: none;
+  border-bottom: 5px solid $primary-color;
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .dropdown-options {
   display: none;
   position: absolute;
   left: 0;
-  top: 100%;
+  top: calc(100% + 5px);
   background: $white;
-  border: 1px solid $light-gray;
+  border: 1px solid #ddd;
   border-radius: $radius-sm;
-  min-width: 140px;
-  box-shadow: $dropdown-shadow;
-  z-index: 10;
-  margin-top: 0.3em;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
   font-weight: normal;
   text-transform: none;
   list-style: none;
-  padding: 0;
-  padding-top: 0.3em;
-  margin-top: 0;
+  padding: 0.5rem 0;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
 }
 
-/* Show dropdown when hovering over the container OR the dropdown itself */
-.custom-dropdown:hover .dropdown-options,
-.dropdown-options:hover {
+.custom-dropdown.active .dropdown-options {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dropdown-options li {

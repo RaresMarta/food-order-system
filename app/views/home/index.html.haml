@@ -1,7 +1,6 @@
 - provide(:title, "Food")
 
 %div{ data: { controller: "home" } }
-  / Hero Section
   %section.hero
     .background
     .hero-content
@@ -15,68 +14,67 @@
         %br/
         Eureka Caffe — simple, satisfying, and just one order away.
 
-  / Filter Bar
   %section.filter-bar
     .content-wrapper.filter-bar-content
-      .dropdowns-container
-        #category-dropdown.custom-dropdown{ data: { home_target: "category" } }
-          .dropdown-label Category
-          %ul.dropdown-options{ data: { action: "click->home#applyFilters" } }
-            %li{ data_value: "default" } All
-            %li{ data_value: "entrees" } Entrees
-            %li{ data_value: "main-courses" } Main courses
-            %li{ data_value: "second-courses" } Second courses
-            %li{ data_value: "salads" } Salads
-            %li{ data_value: "pizza" } Pizza
-            %li{ data_value: "desserts" } Desserts
+      = form_with url: root_path,
+                  method: :get,
+                  data:   { turbo_frame: "food_grid", controller: "home" },
+                  local:  true do
 
-        #sort-dropdown.custom-dropdown{ data: { home_target: "sort" } }
-          .dropdown-label Sorting
-          %ul.dropdown-options{ data: { action: "click->home#applyFilters" } }
-            %li{ data_value: "default" } Default
-            %li{ data_value: "asc" } Price: Low to High
-            %li{ data_value: "desc" } Price: High to Low
+        .dropdowns-container
+          .custom-dropdown
+            = label_tag :category, "CATEGORY", class: "dropdown-label"
+            = select_tag :category,
+                options_for_select(category_options, params[:category]),
+                data: { home_target: "category" }
 
-        #vegetarian-dropdown.custom-dropdown
-          .dropdown-label Vegetarian
-          %ul.dropdown-options
-            %li
-              %label.vegetarian-label
-                %input{
-                  type: "checkbox",
-                  id: "vegetarian-toggle",
-                  data: { action: "change->home#applyFilters", home_target: "veg" }
-                }
-                %span Show Only Vegetarian
+          .custom-dropdown
+            = label_tag :sort, "SORTING", class: "dropdown-label"
+            = select_tag :sort,
+                options_for_select(sort_options, params[:sort]),
+                data: { home_target: "sort" }
 
-      .price-range-container
-        .price-label Price
-        .price-slider-wrapper
-          %span.min-price{ data: { home_target: "minLabel" } } 0
+          .custom-dropdown
+            = label_tag :vegetarian, class: "vegetarian-label" do
+              = check_box_tag :vegetarian, "true",
+                              params[:vegetarian].present?,
+                              data: { home_target: "veg",
+                                      action: "change->home#applyFilters" }
+              %span VEGETARIAN
 
-          .slider-container
-            %label.visually-hidden{ for: "price-range-min" } Minimum price
-            %input#price-range-min{
-              title: "Minimum price",
-              type: "range",
-              min: "0", max: "100", value: "0",
-              data: { action: "input->home#filterChanged", home_target: "min" }
-            }
+        .price-range-container
+          .price-label PRICE
+          .price-slider-wrapper
+            %span.min-price{ data: { home_target: "minLabel" } }= params[:min] || 0
 
-            %label.visually-hidden{ for: "price-range-max" } Maximum price
-            %input#price-range-max{
-              title: "Maximum price",
-              type: "range",
-              min: "0", max: "100", value: "100",
-              data: { action: "input->home#filterChanged", home_target: "max" }
-            }
+            .slider-container
+              %input#price-range-min{
+                type:  "range",
+                name:  "min",
+                value: params[:min] || 0,
+                min: 0, max: 100, step: 1,
+                data: { home_target: "min",
+                        action: "input->home#filterChanged" }
+              }
+              %input#price-range-max{
+                type:  "range",
+                name:  "max",
+                value: params[:max] || 100,
+                min: 0, max: 100, step: 1,
+                data: { home_target: "max",
+                        action: "input->home#filterChanged" }
+              }
 
-            .slider-track
-            .slider-range{ data: { home_target: "sliderRange" } }
-            .slider-thumb.left{ data: {home_target: "thumbLeft" } }
-            .slider-thumb.right{ data: {home_target: "thumbRight" } }
-          %span.max-price{ data: { home_target: "maxLabel" } } 100
+              .slider-track
+              .slider-range{ data: { home_target: "sliderRange" } }
+              .slider-thumb.left{  data: { home_target: "thumbLeft"  } }
+              .slider-thumb.right{ data: { home_target: "thumbRight" } }
 
-  / Food Grid
-  .content-wrapper
-    %section#food-grid.food-grid{ data: { home_target: "grid" } }
+            %span.max-price{ data: { home_target: "maxLabel" } }= params[:max] || 100
+
+        .filter-submit
+          = submit_tag "Apply Filters", class: "filter-button"
+
+  %turbo-frame#food-grid.content-wrapper
+    %section.food-grid
+      = render partial: "shared/grid", locals: { food_items: @food_items }
