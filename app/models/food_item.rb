@@ -1,34 +1,34 @@
 class FoodItem < ApplicationRecord
   has_one_attached :image
 
+  validates :name, presence: true, length: { maximum: 100 }
+  validates :category, presence: true, length: { maximum: 50 }
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :vegetarian, inclusion: { in: [true, false] }
+
   scope :filter_by_category, ->(cat) {
-    where(category: cat) if cat.present? && cat != "default"
+    cat.present? && cat != "default" ? where(category: cat) : all
   }
 
   scope :vegetarian_only, ->(veg) {
-    where(vegetarian: ActiveModel::Type::Boolean.new.cast(veg)) if veg.present?
+    veg.present? ? where(vegetarian: ActiveModel::Type::Boolean.new.cast(veg)) : all
   }
 
   scope :price_between, ->(min, max) {
     min_val = min.present? ? min.to_f : 0
     max_val = max.present? ? max.to_f : 100
-    where(price: min_val..max_val) if min_val <= max_val
+    min_val <= max_val ? where(price: min_val..max_val) : all
   }
 
   scope :sorted_by_price, ->(order) {
-    order(price: order.to_sym) if %w[asc desc].include?(order)
+    %w[asc desc].include?(order) ? order(price: order.to_sym) : all
   }
 
   def self.filtered(params)
-    Rails.logger.info "Filtering with params: #{params.inspect}"
-
-    result = FoodItem.all
-    result = result.filter_by_category(params[:category]) if params[:category].present?
-    result = result.vegetarian_only(params[:vegetarian]) if params[:vegetarian].present?
-    result = result.price_between(params[:min], params[:max]) if params[:min].present? || params[:max].present?
-    result = result.sorted_by_price(params[:sort]) if params[:sort].present? && params[:sort] != "default"
-
-    Rails.logger.info "Filtered result count: #{result.count}"
-    result
+    FoodItem
+      .filter_by_category(params[:category])
+      .vegetarian_only(params[:vegetarian])
+      .price_between(params[:min], params[:max])
+      .sorted_by_price(params[:sort])
   end
 end

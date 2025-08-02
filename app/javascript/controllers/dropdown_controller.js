@@ -5,7 +5,6 @@ export default class extends Controller {
 
   select(e) {
     e.preventDefault()
-
     const li = e.currentTarget
     const value = li.dataset.value
     this.inputTarget.value = value
