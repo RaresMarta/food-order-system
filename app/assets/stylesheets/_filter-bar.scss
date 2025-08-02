@@ -1,0 +1,228 @@
+@import "variables";
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $filter-bg;
+  padding: $padding 0;
+  width: 100%;
+  font-family: $filter-font;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing;
+  font-size: 0.85rem;
+
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.filter-bar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dropdowns-container {
+  display: flex;
+  align-items: center;
+  gap: $gap-lg;
+}
+
+.custom-dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+}
+
+.dropdown-label {
+  position: relative;
+  padding-right: 1.5em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing;
+  color: $filter-label;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+  margin-left: 0;
+  flex-shrink: 0;
+}
+
+.custom-dropdown:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 5px);
+  background: $white;
+  border: 1px solid #ddd;
+  border-radius: $radius-sm;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  font-weight: normal;
+  text-transform: none;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+}
+
+.custom-dropdown:hover .dropdown-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-options li {
+  padding: 0.7em 1.2em;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: $gap-sm;
+}
+
+.dropdown-options li:hover {
+  background: $dropdown-hover;
+}
+
+.dropdown-options li.active {
+  background: $dropdown-hover;
+  font-weight: 600;
+}
+
+/* Price range styles */
+.price-range-container {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: $filter-label;
+  gap: 0.5rem;
+}
+
+.price-label {
+  margin-right: 0.5rem;
+}
+
+.price-slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.min-price, .max-price {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  min-width: 35px;
+  display: inline-block;
+  text-align: center;
+}
+
+/* Slider track container */
+.slider-container {
+  position: relative;
+  height: 30px;
+  width: 120px;
+}
+
+/* Hide original inputs but keep them accessible */
+.slider-container input[type="range"] {
+  position: absolute;
+  pointer-events: none;
+  appearance: none;
+  opacity: 0;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* Make thumbs clickable */
+.slider-container input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+  appearance: none;
+}
+
+.slider-container input[type="range"]::-moz-range-thumb {
+  pointer-events: all;
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+}
+
+/* Slider track */
+.slider-track {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  background: #ccc;
+  border-radius: 2px;
+}
+
+/* Active area between thumbs */
+.slider-range {
+  position: absolute;
+  z-index: 2;
+  left: 0%;
+  right: 0%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  background: $primary-color;
+  border-radius: 2px;
+}
+
+/* Slider thumbs */
+.slider-thumb {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  background: $white;
+  border: 2px solid $primary-color;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.slider-thumb.left {
+  left: 0%;
+}
+
+.slider-thumb.right {
+  left: 100%;
+}
