@@ -2,12 +2,12 @@
 
 .food-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 300px));
+  gap: $gap-md;
   max-width: $content-width;
-  justify-items: center;
   justify-content: center;
   margin: 0 auto;
-  padding: $gap-lg 0;
+  padding: $gap-lg;
   min-height: 400px;
 }
 
@@ -21,6 +21,8 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  width: 300px; // Fixed width
+  max-width: 300px; // Prevent stretching
 
   &:hover {
     transform: translateY(-5px);
