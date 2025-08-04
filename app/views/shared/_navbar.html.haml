@@ -16,3 +16,12 @@
           %li= link_to "DASHBOARD", dashboard_path
       %li= link_to "BLOG", "#"
       %li= link_to "CONTACTS", "#"
+      %li.has-dropdown
+        = link_to "ACCOUNT", "#"
+        %ul.nav-dropdown
+          - if logged_in?
+            %li= link_to "Welcome, #{current_user.name}!", "#"
+            %li= link_to "LOGOUT", logout_path, data: { turbo_method: :delete }
+          - else
+            %li= link_to "LOGIN", login_path
+            %li= link_to "REGISTER", register_path

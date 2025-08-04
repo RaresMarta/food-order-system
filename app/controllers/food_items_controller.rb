@@ -1,7 +1,7 @@
 class FoodItemsController < ApplicationController
   protect_from_forgery with: :null_session
 
-  before_action :set_food_item, only: [:show, :update, :destroy]
+  before_action :set_food_item, only: [ :show, :update, :destroy ]
 
   # GET /food_items
   def index

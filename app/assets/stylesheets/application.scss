@@ -1,9 +1,11 @@
 @import "variables";
+@import "shared";
 @import "header";
 @import "filter-bar";
 @import "food-grid";
 @import "dashboard";
 @import "footer";
+@import "auth_forms";
 
 * {
   margin: 0;
@@ -27,12 +29,6 @@ a {
 
 img {
   max-width: 100%;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: $container-padding;
 }
 
 .content-wrapper {

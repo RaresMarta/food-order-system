@@ -4,7 +4,7 @@ class FoodItem < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :category, presence: true, length: { maximum: 50 }
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :vegetarian, inclusion: { in: [true, false] }
+  validates :vegetarian, inclusion: { in: [ true, false ] }
 
   scope :filter_by_category, ->(cat) {
     cat.present? && cat != "default" ? where(category: cat) : all
@@ -23,12 +23,4 @@ class FoodItem < ApplicationRecord
   scope :sorted_by_price, ->(order) {
     %w[asc desc].include?(order) ? order(price: order.to_sym) : all
   }
-
-  def self.filtered(params)
-    FoodItem
-      .filter_by_category(params[:category])
-      .vegetarian_only(params[:vegetarian])
-      .price_between(params[:min], params[:max])
-      .sorted_by_price(params[:sort])
-  end
 end

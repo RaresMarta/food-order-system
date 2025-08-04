@@ -8,6 +8,7 @@
 
   .hero-content {
     margin-top: 4rem;
+
     h1 {
       font-size: 2rem;
       margin-bottom: $gap-lg;
@@ -245,7 +246,8 @@ table {
     font-size: 0.9rem;
   }
 
-  th, td {
+  th,
+  td {
     padding: 0.75rem 0.5rem;
     text-align: left;
     border-bottom: 1px solid $light-gray;
@@ -274,7 +276,8 @@ table {
   td {
     white-space: nowrap;
 
-    &:nth-child(2) { // Name column
+    &:nth-child(2) {
+      // Name column
       white-space: normal;
       word-break: break-word;
       max-width: 120px;
