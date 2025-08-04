@@ -4,7 +4,7 @@ class FoodItem < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :category, presence: true, length: { maximum: 50 }
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :vegetarian, inclusion: { in: [true, false] }
+  validates :vegetarian, inclusion: { in: [ true, false ] }
 
   scope :filter_by_category, ->(cat) {
     cat.present? && cat != "default" ? where(category: cat) : all
