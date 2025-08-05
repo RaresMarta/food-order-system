@@ -8,50 +8,5 @@
 
 .content-wrapper
   %section.dashboard-container{ data: { controller: "dashboard" } }
-    .dashboard-form
-      %h2 Add New Food Item
-      = form_with model: @food_item || FoodItem.new, url: @food_item ? food_item_path(@food_item) : food_items_path, local: true, method: (@food_item ? :patch : :post), class: "form" do |form|
-        .form-group
-          = form.label :name, "Name"
-          = form.text_field :name, required: true, class: "form-control"
-        .form-group
-          = form.label :category, "Category"
-          = form.select :category, dashboard_category_options, { prompt: "Select category" }, { required: true, class: "form-control" }
-        .form-group
-          = form.label :price, "Price ($)"
-          = form.number_field :price, min: 1, step: 0.5, required: true, class: "form-control"
-        .form-group.checkbox-group
-          = form.check_box :vegetarian
-          = form.label :vegetarian, "Vegetarian"
-        .form-group
-          = form.label :image, "Image"
-          = form.file_field :image, accept: "image/*", class: "form-control"
-        .form-buttons
-          = form.submit (@food_item ? "Update Item" : "Add Item"), class: "btn btn-primary"
-          = link_to "Clear Form", dashboard_path, class: "btn btn-secondary"
-
-    .dashboard-table
-      %h2 Manage Food Items
-      .table-container
-        %table.table
-          %thead
-            %tr
-              - dashboard_table_headers.each do |header|
-                %th= header
-          %tbody
-            - @food_items.each do |item|
-              %tr
-                %td= item.id
-                %td= item.name
-                %td= item.category
-                %td= number_to_currency(item.price)
-                %td= item.vegetarian? ? "Yes" : "No"
-                %td
-                  - if item.image.attached?
-                    = image_tag item.image, style: "width: 50px; height: 50px; object-fit: cover;"
-                  - else
-                    No image
-                %td
-                  = link_to "Edit", dashboard_path(edit_id: item.id), class: "btn btn-sm btn-warning"
-                  = link_to "Delete", food_item_path(item), method: :delete,
-                      data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"
+    = render partial: "food_item_form", locals: { food_item: @food_item }
+    = render partial: "food_items_table", locals: { food_items: @food_items }
