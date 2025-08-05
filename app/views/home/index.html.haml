@@ -13,69 +13,7 @@
       %br/
       Eureka Caffe — simple, satisfying, and just one order away.
 
-%section.filter-bar
-  = form_with url: root_path,
-              method: :get,
-              data:   { turbo_frame: "food_grid", controller: "home", home_target: "form"},
-              html:   { class: "content-wrapper filter-bar-content", role: "search" },
-              local:  true do
-
-    .dropdowns-container
-      / — Category —
-      .custom-dropdown#category-dropdown{ data: { controller: "dropdown" } }
-        .dropdown-label
-          CATEGORY
-          = render "shared/dropdown_arrow"
-        %input{ type: "hidden", name: "category", value: params[:category] || "default", data: { dropdown_target: "input" } }
-        %ul.dropdown-options{ data: { dropdown_target: "options" } }
-          - category_options.each do |label, val|
-            %li{ data: { value: val, action: "click->dropdown#select" },
-                  class: ("active" if params[:category] == val) }= label
-
-      / — Sorting —
-      .custom-dropdown#sort-dropdown{ data: { controller: "dropdown" } }
-        .dropdown-label
-          SORTING
-          = render "shared/dropdown_arrow"
-        %input{ type: "hidden", name: "sort", value: params[:sort] || "default", data: { dropdown_target: "input" } }
-        %ul.dropdown-options{ data: { dropdown_target: "options" } }
-          - sort_options.each do |label, val|
-            %li{ data: { value: val, action: "click->dropdown#select" },
-                  class: ("active" if params[:sort] == val) }= label
-
-      / — Vegetarian —
-      .custom-dropdown#vegetarian-dropdown{ data: { controller: "dropdown" } }
-        .dropdown-label
-          VEGETARIAN
-          = render "shared/dropdown_arrow"
-        %input{ type: "hidden", name: "vegetarian", value: (params[:vegetarian] || ""), data: { dropdown_target: "input" } }
-        %ul.dropdown-options{ data: { dropdown_target: "options" } }
-          %li{ data: { value: "", action: "click->dropdown#select" }, class: ("active" if params[:vegetarian].blank?) }
-            Show All
-          %li{ data: { value: "true", action: "click->dropdown#select" }, class: ("active" if params[:vegetarian].present?) }
-            Show Only Vegetarian
-
-
-    .price-range-container
-      .price-label PRICE
-      .price-slider-wrapper
-        %span.min-price{ data: { home_target: "minLabel" } }= params[:min] || 0
-        .slider-container
-          %input#price-range-min{
-            type:  "range", name: "min",
-            value: params[:min] || 0, min: 0, max: 100, step: 1,
-            data: { home_target: "min", action: "input->home#filterChanged" }
-          }
-          %input#price-range-max{
-            type:  "range", name: "max",
-            value: params[:max] || 100, min: 0, max: 100, step: 1,
-            data: { home_target: "max", action: "input->home#filterChanged" }
-          }
-          .slider-track
-          .slider-range{ data: { home_target: "sliderRange" } }
-          .slider-thumb.left{  data: { home_target: "thumbLeft"  } }
-          .slider-thumb.right{ data: { home_target: "thumbRight" } }
-        %span.max-price{ data: { home_target: "maxLabel" } }= params[:max] || 100
+= render "filter_bar"
 
 .content-wrapper
   %turbo-frame#food_grid

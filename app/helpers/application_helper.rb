@@ -27,4 +27,9 @@ module ApplicationHelper
       [ "Price: High to Low",    "desc" ]
     ]
   end
+
+  def cart_item_count
+    return 0 unless logged_in? && current_user
+    current_user.cart_items.sum(:quantity)
+  end
 end

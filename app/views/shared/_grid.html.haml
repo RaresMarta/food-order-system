@@ -6,6 +6,17 @@
       .food-name= item.name
       .food-price= number_to_currency(item.price)
       .food-category= item.category
+      .food-actions
+        - if logged_in?
+          = button_to "Add to Cart", cart_items_path,
+              params: { food_item_id: item.id },
+              method: :post,
+              class: "btn btn-primary btn-sm",
+              data: { turbo_frame: "_top" }
+        - else
+          = link_to "Add to Cart", login_path,
+              class: "btn btn-primary btn-sm",
+              data: { turbo_frame: "_top" }
 - else
   .no-results
     .no-results-content

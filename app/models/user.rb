@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_many :cart_items, dependent: :destroy
+  has_many :food_items, through: :cart_items
+
   has_secure_password
 
   validates :email, presence: true, uniqueness: true,

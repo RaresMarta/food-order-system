@@ -1,4 +1,7 @@
 class FoodItem < ApplicationRecord
+  has_many :cart_items, dependent: :destroy
+  has_many :users, through: :cart_items
+
   has_one_attached :image
 
   validates :name, presence: true, length: { maximum: 100 }
