@@ -1,0 +1,21 @@
+- if food_items.any?
+  - food_items.each do |item|
+    .food-card
+      .image-wrapper
+        = image_tag(item.image.attached? ? url_for(item.image) : 'default-food.jpg', alt: item.name)
+      .food-name= item.name
+      .food-price= number_to_currency(item.price)
+      .food-category= item.category
+      .food-actions
+        = button_to "Add to Cart",
+          logged_in? ? cart_items_path : login_path,
+          params: logged_in? ? { food_item_id: item.id } : nil,
+          data: { turbo_frame: "_top", turbo_method: (logged_in? ? :post : nil) },
+          class: "btn btn-primary btn-sm"
+
+
+- else
+  .no-results
+    .no-results-content
+      %h3 No items found
+      %p Try adjusting your filters or search criteria

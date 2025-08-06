@@ -1,7 +1,8 @@
 - provide(:title, "Cart")
 
-%section.cart-hero
-  .content-wrapper
+%section.dashboard-hero
+  .background
+  .hero-content
     %h1 Your Cart
 
 .content-wrapper
@@ -46,8 +47,8 @@
         = link_to "Checkout", "#", class: "btn btn-primary"
 
   - else
-    %section.empty-cart
-      .text-center
+    %section.no-results
+      .no-results-content
         %h3 Your cart is empty
         %p Start adding some delicious items to your cart!
         = link_to "Browse Menu", root_path, class: "btn btn-primary"

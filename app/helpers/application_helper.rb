@@ -32,4 +32,8 @@ module ApplicationHelper
     return 0 unless logged_in? && current_user
     current_user.cart_items.sum(:quantity)
   end
+
+  def current_user_admin?
+    logged_in? && current_user.admin?
+  end
 end

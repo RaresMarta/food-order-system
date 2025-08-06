@@ -1,6 +1,11 @@
 class CartItemsController < ApplicationController
   before_action :require_login
 
+  def index
+    @cart_items = current_user.cart_items.includes(:food_item)
+    @total = @cart_items.sum { |item| item.food_item.price * item.quantity }
+  end
+
   def create
     @food_item = FoodItem.find(params[:food_item_id])
     @cart_item = current_user.cart_items.find_by(food_item: @food_item)

@@ -13,9 +13,10 @@
       %br/
       Eureka Caffe — simple, satisfying, and just one order away.
 
-= render "filter_bar"
+%section.filter-bar
+  = render "filter_bar"
 
 .content-wrapper
   %turbo-frame#food_grid
     %section.food-grid
-      = render partial: "shared/grid", locals: { food_items: @food_items }
+      = render "grid", food_items: @food_items
