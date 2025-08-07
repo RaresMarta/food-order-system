@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "home#index"
+  root "food_items#index"
 
   get "/register", to: "users#new"
   post "/register", to: "users#create"
@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :cart_items, only: [ :index, :create, :update, :destroy ]
   get "/cart", to: "cart_items#index", as: :cart
 
-  get "/dashboard", to: "dashboard#index", as: :dashboard
   resources :food_items, only: [ :create, :update, :destroy ]
+
+  get "/dashboard", to: "dashboard#index", as: :dashboard
 end

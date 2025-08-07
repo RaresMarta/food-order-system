@@ -1,11 +1,12 @@
 class SessionsController < ApplicationController
+  skip_before_action :require_login
+
   # GET /login
-  def new
-  end
+  def new; end
 
   # POST /login
   def create
-    user = User.find_by(email: params[:email].downcase)
+    user = User.find_by(email: params[:email])
 
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id

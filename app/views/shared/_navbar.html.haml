@@ -25,8 +25,9 @@
             %li
               = link_to cart_path do
                 CART
-                - if cart_item_count > 0
-                  %span.badge.bg-primary= cart_item_count
+                %turbo_frame{id: "cart_count"}
+                  - if cart_item_count.positive?
+                    %span.badge.bg-primary= cart_item_count
             - if current_user_admin?
               %li= link_to "DASHBOARD", dashboard_path
             %li= link_to "LOGOUT", logout_path, data: { turbo_method: :delete }

@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   allow_browser versions: :modern
-
-  before_action :current_user
+  before_action :require_login
 
   private
 
@@ -17,6 +16,13 @@ class ApplicationController < ActionController::Base
     unless logged_in?
       flash[:alert] = "You must be logged in to access this page"
       redirect_to login_path
+    end
+  end
+
+  def require_admin
+    unless current_user&.admin?
+      flash[:alert] = "Access denied. Admin privileges required."
+      redirect_to root_path
     end
   end
 

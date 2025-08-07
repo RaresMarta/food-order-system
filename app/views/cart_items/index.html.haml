@@ -27,7 +27,7 @@
                 - else
                   No image
               %td= cart_item.food_item.name
-              %td= cart_item.food_item.category
+              %td= cart_item.food_item.category.humanize
               %td= number_to_currency(cart_item.food_item.price)
               %td
                 = form_with model: cart_item, url: cart_item_path(cart_item), method: :patch, local: true, class: "d-inline" do |form|

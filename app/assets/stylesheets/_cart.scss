@@ -1,0 +1,426 @@
+@import "variables";
+
+// Cart specific styles
+.cart-items {
+  background-color: $white;
+  // border-radius: $radius-md;
+  // box-shadow: $card-shadow;
+  margin: $gap-lg;
+  padding: $gap-md 0;
+
+  .table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+
+    thead {
+      background-color: $filter-bg;
+
+      th {
+        padding: $gap-md;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: $letter-spacing;
+        color: $text-color;
+        border-bottom: 2px solid $light-gray;
+
+        @media (max-width: 768px) {
+          padding: $gap-sm;
+          font-size: 0.7rem;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $light-gray;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: rgba($light-gray, 0.3);
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        td {
+          padding: $gap-md;
+          vertical-align: middle;
+
+          @media (max-width: 768px) {
+            padding: $gap-sm;
+          }
+
+          // Image column
+          &:first-child {
+            width: 80px;
+
+            img {
+              border-radius: $radius-sm;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            @media (max-width: 768px) {
+              width: 60px;
+            }
+          }
+
+          // Item name column
+          &:nth-child(2) {
+            font-weight: 600;
+            color: $text-color;
+            min-width: 150px;
+
+            @media (max-width: 768px) {
+              min-width: 120px;
+              font-size: 0.9rem;
+            }
+          }
+
+          // Category column
+          &:nth-child(3) {
+            color: #666;
+            font-style: italic;
+
+            @media (max-width: 768px) {
+              font-size: 0.8rem;
+            }
+          }
+
+          // Price columns
+          &:nth-child(4),
+          &:nth-child(6) {
+            font-weight: 600;
+            color: $primary-color;
+
+            @media (max-width: 768px) {
+              font-size: 0.9rem;
+            }
+          }
+
+          // Quantity column
+          &:nth-child(5) {
+            min-width: 140px;
+
+            form {
+              display: flex;
+              align-items: center;
+              gap: $gap-sm;
+
+              .quantity-input {
+                width: 60px !important;
+                text-align: center;
+                border: 1px solid $light-gray;
+                border-radius: $radius-sm;
+                padding: 0.4rem !important;
+
+                &:focus {
+                  border-color: $primary-color;
+                  outline: none;
+                  box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+                }
+              }
+
+              .btn-warning {
+                background-color: #f39c12;
+                color: $white;
+                border: none;
+                padding: 0.4rem 0.8rem;
+                border-radius: $radius-sm;
+                font-size: 0.8rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                  background-color: #e67e22;
+                }
+
+                @media (max-width: 768px) {
+                  padding: 0.3rem 0.6rem;
+                  font-size: 0.7rem;
+                }
+              }
+            }
+
+            @media (max-width: 768px) {
+              min-width: 120px;
+            }
+          }
+
+          // Actions column
+          &:last-child {
+            .btn-danger {
+              background-color: $btn-danger;
+              color: $white;
+              border: none;
+              padding: 0.4rem 0.8rem;
+              border-radius: $radius-sm;
+              font-size: 0.8rem;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.2s ease;
+
+              &:hover {
+                background-color: darken($btn-danger, 10%);
+                transform: translateY(-1px);
+              }
+
+              @media (max-width: 768px) {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Cart summary section
+.cart-summary {
+  background-color: $white;
+  // border-radius: $radius-md;
+  // box-shadow: $card-shadow;
+  margin: $gap-lg;
+  padding: $gap-lg;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $gap-md;
+
+  @media (max-width: 768px) {
+    padding: $gap-md;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cart-total {
+    h3 {
+      font-size: 1.5rem;
+      color: $text-color;
+      font-weight: 700;
+
+      @media (max-width: 768px) {
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  .cart-actions {
+    display: flex;
+    gap: $gap-md;
+    flex-wrap: wrap;
+
+    @media (max-width: 480px) {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: $radius-sm;
+      font-family: $body-font;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      &.btn-secondary {
+        background-color: $light-gray;
+        color: $text-color;
+
+        &:hover {
+          background-color: darken($light-gray, 10%);
+        }
+      }
+
+      &.btn-primary {
+        background-color: $primary-color;
+        color: $white;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+      }
+
+      @media (max-width: 768px) {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// Empty cart state
+.no-results {
+  background-color: $white;
+  padding: $gap-lg * 2;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    padding: $gap-lg;
+  }
+
+  .no-results-content {
+    max-width: 400px;
+    margin: 0 auto;
+
+    h3 {
+      font-size: 1.5rem;
+      color: $text-color;
+      margin-bottom: $gap-md;
+      font-weight: 600;
+
+      @media (max-width: 768px) {
+        font-size: 1.25rem;
+      }
+    }
+
+    p {
+      color: #666;
+      margin-bottom: $gap-lg;
+      font-size: 1rem;
+      line-height: 1.6;
+
+      @media (max-width: 768px) {
+        font-size: 0.9rem;
+      }
+    }
+
+    .btn-primary {
+      background-color: $primary-color;
+      color: $white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: $radius-sm;
+      font-family: $body-font;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// Responsive table for mobile
+@media (max-width: 768px) {
+  .cart-items {
+    .table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      tr {
+        border: 1px solid $light-gray;
+        margin-bottom: $gap-md;
+        border-radius: $radius-sm;
+        padding: $gap-md;
+        background-color: $white;
+        display: block;
+        position: relative;
+
+        &:hover {
+          background-color: rgba($light-gray, 0.1);
+        }
+      }
+
+      td {
+        border: none;
+        position: relative;
+        padding: $gap-sm 0 $gap-sm 30%;
+        text-align: left;
+        white-space: normal;
+
+        &:before {
+          content: attr(data-label) ": ";
+          position: absolute;
+          left: 6px;
+          width: 25%;
+          padding-right: 10px;
+          white-space: nowrap;
+          font-weight: bold;
+          color: $text-color;
+        }
+
+        &:first-child {
+          &:before {
+            content: "Image: ";
+          }
+        }
+
+        &:nth-child(2):before {
+          content: "Item: ";
+        }
+
+        &:nth-child(3):before {
+          content: "Category: ";
+        }
+
+        &:nth-child(4):before {
+          content: "Price: ";
+        }
+
+        &:nth-child(5):before {
+          content: "Quantity: ";
+        }
+
+        &:nth-child(6):before {
+          content: "Subtotal: ";
+        }
+
+        &:last-child:before {
+          content: "Actions: ";
+        }
+      }
+    }
+  }
+}
+
+// Additional spacing for cart page
+.cart-page {
+  .content-wrapper {
+    padding-top: $gap-lg;
+    padding-bottom: $gap-lg;
+  }
+}

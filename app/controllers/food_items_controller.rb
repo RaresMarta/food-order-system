@@ -1,5 +1,11 @@
 class FoodItemsController < ApplicationController
   before_action :set_food_item, only: [ :update, :destroy ]
+  skip_before_action :require_login
+
+  # GET /food_items
+  def index
+    @food_items = FoodItemQuery.new(params: params).call
+  end
 
   # POST /food_items
   def create
