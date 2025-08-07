@@ -30,21 +30,13 @@ export default class extends Controller {
     }
 
     this.updateSliderUI()
-    this.submitForm()
   }
 
-  submitForm() {
+  submitFormDebounced() {
     if (this.submitTimeout) clearTimeout(this.submitTimeout)
     this.submitTimeout = setTimeout(() => {
       if (this.hasFormTarget) {
-        console.log("Form target found, submitting")
-        const scrollPosition = window.pageYOffset
         this.formTarget.requestSubmit()
-        setTimeout(() => {
-          window.scrollTo(0, scrollPosition)
-        }, 50)
-      } else {
-        console.error("No form target found!")
       }
     }, 300)
   }

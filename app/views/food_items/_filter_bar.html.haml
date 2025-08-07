@@ -44,12 +44,18 @@
         %input#price-range-min{
           type:  "range", name: "min",
           value: params[:min] || 0, min: 0, max: 100, step: 1,
-          data: { home_target: "min", action: "input->home#filterChanged" }
+          data: {
+            home_target: "min",
+            action: "input->home#filterChanged input->home#submitFormDebounced"
+          }
         }
         %input#price-range-max{
           type:  "range", name: "max",
           value: params[:max] || 100, min: 0, max: 100, step: 1,
-          data: { home_target: "max", action: "input->home#filterChanged" }
+          data: {
+            home_target: "max",
+            action: "input->home#filterChanged input->home#submitFormDebounced"
+          }
         }
         .slider-track
         .slider-range{ data: { home_target: "sliderRange" } }
