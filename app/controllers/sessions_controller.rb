@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :require_login
+  before_action :initialize_session_service
 
   # GET /login
   def new
@@ -10,20 +11,27 @@ class SessionsController < ApplicationController
 
   # POST /login
   def create
-    user = User.find_by(email: params[:email])
+    result = @session_service.authenticate_user(params[:email], params[:password])
 
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      redirect_to root_path, notice: "Logged in successfully!"
+    if result[:success]
+      session[:user_id] = result[:user].id
+      redirect_to root_path, notice: result[:message]
     else
-      flash.now[:alert] = "Invalid email or password"
+      flash.now[:alert] = result[:message]
       render :new, status: :unprocessable_entity
     end
   end
 
   # DELETE /logout
   def destroy
+    result = @session_service.logout_user
     session[:user_id] = nil
-    redirect_to root_path, notice: "Logged out successfully!"
+    redirect_to root_path, notice: result[:message]
+  end
+
+  private
+
+  def initialize_session_service
+    @session_service = SessionService.new
   end
 end

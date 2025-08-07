@@ -1,39 +1,42 @@
 class CartItemsController < ApplicationController
-  before_action :set_cart_item, only: [ :update, :destroy ]
+  before_action :set_cart_item, only: [:update, :destroy]
+  before_action :initialize_cart_service
 
   def index
     @cart_items = current_user.cart_items.includes(:food_item)
-    @total = @cart_items.sum { |item| item.food_item.price * item.quantity }
+    @total = @cart_service.cart_total
   end
 
   def create
-    @food_item = FoodItem.find_by(id: params[:food_item_id])
-    return redirect_back(fallback_location: root_path), flash: { alert: "Not found" } unless @food_item
+    result = @cart_service.add_item(params[:food_item_id])
 
-    @cart_item = current_user.cart_items.find_or_initialize_by(food_item: @food_item)
-    @cart_item.quantity = (@cart_item.quantity || 0) + 1
-    @cart_item.save
+    unless result[:success]
+      flash.now[:alert] = result[:message]
+      redirect_back(fallback_location: root_path) and return
+    end
 
-    flash.now[:notice] = "Item added to cart!"
+    flash.now[:notice] = result[:message]
   end
 
   def update
-    if @cart_item.update(cart_item_params)
-      flash[:notice] = "Cart updated successfully!"
-    else
-      flash[:alert] = "Failed to update cart."
-    end
+    result = @cart_service.update_item(@cart_item, cart_item_params[:quantity])
 
+    flash[result[:success] ? :notice : :alert] = result[:message]
     redirect_to cart_path
   end
 
   def destroy
-    @cart_item.destroy
-    flash[:notice] = "Item removed from cart."
+    result = @cart_service.remove_item(@cart_item)
+
+    flash[result[:success] ? :notice : :alert] = result[:message]
     redirect_to cart_path
   end
 
   private
+
+  def initialize_cart_service
+    @cart_service = CartService.new(current_user)
+  end
 
   def set_cart_item
     @cart_item = current_user.cart_items.find(params[:id])

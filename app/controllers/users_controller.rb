@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :require_login
+  before_action :initialize_user_service
 
   # GET /register
   def new
@@ -8,17 +9,22 @@ class UsersController < ApplicationController
 
   # POST /register
   def create
-    @user = User.new(user_params)
+    result = @user_service.register_user(user_params)
 
-    if @user.save
-      session[:user_id] = @user.id
-      redirect_to root_path, notice: "Account created successfully!"
+    if result[:success]
+      session[:user_id] = result[:user].id
+      redirect_to root_path, notice: result[:message]
     else
+      @user = result[:user]
       render :new, status: :unprocessable_entity
     end
   end
 
   private
+
+  def initialize_user_service
+    @user_service = UserService.new
+  end
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)

@@ -1,6 +1,7 @@
 class FoodItemsController < ApplicationController
   skip_before_action :require_login
-  before_action :set_food_item, only: [ :update, :destroy ]
+  before_action :set_food_item, only: [:update, :destroy]
+  before_action :initialize_food_item_service
 
   # GET /food_items
   def index
@@ -9,11 +10,12 @@ class FoodItemsController < ApplicationController
 
   # POST /food_items
   def create
-    @food_item = FoodItem.new(food_item_params)
+    result = @food_item_service.create_item(food_item_params)
 
-    if @food_item.save
-      redirect_to dashboard_path, notice: "Food item created successfully!"
+    if result[:success]
+      redirect_to dashboard_path, notice: result[:message]
     else
+      @food_item = result[:food_item]
       @food_items = FoodItem.all
       render "dashboard/index", status: :unprocessable_entity
     end
@@ -21,9 +23,12 @@ class FoodItemsController < ApplicationController
 
   # PATCH /food_items/:id
   def update
-    if @food_item.update(food_item_params)
-      redirect_to dashboard_path, notice: "Food item updated successfully!"
+    result = @food_item_service.update_item(@food_item, food_item_params)
+
+    if result[:success]
+      redirect_to dashboard_path, notice: result[:message]
     else
+      @food_item = result[:food_item]
       @food_items = FoodItem.all
       render "dashboard/index", status: :unprocessable_entity
     end
@@ -31,11 +36,17 @@ class FoodItemsController < ApplicationController
 
   # DELETE /food_items/:id
   def destroy
-    @food_item.destroy
-    redirect_to dashboard_path, notice: "Food item deleted successfully!"
+    result = @food_item_service.delete_item(@food_item)
+
+    flash[result[:success] ? :notice : :alert] = result[:message]
+    redirect_to dashboard_path
   end
 
   private
+
+  def initialize_food_item_service
+    @food_item_service = FoodItemService.new
+  end
 
   def set_food_item
     @food_item = FoodItem.find(params[:id])
