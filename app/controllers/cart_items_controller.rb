@@ -1,5 +1,4 @@
 class CartItemsController < ApplicationController
-  skip_before_action :require_login
   before_action :set_cart_item, only: [ :update, :destroy ]
 
   def index
@@ -15,10 +14,7 @@ class CartItemsController < ApplicationController
     @cart_item.quantity = (@cart_item.quantity || 0) + 1
     @cart_item.save
 
-    respond_to do |format|
-      format.html { redirect_back(fallback_location: root_path) }
-      format.turbo_stream
-    end
+    flash.now[:notice] = "Item added to cart!"
   end
 
   def update

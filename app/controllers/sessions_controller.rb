@@ -2,7 +2,11 @@ class SessionsController < ApplicationController
   skip_before_action :require_login
 
   # GET /login
-  def new; end
+  def new
+    if params[:redirect_reason] == 'cart'
+      flash.now[:alert] = "You must be logged in to add items to your cart"
+    end
+  end
 
   # POST /login
   def create

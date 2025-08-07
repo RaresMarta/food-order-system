@@ -6,11 +6,6 @@
         %h2.text-center.mb-4.fw-semibold Welcome Back
 
         = form_with url: login_path, local: true do |form|
-          - if flash[:alert]
-            .alert.alert-danger.alert-dismissible.fade.show.border-0
-              %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "alert", type: "button"}
-              = flash[:alert]
-
           .mb-3
             = form.label :email, "Email", class: "form-label text-muted small fw-medium"
             = form.email_field :email, class: "form-control", placeholder: "Enter your email address", required: true

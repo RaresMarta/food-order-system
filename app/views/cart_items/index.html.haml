@@ -3,7 +3,6 @@
 %section.dashboard-hero
   .background
   .hero-content
-    %h1 Your Cart
 
 .content-wrapper
   - if @cart_items.any?
@@ -47,8 +46,8 @@
         = link_to "Checkout", "#", class: "btn btn-primary"
 
   - else
-    %section.no-results
-      .no-results-content
+    %section.no-results.d-flex.align-items-center.justify-content-center{style: "min-height: 60vh;"}
+      .no-results-content.text-center
         %h3 Your cart is empty
         %p Start adding some delicious items to your cart!
         = link_to "Browse Menu", root_path, class: "btn btn-primary"

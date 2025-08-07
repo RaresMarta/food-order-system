@@ -13,7 +13,7 @@
             class: "btn btn-primary btn-sm"
 
         - else
-          = link_to "Add to Cart", login_path,
+          = link_to "Add to Cart", login_path(redirect_reason: 'cart'),
             class: "btn btn-primary btn-sm",
             data: { turbo_frame: "_top" }
 - else

@@ -2,3 +2,6 @@
   %turbo-frame{id: "cart_count"}
     - if cart_item_count.positive?
       %span.badge.bg-primary= cart_item_count
+
+= turbo_stream.replace "flash" do
+  = render "shared/flash"
