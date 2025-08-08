@@ -9,13 +9,7 @@ class CartItemsController < ApplicationController
 
   def create
     result = @cart_service.add_item(params[:food_item_id])
-
-    unless result[:success]
-      handle_result(result, root_path, use_flash_now: true)
-      redirect_back(fallback_location: root_path) and return
-    end
-
-    handle_result(result, use_flash_now: true)
+    handle_result(result, root_path, use_flash_now: true)
   end
 
   def update
