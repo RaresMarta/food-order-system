@@ -12,4 +12,13 @@ class SessionService
   def logout_user
     { success: true, message: "Logged out successfully!" }
   end
+
+  def handle_redirect_reason(redirect_reason)
+    case redirect_reason
+    when 'cart'
+      { success: false, message: "You must be logged in to add items to your cart" }
+    else
+      nil
+    end
+  end
 end

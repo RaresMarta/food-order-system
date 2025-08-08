@@ -14,15 +14,26 @@ class ApplicationController < ActionController::Base
 
   def require_login
     unless logged_in?
-      flash[:alert] = "You must be logged in to access this page"
-      redirect_to login_path
+      result = { success: false, message: "You must be logged in to access this page" }
+      handle_result(result, login_path)
     end
   end
 
   def require_admin
     unless current_user&.admin?
-      flash[:alert] = "Access denied. Admin privileges required."
-      redirect_to root_path
+      result = { success: false, message: "Access denied. Admin privileges required." }
+      handle_result(result, root_path)
+    end
+  end
+
+  def handle_result(result, redirect_path = root_path, use_flash_now: false)
+    flash_type = result[:success] ? :notice : :alert
+
+    if use_flash_now
+      flash.now[flash_type] = result[:message]
+    else
+      flash[flash_type] = result[:message]
+      redirect_to redirect_path
     end
   end
 

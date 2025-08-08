@@ -11,25 +11,21 @@ class CartItemsController < ApplicationController
     result = @cart_service.add_item(params[:food_item_id])
 
     unless result[:success]
-      flash.now[:alert] = result[:message]
+      handle_result(result, root_path, use_flash_now: true)
       redirect_back(fallback_location: root_path) and return
     end
 
-    flash.now[:notice] = result[:message]
+    handle_result(result, use_flash_now: true)
   end
 
   def update
     result = @cart_service.update_item(@cart_item, cart_item_params[:quantity])
-
-    flash[result[:success] ? :notice : :alert] = result[:message]
-    redirect_to cart_path
+    handle_result(result, cart_path)
   end
 
   def destroy
     result = @cart_service.remove_item(@cart_item)
-
-    flash[result[:success] ? :notice : :alert] = result[:message]
-    redirect_to cart_path
+    handle_result(result, cart_path)
   end
 
   private

@@ -4,9 +4,8 @@ class SessionsController < ApplicationController
 
   # GET /login
   def new
-    if params[:redirect_reason] == 'cart'
-      flash.now[:alert] = "You must be logged in to add items to your cart"
-    end
+    result = @session_service.handle_redirect_reason(params[:redirect_reason])
+    handle_result(result, use_flash_now: true) if result
   end
 
   # POST /login
@@ -15,9 +14,9 @@ class SessionsController < ApplicationController
 
     if result[:success]
       session[:user_id] = result[:user].id
-      redirect_to root_path, notice: result[:message]
+      handle_result(result, root_path)
     else
-      flash.now[:alert] = result[:message]
+      handle_result(result, use_flash_now: true)
       render :new, status: :unprocessable_entity
     end
   end
@@ -26,7 +25,7 @@ class SessionsController < ApplicationController
   def destroy
     result = @session_service.logout_user
     session[:user_id] = nil
-    redirect_to root_path, notice: result[:message]
+    handle_result(result, root_path)
   end
 
   private

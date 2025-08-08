@@ -1,7 +1,7 @@
 class FoodItemsController < ApplicationController
   skip_before_action :require_login
   before_action :set_food_item, only: [:update, :destroy]
-  before_action :initialize_food_item_service
+  before_action :initialize_food_item_service, only: [:create, :update, :destroy]
 
   # GET /food_items
   def index
@@ -13,7 +13,7 @@ class FoodItemsController < ApplicationController
     result = @food_item_service.create_item(food_item_params)
 
     if result[:success]
-      redirect_to dashboard_path, notice: result[:message]
+      handle_result(result, dashboard_path)
     else
       @food_item = result[:food_item]
       @food_items = FoodItem.all
@@ -26,7 +26,7 @@ class FoodItemsController < ApplicationController
     result = @food_item_service.update_item(@food_item, food_item_params)
 
     if result[:success]
-      redirect_to dashboard_path, notice: result[:message]
+      handle_result(result, dashboard_path)
     else
       @food_item = result[:food_item]
       @food_items = FoodItem.all
@@ -37,9 +37,7 @@ class FoodItemsController < ApplicationController
   # DELETE /food_items/:id
   def destroy
     result = @food_item_service.delete_item(@food_item)
-
-    flash[result[:success] ? :notice : :alert] = result[:message]
-    redirect_to dashboard_path
+    handle_result(result, dashboard_path)
   end
 
   private
