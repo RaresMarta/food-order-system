@@ -1,5 +1,5 @@
 class CartItemsController < ApplicationController
-  before_action :set_cart_item, only: [:update, :destroy]
+  before_action :set_cart_item, only: [ :update, :destroy ]
   before_action :initialize_cart_service
 
   def index

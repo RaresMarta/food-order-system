@@ -1,7 +1,7 @@
 class FoodItemsController < ApplicationController
   skip_before_action :require_login
-  before_action :set_food_item, only: [:update, :destroy]
-  before_action :initialize_food_item_service, only: [:create, :update, :destroy]
+  before_action :set_food_item, only: [ :update, :destroy ]
+  before_action :initialize_food_item_service, only: [ :create, :update, :destroy ]
 
   # GET /food_items
   def index

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :require_login
-  before_action :initialize_user_service, only: [:create]
+  before_action :initialize_user_service, only: [ :create ]
 
   # GET /register
   def new

@@ -15,7 +15,7 @@ class SessionService
 
   def handle_redirect_reason(redirect_reason)
     case redirect_reason
-    when 'cart'
+    when "cart"
       { success: false, message: "You must be logged in to add items to your cart" }
     else
       nil
