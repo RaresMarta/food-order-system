@@ -1,10 +1,10 @@
-# Food Order System
+# 🍕 Food Order System
 
 A Ruby on Rails web app for browsing, managing, and ordering food items. The system supports user authentication, a shopping cart, and an admin dashboard for managing menu items.
 
 ---
 
-## Features
+## ⚙️ Features
 
 - **User Authentication:** Register, log in, and log out securely.
 - **Food Menu:** Browse food items with categories, prices, and images.
@@ -15,7 +15,7 @@ A Ruby on Rails web app for browsing, managing, and ordering food items. The sys
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 - `app/controllers`: Rails controllers (e.g., `food_items_controller.rb`, `cart_items_controller.rb`)
 - `app/models`: ActiveRecord models (`User`, `FoodItem`, `CartItem`, etc.)
@@ -25,7 +25,7 @@ A Ruby on Rails web app for browsing, managing, and ordering food items. The sys
 
 ---
 
-## Key Endpoints
+## 🔗 Key Endpoints
 
 | Path                | Method   | Purpose                        |
 |---------------------|----------|--------------------------------|
@@ -44,7 +44,7 @@ A Ruby on Rails web app for browsing, managing, and ordering food items. The sys
 
 ---
 
-## Getting Started
+## ▶️ Getting Started
 
 ### Prerequisites
 
@@ -85,12 +85,3 @@ A Ruby on Rails web app for browsing, managing, and ordering food items. The sys
 ```sh
 bundle exec rspec
 ```
-
----
-
-## Docker Support
-
-Build and run with Docker:
-
-```sh
-docker compose up --
