@@ -20,6 +20,9 @@ gem "haml-rails"
 gem "html2haml"
 gem "jbuilder"
 
+# Authentication
+gem "bcrypt", "~> 3.1.7"
+
 # Timezone support
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -37,6 +40,7 @@ group :development do
   gem "web-console"
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "brakeman", require: false
+  gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
 end
 

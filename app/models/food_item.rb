@@ -1,4 +1,7 @@
 class FoodItem < ApplicationRecord
+  has_many :cart_items, dependent: :destroy
+  has_many :users, through: :cart_items
+
   has_one_attached :image
 
   validates :name, presence: true, length: { maximum: 100 }
@@ -23,12 +26,4 @@ class FoodItem < ApplicationRecord
   scope :sorted_by_price, ->(order) {
     %w[asc desc].include?(order) ? order(price: order.to_sym) : all
   }
-
-  def self.filtered(params)
-    FoodItem
-      .filter_by_category(params[:category])
-      .vegetarian_only(params[:vegetarian])
-      .price_between(params[:min], params[:max])
-      .sorted_by_price(params[:sort])
-  end
 end

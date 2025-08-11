@@ -1,0 +1,22 @@
+- provide(:title, "Food")
+
+%section.hero
+  .background
+  .hero-content
+    %h1 Ordering food
+    .divider
+      %span.divider-line
+      %span.divider-icon
+      %span.divider-line
+    %p
+      Delicious meals, crafted with care and delivered to your door.
+      %br/
+      Eureka Caffe — simple, satisfying, and just one order away.
+
+%section.filter-bar
+  = render "filter_bar"
+
+.content-wrapper
+  %turbo-frame#food_grid
+    %section.food-grid
+      = render "grid", food_items: @food_items

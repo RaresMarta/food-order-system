@@ -1,0 +1,23 @@
+%section.auth-hero
+  .background
+  .hero-content
+    .card
+      .card-body.p-4
+        %h2.text-center.mb-4.fw-semibold Welcome Back
+
+        = form_with url: login_path, local: true do |form|
+          .mb-3
+            = form.label :email, "Email", class: "form-label text-muted small fw-medium"
+            = form.email_field :email, class: "form-control", placeholder: "Enter your email address", required: true
+
+          .mb-4
+            = form.label :password, "Password", class: "form-label text-muted small fw-medium"
+            = form.password_field :password, class: "form-control", placeholder: "Enter your password", required: true
+
+          .d-grid
+            = form.submit "Login", class: "btn btn-primary"
+
+        .text-center.mt-4.pt-3.border-top
+          %small.text-muted
+            Don't have an account?
+            = link_to "Register here", register_path, class: "text-decoration-none fw-medium"

@@ -30,18 +30,13 @@ export default class extends Controller {
     }
 
     this.updateSliderUI()
-    this.submitForm()
   }
 
-  submitForm() {
+  submitFormDebounced() {
     if (this.submitTimeout) clearTimeout(this.submitTimeout)
     this.submitTimeout = setTimeout(() => {
       if (this.hasFormTarget) {
-        const scrollPosition = window.pageYOffset
         this.formTarget.requestSubmit()
-        setTimeout(() => {
-          window.scrollTo(0, scrollPosition)
-        }, 50)
       }
     }, 300)
   }
