@@ -1,0 +1,40 @@
+@import "variables";
+@import "shared";
+@import "header";
+@import "filter-bar";
+@import "food-grid";
+@import "dashboard";
+@import "cart";
+@import "footer";
+@import "auth_forms";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $body-font;
+  color: $text-color;
+  background: #fdfdfd;
+  line-height: 1.5;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+.content-wrapper {
+  max-width: $content-width;
+  margin: 0 auto;
+  padding: $content-padding;
+  width: 100%;
+}

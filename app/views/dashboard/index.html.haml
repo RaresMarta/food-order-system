@@ -1,0 +1,10 @@
+- provide(:title, "Dashboard")
+
+%section.dashboard-hero
+  .background
+  .hero-content
+
+.content-wrapper
+  %section.dashboard-container{ data: { controller: "dashboard" } }
+    = render partial: "food_item_form", locals: { food_item: @food_item }
+    = render partial: "food_items_table", locals: { food_items: @food_items }
