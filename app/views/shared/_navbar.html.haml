@@ -1,0 +1,36 @@
+%nav.navbar
+  .content-wrapper
+    = link_to root_path, class: "logo" do
+      .coffee-icon-container
+        = image_tag("coffee-icon-svgrepo-com.svg", alt: "Coffee cup", class: "coffee-icon")
+      %span
+        EUREKA
+        %br
+        CAFFE
+    %ul.nav-links
+      %li= link_to "HOME", root_path
+      %li= link_to "ABOUT", "#"
+      %li.has-dropdown
+        = link_to "SERVICE", "#"
+        %ul.nav-dropdown
+          %li= link_to "CATERING", "#"
+          %li= link_to "DELIVERY", "#"
+      %li= link_to "BLOG", "#"
+      %li= link_to "CONTACTS", "#"
+      %li.has-dropdown
+        = link_to "ACCOUNT", "#"
+        %ul.nav-dropdown
+          - if logged_in?
+            %li= link_to "Welcome, #{current_user.name}!", "#"
+            %li
+              = link_to cart_path do
+                CART
+                %turbo_frame{id: "cart_count"}
+                  - if cart_item_count.positive?
+                    %span.badge.bg-primary= cart_item_count
+            - if current_user_admin?
+              %li= link_to "DASHBOARD", dashboard_path
+            %li= link_to "LOGOUT", logout_path, data: { turbo_method: :delete }
+          - else
+            %li= link_to "LOGIN", login_path
+            %li= link_to "REGISTER", register_path

@@ -1,0 +1,226 @@
+@import "variables";
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $gap-md 0;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: 2rem;
+
+  .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: $gap-sm;
+    color: $white;
+
+    .coffee-icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 0.2rem;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+
+      .coffee-icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: $radius-round;
+    }
+
+    span {
+      font-weight: 700;
+      font-size: 0.9rem;
+      line-height: 1.2;
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: $gap-lg;
+    align-content: center;
+
+    li {
+      position: relative;
+
+      &:not(:last-child)::after {
+        content: "•";
+        position: absolute;
+        right: calc(-#{$gap-lg} / 2);
+        top: 50%;
+        transform: translateY(-50%) scale(1.5);
+        color: $white;
+      }
+
+      /* Dropdown styling */
+      &.has-dropdown {
+        position: relative;
+
+        &:hover .nav-dropdown {
+          transform: scaleY(1);
+          opacity: 1;
+        }
+
+        .nav-dropdown {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background: $white;
+          border-radius: 0;
+          min-width: 160px;
+          box-shadow: $dropdown-shadow;
+          z-index: 10;
+          margin-top: 0;
+          padding: 0;
+          list-style: none;
+          transform: scaleY(0);
+          transform-origin: top;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+          opacity: 0;
+
+          li {
+            padding: 0;
+            margin: 0;
+
+            &::after {
+              display: none;
+            }
+
+            a {
+              color: $text-color;
+              display: block;
+              padding: 0.7rem 1rem;
+
+              &:hover {
+                background-color: $dropdown-hover;
+              }
+
+              &::after {
+                display: none;
+              }
+
+              &.active {
+                background-color: $dropdown-hover;
+                font-weight: 700;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    a {
+      color: $white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 550px;
+      letter-spacing: $letter-spacing;
+      position: relative;
+      padding: $gap-sm 0.5rem;
+
+      &.active::after,
+      &:hover::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: $primary-color;
+      }
+    }
+  }
+}
+
+.hero {
+  height: 64vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: $white;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $dark-overlay;
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    padding: 0 $gap-lg;
+    margin-top: 3rem;
+
+    h1 {
+      font-size: 3.2rem;
+      margin-bottom: $gap-md;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    p {
+      font-family: $rustic-font;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-top: $gap-lg;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: $gap-md;
+      margin: $gap-md 0;
+
+      .divider-line {
+        flex: 1;
+        background-image: url("../assets/squigly-line.svg");
+        background-repeat: repeat-x;
+        background-size: auto 100%;
+        height: 5px;
+        width: 100%;
+      }
+
+      .divider-icon {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background: url("../assets/icons8-spoon-and-fork-64.png") no-repeat center;
+        background-size: contain;
+        filter: invert(100%) brightness(150%);
+      }
+    }
+  }
+}

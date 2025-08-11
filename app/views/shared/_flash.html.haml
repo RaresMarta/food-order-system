@@ -1,0 +1,11 @@
+#flash
+  .flash-container{
+    style: "position: fixed; top: 120px; left: -5px; z-index: 9999; width: 250px;",
+    data: { controller: "flash" }
+  }
+    - flash.each do |type, message|
+      - next if message.blank?
+      - bs_type = { notice: "success", alert: "danger", error: "danger" }[type.to_sym] || type
+      .alert{ class: "alert alert-#{bs_type} alert-dismissible fade show", role: "alert", style: "margin-bottom: 10px;", data: { flash_target: "alert" } }
+        = message
+        %button.btn-close{"data-bs-dismiss" => "alert", "aria-label" => "Close"}

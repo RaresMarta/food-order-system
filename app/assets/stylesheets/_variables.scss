@@ -1,0 +1,47 @@
+// Color variables
+$primary-color: #b79c3b;
+$secondary-color: #f5f5f5;
+$card-border: #eee;
+$filter-bg: #f5f5f5;
+$dropdown-hover: #ffe0b2;
+$text-color: #333;
+$light-gray: #eee;
+$white: #fff;
+$dark-overlay: rgba(0, 0, 0, 0.6);
+$btn-reset: #03c0ff;
+$btn-danger: #e74c3c;
+$btn-edit: #3498db;
+$filter-label: #777;
+$box-shadow: rgba(0, 0, 0, 0.2);
+
+// Layout variables
+$content-width: 1200px;
+$content-padding: 0 2rem;
+
+// Spacing variables
+$padding: 1rem;
+$gap-sm: 0.5rem;
+$gap-md: 1rem;
+$gap-lg: 2rem;
+$container-padding: 0 15%;
+
+// Typography variables
+$filter-font: 'Montserrat', Arial, sans-serif;
+$body-font: 'Montserrat', Arial, sans-serif;
+$rustic-font: 'Georgia', 'Garamond', 'Palatino Linotype', serif;
+$letter-spacing: 0.08em;
+
+// Border radius
+$radius-sm: 0.3em;
+$radius-md: 0.5rem;
+$radius-lg: 12px;
+$radius-round: 50%;
+
+// Shadows
+$dropdown-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+$card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+// CSS variables for JavaScript access
+:root {
+  --primary-color: #{$primary-color};
+}

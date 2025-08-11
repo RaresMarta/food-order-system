@@ -1,0 +1,39 @@
+%section.auth-hero
+  .background
+  .hero-content.d-flex.justify-content-center.align-items-center
+    .card.shadow
+      .card-body.p-4
+        %h2.text-center.mb-4.fw-semibold Create Account
+
+        = form_with model: @user, url: register_path, local: true do |form|
+          - if @user.errors.any?
+            .alert.alert-danger.alert-dismissible.fade.show.border-0
+              %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "alert", type: "button"}
+              = pluralize(@user.errors.count, "error") + " prohibited this account from being saved:"
+              %ul.mb-0.mt-2.small
+                - @user.errors.full_messages.each do |message|
+                  %li= message
+
+          .mb-3
+            = form.label :name, "Name", class: "form-label text-muted small fw-medium"
+            = form.text_field :name, class: "form-control", placeholder: "Enter your full name", required: true
+
+          .mb-3
+            = form.label :email, "Email", class: "form-label text-muted small fw-medium"
+            = form.email_field :email, class: "form-control", placeholder: "Enter your email address", required: true
+
+          .mb-3
+            = form.label :password, "Password", class: "form-label text-muted small fw-medium"
+            = form.password_field :password, class: "form-control", placeholder: "Create a password", required: true
+
+          .mb-4
+            = form.label :password_confirmation, "Confirm Password", class: "form-label text-muted small fw-medium"
+            = form.password_field :password_confirmation, class: "form-control", placeholder: "Confirm your password", required: true
+
+          .d-grid
+            = form.submit "Create Account", class: "btn btn-primary"
+
+        .text-center.mt-4.pt-3.border-top
+          %small.text-muted
+            Already have an account?
+            = link_to "Login here", login_path, class: "text-decoration-none fw-medium"
