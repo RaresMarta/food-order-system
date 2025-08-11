@@ -26,11 +26,8 @@ RSpec.describe "Cart Authorization", type: :request do
       let(:user) { create(:user) }
 
       before do
-        # Simulate login by directly setting session (cleaner for tests)
-        # This is equivalent to what happens after successful login
+        # Simulate login by setting session
         post login_path, params: { email: user.email, password: user.password }
-        # Alternative approach: directly set session
-        # But request specs don't have direct session access, so we use login
       end
 
       it "successfully adds item to cart" do
