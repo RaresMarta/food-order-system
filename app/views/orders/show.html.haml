@@ -4,7 +4,7 @@
   .background
   .hero-content
 
-.content-wrapper
+.container-fluid.py-4
   .row
     .col-12.mb-4
       .d-flex.align-items-center.gap-3
@@ -19,20 +19,7 @@
           %h5.mb-0 Items Ordered
         .card-body
           - @order.order_items.each do |item|
-            .d-flex.align-items-center.gap-4.py-3.border-bottom
-              .image-placeholder{style: "width: 60px; height: 60px; background-color: #f8f9fa; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"}
-                - if item.food_item.image.attached?
-                  = image_tag item.food_item.image, alt: item.food_item.name, style: "width: 60px; height: 60px; object-fit: cover; border-radius: 4px;"
-                - else
-                  %small.text-muted No image
-              .flex-grow-1
-                %h6.mb-1= item.food_item.name
-                - if item.food_item.respond_to?(:description)
-                  %p.text-muted.small.mb-1= item.food_item.description
-                %small.text-muted #{number_to_currency(item.unit_price)} each
-              .text-end
-                %div Qty: #{item.quantity}
-                %strong= number_to_currency(item.unit_price * item.quantity)
+            = render partial: "order_item", locals: { item: item }
 
     .col-lg-4
       .card.border-0.shadow-sm.mb-4
