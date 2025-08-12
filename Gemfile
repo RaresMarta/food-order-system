@@ -45,6 +45,9 @@ group :development do
   gem "brakeman", require: false
   gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem "annotate"
 end
 
 group :test do

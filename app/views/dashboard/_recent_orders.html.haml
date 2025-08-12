@@ -1,0 +1,20 @@
+.card
+  .card-header
+    %h5.mb-0 Recent Orders
+  .card-body{style: "max-height: 400px; overflow-y: auto;"}
+    - if orders.any?
+      - orders.each do |order|
+        .d-flex.justify-content-between.align-items-center.py-2.border-bottom
+          %div
+            %strong Order ##{order.id}
+            %br
+            %small.text-muted #{order.user.name}
+            %br
+            %small.text-muted #{time_ago_in_words(order.created_at)} ago
+          %div.text-end
+            %span.badge{class: order_status_badge_class(order.status)}= order.status.humanize
+            %br
+            %strong= number_to_currency(order.total_price)
+    - else
+      .text-center.py-4
+        %p.text-muted No recent orders

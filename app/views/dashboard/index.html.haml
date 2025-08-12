@@ -4,7 +4,32 @@
   .background
   .hero-content
 
-.content-wrapper
-  %section.dashboard-container{ data: { controller: "dashboard" } }
-    = render partial: "food_item_form", locals: { food_item: @food_item }
-    = render partial: "food_items_table", locals: { food_items: @food_items }
+.container-fluid.py-4
+  .row.mb-4.justify-content-center
+    .col-md-4
+      .card.text-center.text-white.bg-primary.border-0.shadow-sm
+        .card-body
+          %h5.card-title.mb-2 Orders Today
+          %h2.card-text.mb-0.fw-bold= @orders_today
+    .col-md-4
+      .card.text-center.text-white.bg-success.border-0.shadow-sm
+        .card-body
+          %h5.card-title.mb-2 Revenue Today
+          %h2.card-text.mb-0.fw-bold= number_to_currency(@total_revenue_today)
+
+  .row.g-4.mb-4
+    .col-lg-6
+      .card.border-0.shadow-sm.h-100
+        .card-body
+          = render partial: "recent_orders", locals: { orders: @recent_orders }
+
+  .row.g-4
+    .col-lg-6
+      .card.border-0.shadow-sm.h-100
+        .card-body
+          = render partial: "food_item_form", locals: { food_item: @food_item }
+
+    .col-12
+      .card.border-0.shadow-sm
+        .card-body
+          = render partial: "food_items_table", locals: { food_items: @food_items }
