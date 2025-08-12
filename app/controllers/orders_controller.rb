@@ -1,4 +1,5 @@
 class OrdersController < ApplicationController
+  helper OrdersHelper
   before_action :require_login
   before_action :set_order, only: [ :show ]
 
