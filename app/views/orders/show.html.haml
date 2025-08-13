@@ -18,8 +18,7 @@
         .card-header.bg-light
           %h5.mb-0 Items Ordered
         .card-body
-          - @order.order_items.each do |item|
-            = render partial: "order_item", locals: { item: item }
+          = render partial: "order_items", locals: { order: @order }
 
     .col-lg-4
       .card.border-0.shadow-sm.mb-4

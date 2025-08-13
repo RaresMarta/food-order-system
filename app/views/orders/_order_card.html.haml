@@ -1,5 +1,5 @@
-.card.border-0.shadow-sm
-  .card-header.bg-light
+.card.shadow-sm
+  .card-header.bg-light.border-0
     .d-flex.justify-content-between.align-items-center
       .d-flex.align-items-center.gap-3
         %h5.mb-0 Order ##{order.id}
@@ -12,11 +12,9 @@
           %strong Total: #{number_to_currency(order.total_price)}
 
   .card-body
-    %h6.text-muted.mb-3 Items Ordered:
-    - order.order_items.each do |item|
-      = render partial: "order_item", locals: { item: item }
+    = render partial: "order_items", locals: { order: order }
 
-  .card-footer.bg-light
+  .card-footer.bg-light.border-0
     .d-flex.justify-content-between.align-items-center
       %small.text-muted Payment Method: #{order.payment_method.humanize}
       = link_to "View Details", order_path(order), class: "btn btn-sm btn-outline-primary"

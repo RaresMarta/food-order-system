@@ -4,26 +4,17 @@
   .background
   .hero-content
 
-.container-fluid.py-4
+.container.py-4
   .row.mb-4.justify-content-center
-    .col-md-4
-      .card.text-center.text-white.bg-primary.border-0.shadow-sm
-        .card-body
-          %h5.card-title.mb-2 Orders Today
-          %h2.card-text.mb-0.fw-bold= @orders_today
-    .col-md-4
-      .card.text-center.text-white.bg-success.border-0.shadow-sm
-        .card-body
-          %h5.card-title.mb-2 Revenue Today
-          %h2.card-text.mb-0.fw-bold= number_to_currency(@total_revenue_today)
+    = render partial: "today_stats", locals: { orders_today: @orders_today, total_revenue_today: @total_revenue_today }
 
-  .row.g-4.mb-4
+  .row.g-4.mb-4.justify-content-center
     .col-lg-6
       .card.border-0.shadow-sm.h-100
         .card-body
           = render partial: "recent_orders", locals: { orders: @recent_orders }
 
-  .row.g-4
+  .row.g-4.justify-content-center
     .col-lg-6
       .card.border-0.shadow-sm.h-100
         .card-body

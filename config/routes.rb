@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get "/cart", to: "cart_items#index", as: :cart
 
   resources :food_items, only: [ :create, :update, :destroy ]
+
   resources :orders, only: [ :index, :show, :create ]
 
   get "/dashboard", to: "dashboard#index", as: :dashboard
