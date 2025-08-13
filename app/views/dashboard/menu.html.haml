@@ -1,0 +1,25 @@
+- provide(:title, "Menu Management")
+
+.row.mb-4
+  .col-12
+    %h3.mb-4 Menu Management
+
+.row.g-4.mb-4
+  .col-lg-6
+    .card.border-0.shadow-sm.h-100
+      .card-header
+        %h5.mb-0
+          - if @food_item&.persisted?
+            Edit Food Item
+          - else
+            Add New Food Item
+      .card-body
+        = render partial: "food_item_form", locals: { food_item: @food_item }
+
+.row.g-4
+  .col-12
+    .card.border-0.shadow-sm
+      .card-header
+        %h5.mb-0 Current Menu Items
+      .card-body
+        = render partial: "food_items_table", locals: { food_items: @food_items }

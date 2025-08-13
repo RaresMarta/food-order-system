@@ -6,21 +6,43 @@
 
 .container.py-4
   .row.mb-4.justify-content-center
-    = render partial: "today_stats", locals: { orders_today: @orders_today, total_revenue_today: @total_revenue_today }
-
-  .row.g-4.mb-4.justify-content-center
-    .col-lg-6
-      .card.border-0.shadow-sm.h-100
-        .card-body
-          = render partial: "recent_orders", locals: { orders: @recent_orders }
+    .col-lg-8
+      .card.border-0.shadow-sm
+        .card-body.text-center.py-5
+          %h4.mb-4 Dashboard Overview
+          .row.g-4.mb-4
+            .col-md-3
+              .text-center
+                %h3.text-primary= @orders_today
+                %p.text-muted Orders Today
+            .col-md-3
+              .text-center
+                %h3.text-success= number_to_currency(@total_revenue_today)
+                %p.text-muted Revenue Today
+            .col-md-3
+              .text-center
+                %h3.text-info= @total_orders
+                %p.text-muted Total Orders
+            .col-md-3
+              .text-center
+                %h3.text-warning= @total_food_items
+                %p.text-muted Menu Items
 
   .row.g-4.justify-content-center
-    .col-lg-6
+    .col-lg-4
       .card.border-0.shadow-sm.h-100
-        .card-body
-          = render partial: "food_item_form", locals: { food_item: @food_item }
+        .card-body.text-center.py-4.d-flex.flex-column.justify-content-between
+          %i.fas.fa-clipboard-list.fa-3x.text-primary.mb-3
+          %h5.card-title Order Management
+          %p.card-text.text-muted.small View and manage all customer orders, update status and track progress.
+          = link_to dashboard_orders_path, class: "btn btn-primary" do
+            Manage Orders
 
-    .col-12
-      .card.border-0.shadow-sm
-        .card-body
-          = render partial: "food_items_table", locals: { food_items: @food_items }
+    .col-lg-4
+      .card.border-0.shadow-sm.h-100
+        .card-body.text-center.py-4.d-flex.flex-column.justify-content-between
+          %i.fas.fa-utensils.fa-3x.text-success.mb-3
+          %h5.card-title Menu Management
+          %p.card-text.text-muted.small Add, edit, and remove food items from your restaurant menu.
+          = link_to dashboard_menu_path, class: "btn btn-success" do
+            Manage Menu

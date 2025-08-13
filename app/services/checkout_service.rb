@@ -10,7 +10,7 @@ class CheckoutService
 
     Order.transaction do
       order = @user.orders.create!(
-        status: :placed,
+        status: :preparing,
         payment_method: @payment_method,
         total_price: 0
       )

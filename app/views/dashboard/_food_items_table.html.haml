@@ -20,6 +20,6 @@
               - else
                 No image
             %td
-              = link_to "Edit", dashboard_path(edit_id: item.id), class: "btn btn-sm btn-warning"
-              = link_to "Delete", food_item_path(item), method: :delete,
-                data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"
+              = link_to "Edit", dashboard_menu_path(edit_id: item.id), class: "btn btn-sm btn-warning"
+              = link_to "Delete", food_item_path(item),
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"

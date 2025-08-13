@@ -32,11 +32,15 @@
           .mb-3
             %h6.text-muted.small Status
             %span.badge{class: order_status_class(@order.status)}= @order.status.humanize
+          .mb-3
+            %h6.text-muted.small Total Amount
+            %p.mb-0
+              %strong= number_to_currency(@order.total_price)
           .mb-0
             %h6.text-muted.small Payment Method
             %p.mb-0= @order.payment_method.humanize
 
       .d-flex.gap-2
         - unless @order.delivered? || @order.canceled?
-          %button.btn.btn-danger.flex-fill Cancel Order
+          = button_to "Cancel Order", order_path(@order, order: { status: :canceled }), method: :patch, class: "btn btn-danger flex-fill", data: { turbo_confirm: "Are you sure you want to cancel this order?" }
         = link_to "Order Again", root_path, class: "btn btn-primary flex-fill"

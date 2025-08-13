@@ -1,0 +1,46 @@
+- provide(:title, "Order Management")
+
+.row.mb-4
+  .col-12
+    %h3.mb-4 Order Management
+
+.card
+  .card-header
+    %h5.mb-0 All Orders
+    %small.text-muted Total: #{@all_orders.count} orders
+  .card-body
+    - if @all_orders.any?
+      .table-responsive{style: "max-height: 500px; overflow-y: auto;"}
+        %table.table.table-hover
+          %thead.table-light.sticky-top
+            %tr
+              %th Order ID
+              %th Customer
+              %th Items
+              %th Total
+              %th Status
+              %th Created
+              %th Actions
+          %tbody
+            - @all_orders.each do |order|
+              %tr
+                %td
+                  %strong ##{order.id}
+                %td= order.user.name
+                %td
+                  %small
+                    - order.order_items.each do |item|
+                      = "#{item.quantity}x #{item.food_item.name}"
+                      %br
+                %td
+                  %strong= number_to_currency(order.total_price)
+                %td
+                  %span.badge{class: order_status_badge_class(order.status)}= order.status.humanize
+                %td
+                  %small= order.created_at.strftime("%m/%d/%Y %I:%M %p")
+                %td
+                  = form_with url: order_path(order), method: :patch, local: true, class: "d-inline" do |f|
+                    = f.select :status, options_for_select(Order.statuses.map { |key, value| [key.humanize, key] }, order.status), {}, { class: "form-select form-select-sm", style: "width: 120px;", onchange: "this.form.submit();" }
+    - else
+      .text-center.py-4
+        %p.text-muted No orders found

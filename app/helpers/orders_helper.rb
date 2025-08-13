@@ -3,8 +3,6 @@ module OrdersHelper
     status_str = status.to_s.strip.downcase
 
     case status_str
-    when "placed"
-      "bg-primary text-white"
     when "preparing"
       "bg-warning text-dark"
     when "ready"
@@ -23,8 +21,6 @@ module OrdersHelper
 
     base_class = "badge "
     case status_str
-    when "placed"
-      base_class + "bg-primary text-white"
     when "preparing"
       base_class + "bg-warning text-dark"
     when "ready"

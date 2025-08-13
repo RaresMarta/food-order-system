@@ -13,11 +13,11 @@ class FoodItemsController < ApplicationController
     result = @food_item_service.create_item(food_item_params)
 
     if result[:success]
-      handle_result(result, dashboard_path)
+      handle_result(result, dashboard_menu_path)
     else
       @food_item = result[:food_item]
       @food_items = FoodItem.all
-      render "dashboard/index", status: :unprocessable_entity
+      render "dashboard/menu", status: :unprocessable_entity
     end
   end
 
@@ -26,18 +26,18 @@ class FoodItemsController < ApplicationController
     result = @food_item_service.update_item(@food_item, food_item_params)
 
     if result[:success]
-      handle_result(result, dashboard_path)
+      handle_result(result, dashboard_menu_path)
     else
       @food_item = result[:food_item]
       @food_items = FoodItem.all
-      render "dashboard/index", status: :unprocessable_entity
+      render "dashboard/menu", status: :unprocessable_entity
     end
   end
 
   # DELETE /food_items/:id
   def destroy
     result = @food_item_service.delete_item(@food_item)
-    handle_result(result, dashboard_path)
+    handle_result(result, dashboard_menu_path)
   end
 
   private
