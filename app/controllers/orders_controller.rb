@@ -12,26 +12,22 @@ class OrdersController < ApplicationController
   end
 
   def create
-    begin
-      @order = CheckoutService.new(current_user, payment_method: params[:payment_method]).call
-      redirect_to orders_path, notice: "Order placed successfully!"
-    rescue => e
-      redirect_to cart_path, alert: e.message
+    result = OrderService.checkout(current_user, payment_method: params[:payment_method])
+    if result[:success]
+      redirect_to orders_path, notice: result[:message]
+    else
+      redirect_to cart_path, alert: result[:message]
     end
   end
 
   def update
     @order = Order.find(params[:id])
-    new_status = params[:status]
+    service = OrderService.new(@order)
 
-    redirect_path = request.referer&.include?('dashboard/orders') ? dashboard_orders_path : dashboard_path
+    # Determine redirect path based on referrer
+    redirect_path = request.referer&.include?('dashboard') ? dashboard_orders_path : orders_path
 
-    if Order.statuses.keys.include?(new_status) && @order.update(status: new_status)
-      redirect_to redirect_path, notice: "Order ##{@order.id} status updated to #{new_status.humanize}!"
-    else
-      error_message = @order.errors.full_messages.join(", ")
-      error_message = "Invalid status provided" if error_message.blank?
-      redirect_to redirect_path, alert: "Failed to update order status: #{error_message}"
-    end
+    result = service.update_status(params[:status])
+    handle_result(result, redirect_path)
   end
 end

@@ -1,0 +1,53 @@
+class OrderService
+  def initialize(order = nil)
+    @order = order
+  end
+
+  def self.checkout(user, payment_method:)
+    new.checkout(user, payment_method: payment_method)
+  end
+
+  def checkout(user, payment_method:)
+    cart_items = user.cart_items.includes(:food_item)
+    return { success: false, message: "Cart is empty" } if cart_items.blank?
+
+    order = nil
+    begin
+      Order.transaction do
+        order = user.orders.create!(
+          status: :preparing,
+          payment_method: payment_method,
+          total_price: 0
+        )
+        total = 0
+        cart_items.each do |ci|
+          unit_price = ci.food_item.price
+          order.order_items.create!(
+            food_item: ci.food_item,
+            quantity: ci.quantity,
+            unit_price: unit_price
+          )
+          total += unit_price * ci.quantity
+        end
+
+        order.update!(total_price: total)
+        cart_items.delete_all
+      end
+      { success: true, message: "Order placed successfully!", order: order }
+    rescue => e
+      { success: false, message: "Checkout failed: #{e.message}" }
+    end
+  end
+
+  def update_status(new_status)
+    return { success: false, message: "Order not found" } unless @order
+
+    if @order.update(status: new_status)
+      { success: true, message: "Order ##{@order.id} status updated to #{new_status.humanize}!" }
+    else
+      error_message = @order.errors.full_messages.join(", ")
+      error_message = "Invalid status provided" if error_message.blank?
+      { success: false, message: "Failed to update order status: #{error_message}" }
+    end
+  end
+end

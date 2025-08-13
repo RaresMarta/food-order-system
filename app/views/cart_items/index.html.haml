@@ -5,21 +5,17 @@
   .hero-content
 
 .container.p-5
-
-
   - if @cart_items.any?
     .row.g-4
       .col-lg-8
         .d-flex.justify-content-between.align-items-center.mb-4
           %h1.text-dark Your Cart
           %h1.text-dark= pluralize(@cart_items.sum(&:quantity), "item")
-        .card
-          .card-body
-            = render partial: "cart_items_table", locals: { cart_items: @cart_items }
-          .card-footer.bg-white.border-0.pt-0
-            = link_to root_path, class: "btn btn-outline-secondary" do
-              %i.bi.bi-arrow-left-short.me-1
-              Continue shopping
+        .border-0.p-0
+          = render partial: "cart_items_table", locals: { cart_items: @cart_items }
+          = link_to root_path, class: "btn btn-outline-secondary mt-3" do
+            %i.bi.bi-arrow-left-short.me-1
+            Continue shopping
 
       .col-lg-4
         .position-sticky{ style: "top: 1rem" }

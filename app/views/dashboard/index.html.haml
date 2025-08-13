@@ -29,20 +29,12 @@
                 %p.text-muted Menu Items
 
   .row.g-4.justify-content-center
-    .col-lg-4
-      .card.border-0.shadow-sm.h-100
-        .card-body.text-center.py-4.d-flex.flex-column.justify-content-between
-          %i.fas.fa-clipboard-list.fa-3x.text-primary.mb-3
-          %h5.card-title Order Management
-          %p.card-text.text-muted.small View and manage all customer orders, update status and track progress.
-          = link_to dashboard_orders_path, class: "btn btn-primary" do
-            Manage Orders
-
-    .col-lg-4
-      .card.border-0.shadow-sm.h-100
-        .card-body.text-center.py-4.d-flex.flex-column.justify-content-between
-          %i.fas.fa-utensils.fa-3x.text-success.mb-3
-          %h5.card-title Menu Management
-          %p.card-text.text-muted.small Add, edit, and remove food items from your restaurant menu.
-          = link_to dashboard_menu_path, class: "btn btn-success" do
-            Manage Menu
+    - cards.each do |card|
+      .col-lg-4
+        .card.border-0.shadow-sm.h-100
+          .card-body.d-flex.flex-column.justify-content-between.align-items-center.h-100
+            %i{ class: card[:icon] }
+            %h5.card-title.mt-2.mb-2.text-center= card[:title]
+            %p.card-text.text-muted.small.flex-grow-1.text-center= card[:text]
+            = link_to card[:btn_path], class: "#{card[:btn_class]} w-100 mt-3" do
+              %strong= card[:btn_text]
