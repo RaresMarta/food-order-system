@@ -7,7 +7,7 @@
           = order.status.humanize
       .text-muted
         %small
-          Placed on #{order.created_at.strftime("%B %d, %Y at %I:%M %p")}
+          Placed on #{order.created_at.strftime("%B %d, %Y")}
           %br
           %strong Total: #{number_to_currency(order.total_price)}
 
