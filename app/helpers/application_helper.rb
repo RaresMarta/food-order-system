@@ -49,4 +49,9 @@ module ApplicationHelper
   def current_user_admin?
     logged_in? && current_user.admin?
   end
+
+  def dashboard_title(title = "")
+    content_for(:dashboard_title, title) if title.present?
+    content_for(:dashboard_title)
+  end
 end

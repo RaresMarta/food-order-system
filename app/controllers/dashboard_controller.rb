@@ -5,7 +5,7 @@ class DashboardController < ApplicationController
   def index
     @orders_today = Order.where(created_at: Date.current.all_day).count
     @total_revenue_today = Order.where(created_at: Date.current.all_day).sum(:total_price)
-    @total_food_items = FoodItem.count
+    @total_food_items = FoodItem.active.count
     @total_orders = Order.count
   end
 
@@ -14,7 +14,8 @@ class DashboardController < ApplicationController
   end
 
   def menu
-    @food_items = FoodItem.all
+    @food_items = FoodItem.active
+    @deleted_food_items = FoodItem.where.not(deleted_at: nil)
     @food_item = params[:edit_id] ? FoodItem.find(params[:edit_id]) : nil
   end
 end
