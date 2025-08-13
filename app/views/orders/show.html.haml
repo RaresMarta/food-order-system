@@ -31,7 +31,7 @@
             %small.text-muted= @order.created_at.strftime("%I:%M %p")
           .mb-3
             %h6.text-muted.small Status
-            %span{class: "badge #{order_status_badge_class(@order.status)}"}= @order.status.humanize
+            %span{:class => order_status_badge_class(@order.status)}= @order.status.humanize
           .mb-0
             %h6.text-muted.small Payment Method
             %p.mb-0= @order.payment_method.humanize

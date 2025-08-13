@@ -17,19 +17,20 @@ module OrdersHelper
   end
 
   def order_status_badge_class(status)
+    base_class = "badge "
     case status.to_s
     when "placed"
-      "bg-primary text-white"
+      base_class + "bg-primary text-white"
     when "preparing"
-      "bg-warning text-dark"
+      base_class + "bg-warning text-dark"
     when "ready"
-      "bg-success text-white"
+      base_class + "bg-success text-white"
     when "delivered"
-      "bg-secondary text-white"
+      base_class + "bg-secondary text-white"
     when "canceled"
-      "bg-danger text-white"
+      base_class + "bg-danger text-white"
     else
-      "bg-secondary text-white"
+      base_class + "bg-secondary text-white"
     end
   end
 end
