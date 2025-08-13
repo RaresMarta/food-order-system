@@ -1,24 +1,28 @@
 module OrdersHelper
   def order_status_class(status)
-    case status.to_s
+    status_str = status.to_s.strip.downcase
+
+    case status_str
     when "placed"
-      "bg-blue-100 text-blue-800"
+      "bg-primary text-white"
     when "preparing"
-      "bg-yellow-100 text-yellow-800"
+      "bg-warning text-dark"
     when "ready"
-      "bg-green-100 text-green-800"
+      "bg-success text-white"
     when "delivered"
-      "bg-gray-100 text-gray-800"
+      "bg-secondary text-white"
     when "canceled"
-      "bg-red-100 text-red-800"
+      "bg-danger text-white"
     else
-      "bg-gray-100 text-gray-800"
+      "bg-secondary text-white"
     end
   end
 
   def order_status_badge_class(status)
+    status_str = status.to_s.strip.downcase
+
     base_class = "badge "
-    case status.to_s
+    case status_str
     when "placed"
       base_class + "bg-primary text-white"
     when "preparing"
