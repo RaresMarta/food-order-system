@@ -25,8 +25,9 @@ class OrderService
     end
   end
 
-  def update_status(new_status)
+  def update_status(new_status, current_user)
     return { success: false, message: "Order not found" } unless @order
+    return { success: false, message: "You are not authorized to update this order." } unless can_update_status?(new_status, current_user)
 
     if @order.update(status: new_status)
       { success: true, message: "Order ##{@order.id} status updated to #{new_status.humanize}!" }
@@ -62,5 +63,15 @@ class OrderService
 
   def clear_cart(cart_items)
     cart_items.delete_all
+  end
+
+  def can_update_status?(new_status, current_user)
+    # Users can cancel their own orders
+    return true if new_status == "canceled" && @order.user == current_user
+
+    # Admins can update any status
+    return true if current_user.admin?
+
+    false
   end
 end

@@ -7,17 +7,12 @@
     %small.text-muted Total: #{@all_orders.count} orders
   .card-body
     - if @all_orders.any?
-      .table-responsive{style: "max-height: 500px; overflow-y: auto;"}
+      .table-responsive
         %table.table.table-hover
-          %thead.table-light.sticky-top
+          %thead.table-light
             %tr
-              %th Order ID
-              %th Customer
-              %th Items
-              %th Total
-              %th Status
-              %th Created
-              %th Actions
+              - dashboard_orders_table_headers.each do |header|
+                %th= header
           %tbody
             - @all_orders.each do |order|
               %tr

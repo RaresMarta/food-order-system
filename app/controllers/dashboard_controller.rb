@@ -14,8 +14,7 @@ class DashboardController < ApplicationController
   end
 
   def menu
-    @food_items = FoodItem.active
-    @deleted_food_items = FoodItem.where.not(deleted_at: nil)
+    @food_items = FoodItem.unscoped.order(:deleted_at, :name) # Show all items, deleted ones last
     @food_item = params[:edit_id] ? FoodItem.find(params[:edit_id]) : nil
   end
 end

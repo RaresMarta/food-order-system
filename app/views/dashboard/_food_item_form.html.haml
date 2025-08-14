@@ -1,5 +1,5 @@
 .dashboard-form
-  %h2 Add New Food Item
+  %h2= food_item ? "Edit Food Item" : "Add New Food Item"
   = form_with model: food_item || FoodItem.new, url: food_item ? food_item_path(food_item) : food_items_path, local: true, method: (food_item ? :patch : :post), class: "form" do |form|
     .form-group
       = form.label :name, "Name"

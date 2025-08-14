@@ -1,7 +1,6 @@
 class OrdersController < ApplicationController
   helper OrdersHelper
   before_action :require_login
-  before_action :require_admin, only: [:update]
 
   def index
     @orders = current_user.orders.includes(order_items: :food_item).order(created_at: :desc)
@@ -24,7 +23,7 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     redirect_path = request.referer&.include?('dashboard') ? dashboard_orders_path : orders_path
 
-    result = OrderService.new(@order).update_status(params[:status])
+    result = OrderService.new(@order).update_status(params[:status], current_user)
     handle_result(result, redirect_path)
   end
 end

@@ -10,8 +10,12 @@ module DashboardHelper
     ]
   end
 
-  def dashboard_table_headers
-    [ "ID", "Name", "Category", "Price", "Vegetarian", "Image", "Actions" ]
+  def dashboard_menu_table_headers
+    [ "ID", "Name", "Category", "Price", "Vegetarian", "Image", "Status", "Actions" ]
+  end
+
+  def dashboard_orders_table_headers
+    ["Order ID", "Customer", "Items", "Total", "Status", "Created", "Actions"]
   end
 
   def cards

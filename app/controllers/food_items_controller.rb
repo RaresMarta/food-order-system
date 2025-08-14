@@ -3,12 +3,10 @@ class FoodItemsController < ApplicationController
   before_action :set_food_item, only: [ :update, :destroy ]
   before_action :initialize_food_item_service, only: [ :create, :update, :destroy ]
 
-  # GET /food_items
   def index
     @food_items = FoodItemQuery.new(params: params).call
   end
 
-  # POST /food_items
   def create
     result = @food_item_service.create_item(food_item_params)
 
@@ -21,8 +19,17 @@ class FoodItemsController < ApplicationController
     end
   end
 
-  # PATCH /food_items/:id
   def update
+    if params[:reactivate]
+      @food_item = FoodItem.unscoped.find(params[:id])
+      if @food_item.update(deleted_at: nil)
+        redirect_to dashboard_menu_path, notice: "#{@food_item.name} has been reactivated!"
+      else
+        redirect_to dashboard_menu_path, alert: "Failed to reactivate item."
+      end
+      return
+    end
+
     result = @food_item_service.update_item(@food_item, food_item_params)
 
     if result[:success]
@@ -34,7 +41,6 @@ class FoodItemsController < ApplicationController
     end
   end
 
-  # DELETE /food_items/:id
   def destroy
     result = @food_item_service.delete_item(@food_item)
     handle_result(result, dashboard_menu_path)

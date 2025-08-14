@@ -4,11 +4,11 @@
     %table.table
       %thead
         %tr
-          - dashboard_table_headers.each do |header|
+          - dashboard_menu_table_headers.each do |header|
             %th= header
       %tbody
         - food_items.each do |item|
-          %tr
+          %tr{class: item.deleted? ? "table-secondary" : ""}
             %td= item.id
             %td= item.name
             %td= item.category
@@ -20,6 +20,16 @@
               - else
                 No image
             %td
+              - if item.deleted?
+                %span.badge.bg-danger Inactive
+              - else
+                %span.badge.bg-success Active
+            %td
               = link_to "Edit", dashboard_menu_path(edit_id: item.id), class: "btn btn-sm btn-warning"
-              = link_to "Delete", food_item_path(item),
-                data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"
+              - if item.deleted?
+                = link_to "Reactivate", food_item_path(item, reactivate: true),
+                  data: { turbo_method: :patch, turbo_confirm: "Are you sure you want to reactivate this item?" },
+                  class: "btn btn-sm btn-success"
+              - else
+                = link_to "Delete", food_item_path(item),
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-danger"
