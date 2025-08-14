@@ -9,7 +9,8 @@ class CartItemsController < ApplicationController
 
   def create
     if params[:order_id].present?
-      result = @cart_service.add_items_from_order(params[:order_id])
+      order = current_user.orders.find_by(id: params[:order_id])
+      result = @cart_service.add_items_from_order(order)
       handle_result(result, cart_path)
     else
       result = @cart_service.add_item(params[:food_item_id])

@@ -22,12 +22,9 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
-    service = OrderService.new(@order)
-
-    # Determine redirect path based on referrer
     redirect_path = request.referer&.include?('dashboard') ? dashboard_orders_path : orders_path
 
-    result = service.update_status(params[:status])
+    result = OrderService.new(@order).update_status(params[:status])
     handle_result(result, redirect_path)
   end
 end

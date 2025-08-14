@@ -33,8 +33,7 @@ class CartService
     end
   end
 
-  def add_items_from_order(order_id)
-    order = @user.orders.find_by(id: order_id)
+  def add_items_from_order(order)
     return { success: false, message: "Order not found" } unless order
 
     added_items = 0
