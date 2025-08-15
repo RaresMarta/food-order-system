@@ -1,0 +1,11 @@
+- provide(:title, "Menu Management")
+- dashboard_title("Menu Management")
+
+.row.g-4
+  .col-lg-4
+    .position-sticky{ style: "top: 2rem" }
+      .card-body.p-3
+        = render partial: "food_item_form", locals: { food_item: @food_item }
+  .col-lg-8
+    .card-body.p-3
+      = render partial: "food_items_table", locals: { food_items: @food_items }

@@ -1,0 +1,19 @@
+- provide(:title, "Order History")
+
+%section.dashboard-hero
+  .background
+  .hero-content
+
+.container.p-5
+  .d-flex.justify-content-between.align-items-center.mb-4
+    %h1.text-dark Your orders
+    = link_to "Continue Shopping", root_path, class: "btn btn-primary"
+
+  - if @orders.any?
+    .row.g-4
+      - @orders.each do |order|
+        .col-12
+          = render partial: "order_card", locals: { order: order }
+
+  - else
+    = render partial: "shared/empty_state", title: "No orders yet", message: "Start shopping to see your order history here."

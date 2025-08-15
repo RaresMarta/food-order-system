@@ -1,0 +1,15 @@
+#flash {
+  .flash-container {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px;
+
+    .alert {
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: none;
+    }
+  }
+}

@@ -28,6 +28,18 @@ module ApplicationHelper
     ]
   end
 
+  def payment_options
+    [
+      [ "Credit Card",  "credit_card" ],
+      [ "Cash",         "cash" ],
+      [ "PayPal",       "paypal" ]
+    ]
+  end
+
+  def cart_table_headers
+    [ "Image", "Item Name", "Category", "Price", "Quantity", "Subtotal", "Actions" ]
+  end
+
   def cart_item_count
     return 0 unless logged_in? && current_user
 
@@ -36,5 +48,10 @@ module ApplicationHelper
 
   def current_user_admin?
     logged_in? && current_user.admin?
+  end
+
+  def dashboard_title(title = "")
+    content_for(:dashboard_title, title) if title.present?
+    content_for(:dashboard_title)
   end
 end

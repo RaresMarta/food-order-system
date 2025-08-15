@@ -33,6 +33,37 @@ class CartService
     end
   end
 
+  def add_items_from_order(order)
+    return { success: false, message: "Order not found" } unless order
+
+    added_items = 0
+    unavailable_items = 0
+
+    order.order_items.each do |order_item|
+      food_item = order_item.food_item
+
+      if food_item&.deleted?
+        unavailable_items += 1
+        next
+      end
+
+      cart_item = @user.cart_items.find_or_initialize_by(food_item: food_item)
+      cart_item.quantity = (cart_item.quantity || 0) + order_item.quantity
+
+      added_items += 1 if cart_item.save
+    end
+
+    if added_items > 0 && unavailable_items > 0
+      { success: true, message: "Added #{added_items} item(s) to cart. #{unavailable_items} item(s) are no longer available and were skipped." }
+    elsif added_items > 0
+      { success: true, message: "Added #{added_items} item(s) from your previous order to cart!" }
+    elsif unavailable_items > 0
+      { success: false, message: "None of the items from this order are currently available." }
+    else
+      { success: false, message: "No items could be added from this order" }
+    end
+  end
+
   def cart_total
     @user.cart_items.includes(:food_item).sum { |item| item.food_item.price * item.quantity }
   end

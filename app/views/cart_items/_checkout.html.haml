@@ -1,0 +1,19 @@
+.position-sticky{style: "top: 20px;"}
+  .card.border-0.shadow-sm
+    .card-header.bg-light
+      %h5.mb-0 Checkout
+    .card-body
+      .d-flex.justify-content-between.mb-2
+        %span Subtotal
+        %span= number_to_currency(total)
+      .d-flex.justify-content-between.mb-2
+        %span Delivery
+        %span Free
+      %hr
+      .d-flex.justify-content-between.fw-bold
+        %span Total
+        %span= number_to_currency(total)
+
+      = form_with url: orders_path, method: :post, local: true, class: "d-grid gap-3 mt-3" do |form|
+        = form.select :payment_method, options_for_select(payment_options), {}, { class: "form-select" }
+        = form.submit "Place Order", class: "btn btn-primary btn-lg"

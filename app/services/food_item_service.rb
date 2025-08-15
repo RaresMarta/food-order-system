@@ -18,10 +18,15 @@ class FoodItemService
   end
 
   def delete_item(food_item)
-    if food_item.destroy
-      { success: true, message: "Food item deleted successfully!" }
+    if food_item.order_items.exists?
+      food_item.soft_delete!
+      { success: true, message: "Food item was featured in an order and has been archived (soft deleted)." }
     else
-      { success: false, message: "Failed to delete food item" }
+      if food_item.destroy
+        { success: true, message: "Food item deleted successfully." }
+      else
+        { success: false, message: "Failed to delete food item." }
+      end
     end
   end
 end

@@ -1,5 +1,5 @@
 .dashboard-form
-  %h2 Add New Food Item
+  %h2= food_item ? "Edit Food Item" : "Add New Food Item"
   = form_with model: food_item || FoodItem.new, url: food_item ? food_item_path(food_item) : food_items_path, local: true, method: (food_item ? :patch : :post), class: "form" do |form|
     .form-group
       = form.label :name, "Name"
@@ -18,4 +18,4 @@
       = form.file_field :image, accept: "image/*", class: "form-control"
     .form-buttons
       = form.submit (food_item ? "Update Item" : "Add Item"), class: "btn btn-primary"
-      = link_to "Clear Form", dashboard_path, class: "btn btn-secondary"
+      = link_to "Clear Form", dashboard_menu_path, class: "btn btn-secondary"

@@ -1,0 +1,21 @@
+- order.order_items.each_with_index do |item, index|
+  - use_border = (order.order_items.count > 1 && index < order.order_items.count - 1)
+
+  .d-flex.justify-content-between.align-items-center.py-2{ class: (use_border ? "border-bottom" : "") }
+    .d-flex.align-items-center.gap-3
+      .d-flex.justify-content-center.align-items-center.bg-light.rounded{style: "width: 55px; height: 55px;"}
+        - if item.food_item.image.attached?
+          = image_tag item.food_item.image, alt: item.food_item.name, class: "rounded", style: "width: 55px; height: 55px; object-fit: cover;"
+        - else
+          %small.text-muted No image
+      %div
+        %strong= item.food_item.name
+        - if item.food_item.respond_to?(:description) && item.food_item.description.present?
+          %br
+          %small.text-muted.fst-italic= truncate(item.food_item.description, length: 60)
+        %br
+        %small.text-muted #{number_to_currency(item.unit_price)} each
+
+    %div.text-end
+      %div Qty: #{item.quantity}
+      %strong= number_to_currency(item.unit_price * item.quantity)

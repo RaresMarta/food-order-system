@@ -1,0 +1,20 @@
+.card.shadow-sm
+  .card-header.bg-light.border-0
+    .d-flex.justify-content-between.align-items-center
+      .d-flex.align-items-center.gap-3
+        %h5.mb-0 Order ##{order.id}
+        %span.badge{class: order_status_badge_class(order.status)}
+          = order.status.humanize
+      .text-muted
+        %small
+          Placed on #{order.created_at.strftime("%B %d, %Y")}
+          %br
+          %strong Total: #{number_to_currency(order.total_price)}
+
+  .card-body
+    = render partial: "order_items", locals: { order: order }
+
+  .card-footer.bg-light.border-0
+    .d-flex.justify-content-between.align-items-center
+      %small.text-muted Payment Method: #{order.payment_method.humanize}
+      = link_to "View Details", order_path(order), class: "btn btn-sm btn-outline-primary"
