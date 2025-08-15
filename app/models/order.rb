@@ -1,7 +1,7 @@
 class Order < ApplicationRecord
   belongs_to :user
   has_many :order_items, dependent: :destroy
-  enum :status, { preparing: 0, ready: 1, delivered: 2, canceled: 3 }
+  enum :status, { placed: 0, preparing: 1, ready: 2, delivered: 3, canceled: 4 }
 
   validates :status, presence: true, inclusion: { in: statuses.keys }
   validates :payment_method, presence: true

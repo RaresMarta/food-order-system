@@ -41,7 +41,7 @@ class OrderService
 
   def create_order(user, payment_method)
     user.orders.create!(
-      status: :preparing,
+      status: :placed,
       payment_method: payment_method,
       total_price: 0
     )

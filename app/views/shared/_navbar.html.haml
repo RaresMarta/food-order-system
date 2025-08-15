@@ -21,7 +21,7 @@
         = link_to "ACCOUNT", "#"
         %ul.nav-dropdown
           - if logged_in?
-            %li= link_to "Welcome, #{current_user.name}!", "#"
+            %li= link_to "@#{current_user.name}", "#"
             %li
               = link_to cart_path do
                 CART
