@@ -14,9 +14,8 @@ class OrderService
     order = nil
     begin
       Order.transaction do
-        order = create_order(user, payment_method)
-        total = add_order_items(order, cart_items)
-        order.update!(total_price: total)
+        order = create_order(user, payment_method, cart_items)
+        add_order_items(order, cart_items)
         clear_cart(cart_items)
       end
       { success: true, message: "Order placed successfully!", order: order }
@@ -39,16 +38,15 @@ class OrderService
 
   private
 
-  def create_order(user, payment_method)
+  def create_order(user, payment_method, cart_items)
     user.orders.create!(
       status: :placed,
       payment_method: payment_method,
-      total_price: 0
+      total_price: cart_items.sum(&:subtotal)
     )
   end
 
   def add_order_items(order, cart_items)
-    total = 0
     cart_items.each do |ci|
       unit_price = ci.food_item.price
       order.order_items.create!(
@@ -56,9 +54,7 @@ class OrderService
         quantity: ci.quantity,
         unit_price: unit_price
       )
-      total += unit_price * ci.quantity
     end
-    total
   end
 
   def clear_cart(cart_items)

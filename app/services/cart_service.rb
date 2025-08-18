@@ -65,6 +65,6 @@ class CartService
   end
 
   def cart_total
-    @user.cart_items.includes(:food_item).sum { |item| item.food_item.price * item.quantity }
+    @user.cart_items.includes(:food_item).sum(&:subtotal)
   end
 end

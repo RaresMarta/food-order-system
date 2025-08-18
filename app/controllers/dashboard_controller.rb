@@ -10,7 +10,7 @@ class DashboardController < ApplicationController
   end
 
   def orders
-    @all_orders = Order.includes(order_items: :food_item, user: :orders).order(created_at: :desc)
+    @all_orders = Order.includes(order_items: :food_item, user: :orders).recent
   end
 
   def menu
