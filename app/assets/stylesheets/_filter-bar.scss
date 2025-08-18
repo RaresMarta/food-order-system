@@ -127,7 +127,8 @@
   gap: 0.5rem;
 }
 
-.min-price, .max-price {
+.min-price,
+.max-price {
   font-size: 0.85rem;
   font-weight: 600;
   color: #333;
@@ -157,25 +158,25 @@
   margin: 0;
 }
 
-/* Make thumbs clickable */
+/* Make thumbs clickable with smaller, more precise hover area */
 .slider-container input[type="range"]::-webkit-slider-thumb {
   pointer-events: all;
-  width: 20px;
-  height: 20px;
-  border-radius: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   border: 0 none;
-  background-color: red;
+  background-color: transparent;
   cursor: pointer;
   appearance: none;
 }
 
 .slider-container input[type="range"]::-moz-range-thumb {
   pointer-events: all;
-  width: 20px;
-  height: 20px;
-  border-radius: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   border: 0 none;
-  background-color: red;
+  background-color: transparent;
   cursor: pointer;
 }
 
@@ -203,6 +204,7 @@
   height: 4px;
   background: $primary-color;
   border-radius: 2px;
+  transition: none;
 }
 
 /* Slider thumbs */
@@ -217,6 +219,7 @@
   border: 2px solid $primary-color;
   border-radius: 50%;
   pointer-events: none;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-width 0.1s ease;
 }
 
 .slider-thumb.left {
@@ -225,4 +228,28 @@
 
 .slider-thumb.right {
   left: 100%;
+}
+
+/* Visual feedback on hover - show which thumb will be activated */
+.slider-container input[type="range"]:first-of-type:hover~.slider-thumb.left {
+  box-shadow: 0 0 0 3px rgba($primary-color, 0.3);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.slider-container input[type="range"]:last-of-type:hover~.slider-thumb.right {
+  box-shadow: 0 0 0 3px rgba($primary-color, 0.3);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Active state feedback */
+.slider-container input[type="range"]:first-of-type:active~.slider-thumb.left {
+  box-shadow: 0 0 0 4px rgba($primary-color, 0.4);
+  transform: translate(-50%, -50%) scale(1.2);
+  border-width: 3px;
+}
+
+.slider-container input[type="range"]:last-of-type:active~.slider-thumb.right {
+  box-shadow: 0 0 0 4px rgba($primary-color, 0.4);
+  transform: translate(-50%, -50%) scale(1.2);
+  border-width: 3px;
 }

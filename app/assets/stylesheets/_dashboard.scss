@@ -22,6 +22,85 @@
   }
 }
 
+// Dashboard Stats Cards
+.dashboard-stats {
+  margin-bottom: $gap-lg;
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $gap-md;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: $gap-sm;
+    }
+  }
+
+  .stat-card {
+    background: $white;
+    border-radius: $radius-md;
+    padding: $gap-lg;
+    text-align: center;
+    color: $white;
+    box-shadow: $card-shadow;
+
+    &.bg-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    &.bg-success {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    &.bg-info {
+      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+
+    .stat-content {
+      .stat-title {
+        font-size: 1rem;
+        margin-bottom: $gap-sm;
+        font-weight: 500;
+        opacity: 0.9;
+      }
+
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
+      }
+    }
+  }
+}
+
+// Dashboard Content Layout
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $gap-lg;
+  margin-bottom: $gap-lg;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    gap: $gap-md;
+  }
+
+  .form-section,
+  .orders-section {
+    background: $white;
+    border-radius: $radius-md;
+    box-shadow: $card-shadow;
+  }
+}
+
+.table-section {
+  background: $white;
+  border-radius: $radius-md;
+  box-shadow: $card-shadow;
+}
+
 // Reset button container
 .reset-container {
   width: 100%;

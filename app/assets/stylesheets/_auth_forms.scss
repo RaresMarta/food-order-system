@@ -1,15 +1,20 @@
 .auth-hero {
+  position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   padding: 4rem 1rem;
+  min-height: 100vh;
+  height: auto;
+  overflow: hidden;
 
   .hero-content {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 4rem;
+    z-index: 1;
   }
 
   .card {
@@ -47,7 +52,8 @@
 
 @media (max-height: 600px) {
   .auth-hero {
+    min-height: auto;
     align-items: flex-start;
-    padding-top: 2rem;
+    padding: 2rem 1rem;
   }
 }

@@ -8,8 +8,14 @@ class CartItemsController < ApplicationController
   end
 
   def create
-    result = @cart_service.add_item(params[:food_item_id])
-    handle_result(result, root_path, use_flash_now: true)
+    if params[:order_id].present?
+      order = current_user.orders.find_by(id: params[:order_id])
+      result = @cart_service.add_items_from_order(order)
+      handle_result(result, cart_path)
+    else
+      result = @cart_service.add_item(params[:food_item_id])
+      handle_result(result, root_path, use_flash_now: true)
+    end
   end
 
   def update

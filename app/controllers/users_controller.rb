@@ -2,12 +2,10 @@ class UsersController < ApplicationController
   skip_before_action :require_login
   before_action :initialize_user_service, only: [ :create ]
 
-  # GET /register
   def new
     @user = User.new
   end
 
-  # POST /register
   def create
     result = @user_service.register_user(user_params)
 

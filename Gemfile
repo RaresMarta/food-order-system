@@ -31,6 +31,9 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+# Image storage and processing
+gem "cloudinary"
+
 # Performance and deployment
 gem "bootsnap", require: false
 gem "kamal", require: false
@@ -42,6 +45,9 @@ group :development do
   gem "brakeman", require: false
   gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem "annotate"
 end
 
 group :test do
@@ -53,4 +59,5 @@ end
 group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem "dotenv-rails"
 end

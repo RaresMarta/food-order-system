@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :cart_items, dependent: :destroy
   has_many :food_items, through: :cart_items
+  has_many :orders
 
   has_secure_password
 

@@ -4,50 +4,22 @@
   .background
   .hero-content
 
-.content-wrapper
+.container.p-5
   - if @cart_items.any?
-    %section.cart-items
-      %table.table
-        %thead
-          %tr
-            %th Image
-            %th Item Name
-            %th Category
-            %th Price
-            %th Quantity
-            %th Subtotal
-            %th Actions
-        %tbody
-          - @cart_items.each do |cart_item|
-            %tr
-              %td
-                - if cart_item.food_item.image.attached?
-                  = image_tag cart_item.food_item.image, style: "width: 50px; height: 50px; object-fit: cover;"
-                - else
-                  No image
-              %td= cart_item.food_item.name
-              %td= cart_item.food_item.category.humanize
-              %td= number_to_currency(cart_item.food_item.price)
-              %td
-                = form_with model: cart_item, url: cart_item_path(cart_item), method: :patch, local: true, class: "d-inline" do |form|
-                  = form.number_field :quantity, value: cart_item.quantity, min: 1, class: "form-control quantity-input", style: "width: 80px; display: inline-block;"
-                  = form.submit "Update", class: "btn btn-sm btn-warning ms-2"
-              %td= number_to_currency(cart_item.food_item.price * cart_item.quantity)
-              %td
-                = link_to "Remove", cart_item_path(cart_item),
-                    data: { turbo_method: :delete, confirm: "Are you sure?" },
-                    class: "btn btn-sm btn-danger"
+    .row.g-4
+      .col-lg-8
+        .d-flex.justify-content-between.align-items-center.mb-4
+          %h1.text-dark Your Cart
+          %h1.text-dark= pluralize(@cart_items.sum(&:quantity), "item")
+        .border-0.p-0
+          = render partial: "cart_items_table", locals: { cart_items: @cart_items }
+          = link_to root_path, class: "btn btn-outline-secondary mt-3" do
+            %i.bi.bi-arrow-left-short.me-1
+            Continue shopping
 
-    %section.cart-summary
-      .cart-total
-        %h3 Total: #{number_to_currency(@total)}
-      .cart-actions
-        = link_to "Continue Shopping", root_path, class: "btn btn-secondary"
-        = link_to "Checkout", "#", class: "btn btn-primary"
+      .col-lg-4
+        .position-sticky{ style: "top: 1rem" }
+          = render partial: "checkout", locals: { total: @total }
 
   - else
-    %section.no-results.d-flex.align-items-center.justify-content-center{style: "min-height: 60vh;"}
-      .no-results-content.text-center
-        %h3 Your cart is empty
-        %p Start adding some delicious items to your cart!
-        = link_to "Browse Menu", root_path, class: "btn btn-primary"
+    = render "shared/empty_state", title: "Your cart is empty", message: "Start adding some delicious items to your cart!"
