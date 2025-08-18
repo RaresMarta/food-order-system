@@ -41,13 +41,13 @@ module ApplicationHelper
   end
 
   def cart_item_count
-    return 0 unless logged_in? && current_user
+    return 0 unless user_signed_in? && current_user
 
     current_user.cart_items.sum(:quantity)
   end
 
   def current_user_admin?
-    logged_in? && current_user.admin?
+    user_signed_in? && current_user.admin?
   end
 
   def dashboard_title(title = "")

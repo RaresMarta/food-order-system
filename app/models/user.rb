@@ -3,14 +3,12 @@ class User < ApplicationRecord
   has_many :food_items, through: :cart_items
   has_many :orders
 
-  has_secure_password
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
 
   enum :role, { customer: 0, admin: 1 }
 
-  validates :email, presence: true, uniqueness: true,
-    format: { with: /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/, message: "is invalid" }
   validates :name, presence: true
-  validates :password, length: { minimum: 6 }, if: -> { new_record? || !password.nil? }
 
   before_save :downcase_email
 

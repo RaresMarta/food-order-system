@@ -21,7 +21,7 @@ gem "html2haml"
 gem "jbuilder"
 
 # Authentication
-gem "bcrypt", "~> 3.1.7"
+gem "devise"
 
 # Timezone support
 gem "tzinfo-data", platforms: %i[ windows jruby ]

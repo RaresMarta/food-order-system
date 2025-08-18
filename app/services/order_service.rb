@@ -66,12 +66,6 @@ class OrderService
   end
 
   def can_update_status?(new_status, current_user)
-    # Users can cancel their own orders
-    return true if new_status == "canceled" && @order.user == current_user
-
-    # Admins can update any status
-    return true if current_user.admin?
-
-    false
+    (new_status == "canceled" && @order.user == current_user) || current_user.admin?
   end
 end

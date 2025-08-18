@@ -1,6 +1,5 @@
 class OrdersController < ApplicationController
   helper OrdersHelper
-  before_action :require_login
 
   def index
     @orders = current_user.orders.includes(order_items: :food_item).order(created_at: :desc)

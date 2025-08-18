@@ -1,29 +1,20 @@
 class ApplicationController < ActionController::Base
   allow_browser versions: :modern
-  before_action :require_login
+  before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   private
-
-  def current_user
-    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
-  end
-
-  def logged_in?
-    !!current_user
-  end
-
-  def require_login
-    unless logged_in?
-      result = { success: false, message: "You must be logged in to access this page" }
-      handle_result(result, login_path)
-    end
-  end
 
   def require_admin
     unless current_user&.admin?
       result = { success: false, message: "Access denied. Admin privileges required." }
       handle_result(result, root_path)
     end
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name])
   end
 
   def handle_result(result, redirect_path = root_path, use_flash_now: false)
@@ -37,5 +28,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  helper_method :current_user, :logged_in?
+  helper_method :current_user_admin?
+
+  def current_user_admin?
+    user_signed_in? && current_user.admin?
+  end
 end
