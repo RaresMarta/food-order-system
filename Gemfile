@@ -54,10 +54,12 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "database_cleaner-active_record"
+  gem 'shoulda-matchers'
 end
 
 group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "dotenv-rails"
+  gem "faker"
 end

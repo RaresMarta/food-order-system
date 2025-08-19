@@ -10,15 +10,15 @@ RSpec.describe "Cart Authorization", type: :request do
           post cart_items_path, params: { food_item_id: food_item.id }
         }.not_to change(CartItem, :count)
 
-        expect(response).to redirect_to(login_path)
-        expect(flash[:alert]).to eq("You must be logged in to access this page")
+        expect(response).to redirect_to(new_user_session_path)
+        expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
       end
 
       it "cannot access cart index page" do
         get cart_items_path
 
-        expect(response).to redirect_to(login_path)
-        expect(flash[:alert]).to eq("You must be logged in to access this page")
+        expect(response).to redirect_to(new_user_session_path)
+        expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
       end
     end
 
@@ -26,8 +26,8 @@ RSpec.describe "Cart Authorization", type: :request do
       let(:user) { create(:user) }
 
       before do
-        # Simulate login by setting session
-        post login_path, params: { email: user.email, password: user.password }
+        # Simulate login using Devise test helpers
+        sign_in user
       end
 
       it "successfully adds item to cart" do

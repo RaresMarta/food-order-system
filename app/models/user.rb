@@ -9,6 +9,8 @@ class User < ApplicationRecord
   enum :role, { customer: 0, admin: 1 }
 
   validates :name, presence: true
+  validates :email, presence: true
+  validates :role, presence: true
 
   before_save :downcase_email
 
