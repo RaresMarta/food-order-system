@@ -22,6 +22,13 @@ gem "jbuilder"
 
 # Authentication
 gem "devise"
+gem "doorkeeper"
+gem "doorkeeper-jwt"
+gem "jwt"
+
+# Serialization
+gem 'alba'
+gem 'oj'
 
 # Timezone support
 gem "tzinfo-data", platforms: %i[ windows jruby ]

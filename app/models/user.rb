@@ -3,8 +3,7 @@ class User < ApplicationRecord
   has_many :food_items, through: :cart_items
   has_many :orders
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
   enum :role, { customer: 0, admin: 1 }
 
