@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Doorkeeper.configure do
   orm :active_record
 
@@ -21,7 +22,7 @@ Doorkeeper.configure do
   default_scopes :read
   optional_scopes :write, :admin
 
-  access_token_generator 'Doorkeeper::JWT'
+  access_token_generator "Doorkeeper::JWT"
 
   skip_authorization do
     true

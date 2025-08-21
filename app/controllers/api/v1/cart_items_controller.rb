@@ -3,7 +3,7 @@
 module Api
   module V1
     class CartItemsController < BaseController
-      before_action :set_cart_item, only: [:update, :destroy]
+      before_action :set_cart_item, only: [ :update, :destroy ]
       before_action :initialize_cart_service
 
       # GET /api/v1/cart_items
@@ -12,7 +12,7 @@ module Api
         @total = @cart_service.cart_total
 
         render_success({
-          cart_items: @cart_items.map { |cart_item| CartItemSerializer.new(cart_item).as_json },
+          cart_items: CartItemSerializer.new(@cart_items).as_json,
           total: @total.to_f
         })
       end

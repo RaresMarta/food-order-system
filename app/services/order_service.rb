@@ -19,17 +19,17 @@ class OrderService
       clear_cart(cart_items)
     end
 
-    { success: true, message: "Order placed successfully!", order: order }
+    { success: true, message: "Order placed.", order: order }
   rescue => e
     { success: false, message: "Checkout failed: #{e.message}" }
   end
 
   def update_status(new_status, current_user)
-    return { success: false, message: "Order not found" } unless @order
+    return { success: false, message: "Order not found." } unless @order
     return { success: false, message: "You are not authorized to update this order." } unless can_update_status?(new_status, current_user)
 
     if @order.update(status: new_status)
-      { success: true, message: "Order ##{@order.id} status updated to #{new_status.humanize}!" , order: @order }
+      { success: true, message: "Order ##{@order.id} status updated to #{new_status.humanize}.", order: @order }
     else
       error_message = @order.errors.full_messages.join(", ").presence || "Invalid status provided"
       { success: false, message: "Failed to update order status: #{error_message}" }

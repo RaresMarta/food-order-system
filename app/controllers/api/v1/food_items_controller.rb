@@ -3,8 +3,8 @@
 module Api
   module V1
     class FoodItemsController < BaseController
-      skip_before_action :doorkeeper_authorize!, only: [:index, :show]
-      before_action :set_food_item, only: [:show]
+      skip_before_action :doorkeeper_authorize!, only: [ :index, :show ]
+      before_action :set_food_item, only: [ :show ]
 
       # GET /api/v1/food_items
       def index

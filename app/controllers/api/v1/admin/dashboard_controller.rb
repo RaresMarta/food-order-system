@@ -23,7 +23,7 @@ module Api
           @all_orders = @dashboard_service.orders
 
           render_success({
-            orders: @all_orders.map { |order| OrderSerializer.new(order).as_json }
+            order_list: OrderSerializer.new(@all_orders).as_json
           })
         end
 
@@ -32,12 +32,16 @@ module Api
           menu_data = @dashboard_service.food_items_for_menu(edit_id: params[:edit_id])
 
           render_success({
-            food_items: menu_data[:food_items].map { |item| FoodItemSerializer.new(item).as_json },
-            food_item: menu_data[:food_item] ? FoodItemSerializer.new(menu_data[:food_item]).as_json : nil
+            food_item_list: FoodItemSerializer.new(menu_data[:food_items]).as_json,
+            food_item: serialize_food_item(menu_data[:food_item])
           })
         end
 
         private
+
+          def serialize_food_item(food_item)
+            food_item ? FoodItemSerializer.new(food_item).as_json : nil
+          end
 
           def initialize_dashboard_service
             @dashboard_service = DashboardService.new

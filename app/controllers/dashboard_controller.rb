@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   before_action :require_admin
-  layout 'dashboard_layout', only: [:orders, :menu]
+  layout "dashboard_layout", only: [ :orders, :menu ]
 
   def index
     @orders_today = Order.where(created_at: Date.current.all_day).count

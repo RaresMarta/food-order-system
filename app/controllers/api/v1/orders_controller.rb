@@ -3,7 +3,7 @@
 module Api
   module V1
     class OrdersController < BaseController
-      before_action :set_order, only: [:show, :update]
+      before_action :set_order, only: [ :show, :update ]
 
       # GET /api/v1/orders
       def index

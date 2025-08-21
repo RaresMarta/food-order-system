@@ -27,8 +27,8 @@ gem "doorkeeper-jwt"
 gem "jwt"
 
 # Serialization
-gem 'alba'
-gem 'oj'
+gem "alba"
+gem "oj"
 
 # Timezone support
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -61,7 +61,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "database_cleaner-active_record"
-  gem 'shoulda-matchers'
+  gem "shoulda-matchers"
 end
 
 group :development, :test do

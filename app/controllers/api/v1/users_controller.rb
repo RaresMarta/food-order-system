@@ -1,7 +1,8 @@
 module Api
   module V1
     class UsersController < BaseController
-      skip_before_action :doorkeeper_authorize!, only: [:create]
+      skip_before_action :doorkeeper_authorize!, only: [ :create ]
+
       # POST /api/v1/users/register
       def create
         user = User.new(user_params)

@@ -13,10 +13,10 @@ module Api
         def doorkeeper_unauthorized_render_options(error: nil)
           {
             json: {
-              code: error&.state || 'unauthorized',
-              message: 'Authentication required',
+              code: error&.state || "unauthorized",
+              message: "Authentication required",
               expired: error&.reason == :expired,
-              errors: ['Invalid or expired access token']
+              errors: [ "Invalid or expired access token" ]
             },
             status: :unauthorized
           }
@@ -24,13 +24,13 @@ module Api
 
         def render_error_message(message = nil, status: :unprocessable_entity)
           render json: {
-            message: 'Error',
+            message: "Error",
             errors: Array.wrap(message),
             code: status.to_s
           }, status: status
         end
 
-        def render_success(data = {}, message: 'Success', status: :ok)
+        def render_success(data = {}, message: "Success", status: :ok)
           render json: {
             message: message,
             data: data,
@@ -47,7 +47,7 @@ module Api
         end
 
         def admin_required
-          render_error_message('Admin access required', status: :forbidden) unless current_user&.admin?
+          render_error_message("Admin access required", status: :forbidden) unless current_user&.admin?
         end
     end
   end

@@ -14,7 +14,7 @@ class DashboardService
 
   def food_items_for_menu(edit_id: nil)
     {
-      food_items: FoodItem.unscoped.order(:deleted_at, :name),
+      food_item_list: FoodItem.unscoped.order(:deleted_at, :name),
       food_item: edit_id ? FoodItem.find(edit_id) : nil
     }
   end

@@ -6,7 +6,7 @@ module Api
       extend Apipie::DSL::Concern
 
       api :POST, '/v1/sessions/token', 'Get new access and refresh tokens'
-      param :grant_type,    ['refresh_token'], required: true, desc: 'Grant type of authorization flow'
+      param :grant_type,    [ 'refresh_token' ], required: true, desc: 'Grant type of authorization flow'
       param :refresh_token, String,            required: true, desc: 'Valid refresh token'
       example <<-EXAMPLE
         // Default

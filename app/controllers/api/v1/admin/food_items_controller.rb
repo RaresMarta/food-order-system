@@ -4,15 +4,15 @@ module Api
   module V1
     module Admin
       class FoodItemsController < BaseController
-        before_action :set_food_item, only: [:update, :destroy, :reactivate]
-        before_action :initialize_food_item_service, only: [:create, :update, :destroy]
+        before_action :set_food_item, only: [ :update, :destroy, :reactivate ]
+        before_action :initialize_food_item_service, only: [ :create, :update, :destroy ]
 
         # POST /api/v1/admin/food_items
         def create
           result = @food_item_service.create_item(food_item_params)
 
           if result[:success]
-            render_created_resource(result[:food_item], FoodItemSerializer, message: result[:message])
+            render_resource_success(result[:food_item], FoodItemSerializer, result[:message], status: :created)
           else
             render_validation_errors(result[:food_item], message: result[:message])
           end
@@ -23,7 +23,7 @@ module Api
           result = @food_item_service.update_item(@food_item, food_item_params)
 
           if result[:success]
-            render_updated_resource(result[:food_item], FoodItemSerializer, message: result[:message])
+            render_resource_success(result[:food_item], FoodItemSerializer, result[:message])
           else
             render_validation_errors(result[:food_item], message: result[:message])
           end
@@ -34,7 +34,7 @@ module Api
           result = @food_item_service.delete_item(@food_item)
 
           if result[:success]
-            render_destroyed_resource(result[:food_item], FoodItemSerializer, message: result[:message])
+            render_resource_success(result[:food_item], FoodItemSerializer, result[:message])
           else
             render_validation_errors(result[:food_item], message: result[:message])
           end

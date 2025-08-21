@@ -9,32 +9,26 @@ module Api
 
         protected
 
-          def render_validation_errors(resource, message: 'Validation failed')
+          def render_validation_errors(resource, message: "Validation failed")
             render json: {
               message: message,
               errors: resource.errors.full_messages,
-              code: 'validation_error'
+              code: "validation_error"
             }, status: :unprocessable_entity
           end
 
-          def render_resource_success(resource, serializer_class, message: 'Success', status: :ok)
+          def render_resource_success(resource, serializer_class, message, status: :ok)
             render_success(
-              { resource.class.name.underscore => serializer_class.new(resource).as_json },
+              serialize_resource(resource, serializer_class),
               message: message,
               status: status
             )
           end
 
-          def render_created_resource(resource, serializer_class, message: 'Resource created successfully')
-            render_resource_success(resource, serializer_class, message: message, status: :created)
-          end
+        private
 
-          def render_updated_resource(resource, serializer_class, message: 'Resource updated successfully')
-            render_resource_success(resource, serializer_class, message: message, status: :ok)
-          end
-
-          def render_destroyed_resource(resource, serializer_class, message: 'Resource deleted successfully')
-            render_resource_success(resource, serializer_class, message: message, status: :ok)
+          def serialize_resource(resource, serializer_class)
+            { resource.class.name.underscore => serializer_class.new(resource).as_json }
           end
       end
     end

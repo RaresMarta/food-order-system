@@ -7,13 +7,13 @@ module ApiErrorHandling
     rescue_from ActiveRecord::RecordNotFound do |exception|
       render json: {
         message: "#{exception.model} with id=#{exception.id} not found",
-        code: 'not_found'
+        code: "not_found"
       }, status: :not_found
     end
 
     rescue_from ActiveRecord::RecordInvalid do |exception|
       render json: {
-        message: 'Validation Failed',
+        message: "Validation Failed",
         errors: exception.record.errors.messages
       }, status: :unprocessable_entity
     end
@@ -21,7 +21,7 @@ module ApiErrorHandling
     rescue_from ActionController::ParameterMissing do |exception|
       render json: {
         message: "Parameter missing: #{exception.param}",
-        code: 'param_missing'
+        code: "param_missing"
       }, status: :unprocessable_entity
     end
 

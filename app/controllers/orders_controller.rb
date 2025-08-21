@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
 
   def update
     @order = current_user.admin? ? Order.find(params[:id]) : current_user.orders.find(params[:id])
-    redirect_path = request.referer&.include?('dashboard') ? dashboard_orders_path : orders_path
+    redirect_path = request.referer&.include?("dashboard") ? dashboard_orders_path : orders_path
 
     result = OrderService.new(@order).update_status(params[:status], current_user)
     handle_result(result, redirect_path)

@@ -1,7 +1,7 @@
 module Api
   module V1
     class SessionsController < BaseController
-      skip_before_action :doorkeeper_authorize!, only: [:create]
+      skip_before_action :doorkeeper_authorize!, only: [ :create ]
 
       # POST /api/v1/users/login
       def create

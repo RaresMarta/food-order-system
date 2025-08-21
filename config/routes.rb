@@ -14,12 +14,12 @@ Rails.application.routes.draw do
         delete :logout,   to: "sessions#destroy"
       end
 
-      resources :food_items, only: [:index, :show]
-      resources :orders, only: [:index, :show, :create, :update]
-      resources :cart_items, only: [:index, :create, :update, :destroy]
+      resources :food_items, only: [ :index, :show ]
+      resources :orders, only: [ :index, :show, :create, :update ]
+      resources :cart_items, only: [ :index, :create, :update, :destroy ]
 
       namespace :admin do
-        resources :food_items, only: [:create, :update, :destroy] do
+        resources :food_items, only: [ :create, :update, :destroy ] do
           member { patch :reactivate }
         end
 
@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
         get "users", to: "users#index"
 
-        resources :orders, only: [:update]
+        resources :orders, only: [ :update ]
       end
     end
   end
