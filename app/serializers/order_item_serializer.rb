@@ -1,14 +1,20 @@
 class OrderItemSerializer < ApplicationSerializer
-  attributes :id, :quantity, :price
+  attributes :id, :quantity
 
-  one :food_item, serializer: FoodItemSerializer do |order_item|
-    {
-      id: order_item.food_item.id,
-      name: order_item.food_item.name
-    }
+  attribute :unit_price do |oi|
+    oi.unit_price.to_f
   end
 
-  attribute :price do |order_item|
-    order_item.price&.to_f || 0
+  attribute :subtotal do |oi|
+    oi.subtotal.to_f
+  end
+
+  attribute :food_item do |oi|
+    fi = oi.food_item
+    {
+      id: fi.id,
+      name: fi.name,
+      price: fi.price.to_f
+    }
   end
 end

@@ -7,12 +7,12 @@ Rails.application.routes.draw do
   # API routes
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      devise_scope :user do
-        post "users", to: "registrations#create"
+      scope :users do
+        post   :register, to: "users#create"
+        get    :me,       to: "users#show"
+        post   :login,    to: "sessions#create"
+        delete :logout,   to: "sessions#destroy"
       end
-
-      get  "auth/me",     to: "auth#me"
-      post "auth/logout", to: "auth#logout"
 
       resources :food_items, only: [:index, :show]
       resources :orders, only: [:index, :show, :create, :update]
@@ -23,9 +23,13 @@ Rails.application.routes.draw do
           member { patch :reactivate }
         end
 
-        get "dashboard", to: "dashboard#index"
+        get "dashboard",        to: "dashboard#index"
         get "dashboard/orders", to: "dashboard#orders"
-        get "dashboard/menu", to: "dashboard#menu"
+        get "dashboard/menu",   to: "dashboard#menu"
+
+        get "users", to: "users#index"
+
+        resources :orders, only: [:update]
       end
     end
   end

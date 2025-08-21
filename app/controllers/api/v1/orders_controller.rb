@@ -34,19 +34,29 @@ module Api
         end
       end
 
-      # PATCH /api/v1/orders/:id
-      def update
-        order = current_user.admin? ? Order.find(params[:id]) : current_user.orders.find(params[:id])
-        result = OrderService.new(order).update_status(order_params[:status], current_user)
+    # PATCH /api/v1/orders/:id
+    def update
+      order = current_user.orders.find(params[:id])
 
-        if result[:success]
-          render_success({
-            order: OrderSerializer.new(result[:order]).as_json
-          }, message: result[:message])
-        else
-          render_error_message(result[:message], status: :unprocessable_entity)
-        end
+      desired = order_params[:status]
+      return render_error_message("status is required", status: :unprocessable_entity) if desired.blank?
+
+      unless desired == "canceled"
+        return render_error_message("You can only cancel your order.", status: :forbidden)
       end
+
+      unless order.cancelable?
+        return render_error_message("Order can no longer be canceled.", status: :unprocessable_entity)
+      end
+
+      result = OrderService.new(order).update_status("canceled", current_user)
+
+      if result[:success]
+        render_success({ order: OrderSerializer.new(result[:order]).as_json }, message: result[:message])
+      else
+        render_error_message(result[:message], status: :unprocessable_entity)
+      end
+    end
 
       private
 

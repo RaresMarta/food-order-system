@@ -4,18 +4,18 @@ class OrderSerializer < ApplicationSerializer
   one :user, serializer: UserSerializer do |order|
     {
       id: order.user.id,
-      email: order.user.email,
-      total_orders: order.user.orders.count
+      name: order.user.name,
+      email: order.user.email
     }
   end
 
   many :order_items, serializer: OrderItemSerializer
 
   attribute :total_amount do |order|
-    order.total_price&.to_f || 0
+    (order.total_price || order.calculate_total).to_f
   end
 
   attribute :items_count do |order|
-    order.order_items.count
+    order.order_items.size
   end
 end

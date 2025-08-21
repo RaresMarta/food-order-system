@@ -12,42 +12,24 @@ module Api
         @total = @cart_service.cart_total
 
         render_success({
-          cart_items: @cart_items.map { |cart_item|
-            {
-              id: cart_item.id,
-              quantity: cart_item.quantity,
-              food_item: FoodItemSerializer.new(cart_item.food_item).as_json,
-              subtotal: cart_item.quantity * cart_item.food_item.price
-            }
-          },
+          cart_items: @cart_items.map { |cart_item| CartItemSerializer.new(cart_item).as_json },
           total: @total.to_f
         })
       end
 
       # POST /api/v1/cart_items
       def create
-        if cart_item_params[:order_id].present?
-          order = current_user.orders.find_by(id: cart_item_params[:order_id])
-          result = @cart_service.add_items_from_order(order)
-        else
-          result = @cart_service.add_item(cart_item_params[:food_item_id])
-        end
+        food_item_id = cart_item_params[:food_item_id]
+        return render_error_message("food_item_id is required", status: :unprocessable_entity) if food_item_id.blank?
 
+        result = @cart_service.add_item(food_item_id)
         if result[:success]
-          @cart_items = current_user.cart_items.includes(:food_item)
-          @total = @cart_service.cart_total
-
-          render_success({
-            cart_items: @cart_items.map { |cart_item|
-              {
-                id: cart_item.id,
-                quantity: cart_item.quantity,
-                food_item: FoodItemSerializer.new(cart_item.food_item).as_json,
-                subtotal: cart_item.quantity * cart_item.food_item.price
-              }
-            },
-            total: @total.to_f
-          }, message: result[:message], status: :created)
+          item = current_user.cart_items.includes(:food_item).find_by!(food_item_id: food_item_id)
+          render_success(
+            { cart_item: CartItemSerializer.new(item).as_json },
+            message: result[:message],
+            status: :created
+          )
         else
           render_error_message(result[:message], status: :unprocessable_entity)
         end
@@ -55,23 +37,17 @@ module Api
 
       # PATCH /api/v1/cart_items/:id
       def update
-        result = @cart_service.update_item(@cart_item, cart_item_params[:quantity])
+        quantity = cart_item_params[:quantity]
+        return render_error_message("quantity is required", status: :unprocessable_entity) if quantity.blank?
+
+        result = @cart_service.update_item(@cart_item, quantity)
 
         if result[:success]
-          @cart_items = current_user.cart_items.includes(:food_item)
-          @total = @cart_service.cart_total
-
-          render_success({
-            cart_items: @cart_items.map { |cart_item|
-              {
-                id: cart_item.id,
-                quantity: cart_item.quantity,
-                food_item: FoodItemSerializer.new(cart_item.food_item).as_json,
-                subtotal: cart_item.quantity * cart_item.food_item.price
-              }
-            },
-            total: @total.to_f
-          }, message: result[:message])
+          @cart_item.reload
+          render_success(
+            { cart_item: CartItemSerializer.new(@cart_item).as_json },
+            message: result[:message]
+          )
         else
           render_error_message(result[:message], status: :unprocessable_entity)
         end
@@ -79,23 +55,15 @@ module Api
 
       # DELETE /api/v1/cart_items/:id
       def destroy
+        deleted_item_json = CartItemSerializer.new(@cart_item).as_json
+
         result = @cart_service.remove_item(@cart_item)
 
         if result[:success]
-          @cart_items = current_user.cart_items.includes(:food_item)
-          @total = @cart_service.cart_total
-
-          render_success({
-            cart_items: @cart_items.map { |cart_item|
-              {
-                id: cart_item.id,
-                quantity: cart_item.quantity,
-                food_item: FoodItemSerializer.new(cart_item.food_item).as_json,
-                subtotal: cart_item.quantity * cart_item.food_item.price
-              }
-            },
-            total: @total.to_f
-          }, message: result[:message])
+          render_success(
+            { deleted_item: deleted_item_json },
+            message: result[:message]
+          )
         else
           render_error_message(result[:message], status: :unprocessable_entity)
         end

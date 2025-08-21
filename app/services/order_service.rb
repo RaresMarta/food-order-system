@@ -1,3 +1,4 @@
+# app/services/order_service.rb
 class OrderService
   def initialize(order = nil)
     @order = order
@@ -12,16 +13,15 @@ class OrderService
     return { success: false, message: "Cart is empty" } if cart_items.blank?
 
     order = nil
-    begin
-      Order.transaction do
-        order = create_order(user, payment_method, cart_items)
-        add_order_items(order, cart_items)
-        clear_cart(cart_items)
-      end
-      { success: true, message: "Order placed successfully!", order: order }
-    rescue => e
-      { success: false, message: "Checkout failed: #{e.message}" }
+    Order.transaction do
+      order = create_order(user, payment_method, cart_items)  # <-- computes total here
+      add_order_items(order, cart_items)
+      clear_cart(cart_items)
     end
+
+    { success: true, message: "Order placed successfully!", order: order }
+  rescue => e
+    { success: false, message: "Checkout failed: #{e.message}" }
   end
 
   def update_status(new_status, current_user)
@@ -29,7 +29,7 @@ class OrderService
     return { success: false, message: "You are not authorized to update this order." } unless can_update_status?(new_status, current_user)
 
     if @order.update(status: new_status)
-      { success: true, message: "Order ##{@order.id} status updated to #{new_status.humanize}!" }
+      { success: true, message: "Order ##{@order.id} status updated to #{new_status.humanize}!" , order: @order }
     else
       error_message = @order.errors.full_messages.join(", ").presence || "Invalid status provided"
       { success: false, message: "Failed to update order status: #{error_message}" }
@@ -39,20 +39,25 @@ class OrderService
   private
 
   def create_order(user, payment_method, cart_items)
+    total = cart_items.sum do |ci|
+      qty   = ci.quantity.to_i
+      price = ci.food_item&.price || 0
+      qty * price
+    end
+
     user.orders.create!(
       status: :placed,
       payment_method: payment_method,
-      total_price: cart_items.sum(&:subtotal)
+      total_price: total
     )
   end
 
   def add_order_items(order, cart_items)
     cart_items.each do |ci|
-      unit_price = ci.food_item.price
       order.order_items.create!(
-        food_item: ci.food_item,
-        quantity: ci.quantity,
-        unit_price: unit_price
+        food_item:  ci.food_item,
+        quantity:   ci.quantity,
+        unit_price: ci.food_item.price
       )
     end
   end

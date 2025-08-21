@@ -1,7 +1,7 @@
 class UserSerializer < ApplicationSerializer
-  attributes :id, :email, :name, :role, :created_at, :updated_at
+  attributes :id, :email, :name, :role
 
-  attribute :admin do |user|
-    user.admin?
+  attribute :auth, if: proc { params[:include_tokens].present? } do
+    params[:include_tokens]
   end
 end

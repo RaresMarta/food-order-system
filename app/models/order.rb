@@ -10,7 +10,5 @@ class Order < ApplicationRecord
 
   scope :recent, -> { order(created_at: :desc) }
 
-  def calculate_total
-    order_items.sum(&:subtotal)
-  end
+  def cancelable? = placed? || preparing?
 end
