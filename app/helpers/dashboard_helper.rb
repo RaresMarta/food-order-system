@@ -15,7 +15,7 @@ module DashboardHelper
   end
 
   def dashboard_orders_table_headers
-    ["Order ID", "Customer", "Items", "Total", "Status", "Created", "Actions"]
+    [ "Order ID", "Customer", "Items", "Total", "Status", "Created", "Actions" ]
   end
 
   def cards

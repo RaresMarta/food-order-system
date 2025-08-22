@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   before_action :require_admin
-  layout 'dashboard_layout', only: [:orders, :menu]
+  layout "dashboard_layout", only: [ :orders, :menu ]
 
   def index
     @orders_today = Order.where(created_at: Date.current.all_day).count
@@ -10,7 +10,7 @@ class DashboardController < ApplicationController
   end
 
   def orders
-    @all_orders = Order.includes(order_items: :food_item, user: :orders).order(created_at: :desc)
+    @all_orders = Order.includes(order_items: :food_item, user: :orders).recent
   end
 
   def menu

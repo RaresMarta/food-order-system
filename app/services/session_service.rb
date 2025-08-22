@@ -1,24 +1,33 @@
 class SessionService
-  def authenticate_user(email, password)
-    user = User.find_by(email: email)
+  def login(email, password)
+    user = User.find_for_authentication(email: email.to_s.strip.downcase)
 
-    if user && user.authenticate(password)
-      { success: true, message: "Logged in successfully!", user: user }
-    else
-      { success: false, message: "Invalid email or password" }
+    unless user&.valid_password?(password) && user.active_for_authentication?
+      return {
+        success: false,
+        message: I18n.t("devise.failure.invalid", authentication_keys: :email)
+      }
     end
+
+    tokens = TokenIssuer.new(user).call
+
+    {
+      success: true,
+      message: "Logged in",
+      user: user,
+      tokens: tokens
+    }
   end
 
-  def logout_user
-    { success: true, message: "Logged out successfully!" }
-  end
+  def logout(token)
+    return { success: false, message: "invalid_token" } if token.nil?
 
-  def handle_redirect_reason(redirect_reason)
-    case redirect_reason
-    when "cart"
-      { success: false, message: "You must be logged in to add items to your cart" }
+    if token.revoked?
+      { success: true, message: "Already revoked", revoked: true }
+    elsif token.revoke
+      { success: true, message: "Logged out", revoked: true }
     else
-      nil
+      { success: false, message: "Failed to revoke token" }
     end
   end
 end

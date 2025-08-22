@@ -21,7 +21,14 @@ gem "html2haml"
 gem "jbuilder"
 
 # Authentication
-gem "bcrypt", "~> 3.1.7"
+gem "devise"
+gem "doorkeeper"
+gem "doorkeeper-jwt"
+gem "jwt"
+
+# Serialization
+gem "alba"
+gem "oj"
 
 # Timezone support
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -39,6 +46,9 @@ gem "bootsnap", require: false
 gem "kamal", require: false
 gem "thruster", require: false
 
+# Documentation
+gem 'apipie-rails'
+
 group :development do
   gem "web-console"
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -54,10 +64,12 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "database_cleaner-active_record"
+  gem "shoulda-matchers"
 end
 
 group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "dotenv-rails"
+  gem "faker"
 end

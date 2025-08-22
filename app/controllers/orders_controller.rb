@@ -1,9 +1,8 @@
 class OrdersController < ApplicationController
   helper OrdersHelper
-  before_action :require_login
 
   def index
-    @orders = current_user.orders.includes(order_items: :food_item).order(created_at: :desc)
+    @orders = current_user.orders.includes(order_items: :food_item).recent
   end
 
   def show
@@ -20,8 +19,8 @@ class OrdersController < ApplicationController
   end
 
   def update
-    @order = Order.find(params[:id])
-    redirect_path = request.referer&.include?('dashboard') ? dashboard_orders_path : orders_path
+    @order = current_user.admin? ? Order.find(params[:id]) : current_user.orders.find(params[:id])
+    redirect_path = request.referer&.include?("dashboard") ? dashboard_orders_path : orders_path
 
     result = OrderService.new(@order).update_status(params[:status], current_user)
     handle_result(result, redirect_path)

@@ -7,12 +7,12 @@
       .food-price= number_to_currency(item.price)
       .food-category= item.category.humanize
       .food-actions
-        - if logged_in?
+        - if user_signed_in?
           = button_to "Add to Cart", cart_items_path,
             params: { food_item_id: item.id },
             class: "btn btn-primary btn-sm"
         - else
-          = link_to "Add to Cart", login_path(redirect_reason: 'cart'),
+          = link_to "Add to Cart", new_user_session_path(redirect_reason: 'cart'),
             data: { turbo_frame: "_top" },
             class: "btn btn-primary btn-sm"
 - else

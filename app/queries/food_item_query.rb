@@ -6,6 +6,7 @@ class FoodItemQuery
 
   def call
     @scope
+      .active
       .filter_by_category(@params[:category])
       .vegetarian_only(@params[:vegetarian])
       .price_between(@params[:min], @params[:max])

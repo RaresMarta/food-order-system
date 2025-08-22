@@ -1,5 +1,6 @@
 class FoodItemsController < ApplicationController
-  skip_before_action :require_login
+  skip_before_action :authenticate_user!, only: [ :index ]
+  before_action :require_admin, except: [ :index ]
   before_action :set_food_item, only: [ :update, :destroy ]
   before_action :initialize_food_item_service, only: [ :create, :update, :destroy ]
 
