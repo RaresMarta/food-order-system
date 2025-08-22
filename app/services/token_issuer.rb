@@ -17,4 +17,15 @@ class TokenIssuer
 
     Doorkeeper::OAuth::TokenResponse.new(token).body.with_indifferent_access
   end
+
+  def self.payload_for(token)
+    return nil unless token
+    {
+      "access_token" => token.token,
+      "token_type"   => "Bearer",
+      "scope"        => token.scopes.to_s,
+      "expires_in"   => token.expires_in_seconds,
+      "created_at"   => token.created_at.to_i
+    }.compact
+  end
 end

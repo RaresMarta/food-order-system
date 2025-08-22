@@ -1,7 +1,13 @@
 FactoryBot.define do
   factory :user do
+    name  { Faker::Name.name }
     email { Faker::Internet.unique.email }
-    name { Faker::Name.name }
-    password { Faker::Internet.password(min_length: 6) }
+    password { "Password123!" }
+    password_confirmation { "Password123!" }
+    role { :customer }
+
+    trait :admin do
+      role { :admin }
+    end
   end
 end

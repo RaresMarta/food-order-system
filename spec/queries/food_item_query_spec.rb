@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe FoodItemQuery do
+  include FiltersHelper
+
   let!(:pizza) { create(:food_item, category: "Pizza", vegetarian: true, price: 10) }
   let!(:burger) { create(:food_item, category: "Burger", vegetarian: false, price: 15) }
 

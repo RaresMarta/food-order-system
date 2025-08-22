@@ -15,8 +15,12 @@ module Api
 
       # GET /api/v1/users/me
       def show
-        user = User.find(doorkeeper_token.resource_owner_id)
-        render_success({ user: UserSerializer.new(user).as_json })
+        render_success({
+          user: UserSerializer.new(
+            current_user,
+            params: { include_tokens: TokenIssuer.payload_for(doorkeeper_token) }
+          ).as_json
+        })
       end
 
       private
