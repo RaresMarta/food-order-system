@@ -10,25 +10,28 @@ class FoodItem < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :vegetarian, inclusion: { in: [ true, false ] }
 
+  scope :active, -> { where(deleted_at: nil) }
+
   scope :filter_by_category, ->(cat) {
-    cat.present? && cat != "default" ? active.where(category: cat) : active
+    return all unless cat.present? && cat != "default"
+    where(category: cat)
   }
 
   scope :vegetarian_only, ->(veg) {
-    veg.present? ? active.where(vegetarian: ActiveModel::Type::Boolean.new.cast(veg)) : active
+    return all unless veg.present?
+    where(vegetarian: ActiveModel::Type::Boolean.new.cast(veg))
   }
 
   scope :price_between, ->(min, max) {
-    min_val = min.present? ? min.to_f : 0
-    max_val = max.present? ? max.to_f : 100
-    min_val <= max_val ? active.where(price: min_val..max_val) : active
+    min_val = min.present? ? min.to_f : -Float::INFINITY
+    max_val = max.present? ? max.to_f :  Float::INFINITY
+    where(price: min_val..max_val)
   }
 
   scope :sorted_by_price, ->(order) {
-    %w[asc desc].include?(order) ? active.order(price: order.to_sym) : active
+    return all unless %w[asc desc].include?(order)
+    order(price: order.to_sym)
   }
-
-  scope :active, -> { where(deleted_at: nil) }
 
   def soft_delete!
     update(deleted_at: Time.current)

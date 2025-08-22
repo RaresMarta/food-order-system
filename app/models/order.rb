@@ -11,4 +11,5 @@ class Order < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
 
   def cancelable? = placed? || preparing?
+  def items_count = order_items.size
 end

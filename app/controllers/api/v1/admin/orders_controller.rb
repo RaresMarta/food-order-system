@@ -11,7 +11,7 @@ module Api
           result = OrderService.new(@order).update_status(order_params[:status], current_user)
 
           if result[:success]
-            render_updated_resource(result[:order], OrderSerializer, message: result[:message])
+            render_resource_success(result[:order], OrderAdminSerializer, result[:message])
           else
             render_validation_errors(result[:order], message: result[:message])
           end

@@ -19,7 +19,7 @@ module Api
 
           def render_resource_success(resource, serializer_class, message, status: :ok)
             render_success(
-              serialize_resource(resource, serializer_class),
+              hash_resource(resource, serializer_class).as_json,
               message: message,
               status: status
             )
@@ -27,8 +27,8 @@ module Api
 
         private
 
-          def serialize_resource(resource, serializer_class)
-            { resource.class.name.underscore => serializer_class.new(resource).as_json }
+          def hash_resource(resource, serializer_class)
+            { resource.class.name.underscore => serializer_class.new(resource) }
           end
       end
     end

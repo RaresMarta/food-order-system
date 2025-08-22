@@ -4,15 +4,20 @@ module Api
   module V1
     module Admin
       class FoodItemsController < BaseController
-        before_action :set_food_item, only: [ :update, :destroy, :reactivate ]
+        before_action :set_food_item, only: [ :show, :update, :destroy, :reactivate ]
         before_action :initialize_food_item_service, only: [ :create, :update, :destroy ]
+
+        # GET /api/v1/food_items/:id
+        def show
+          render_resource_success(@food_item, FoodItemAdminSerializer, "Food item fetched.")
+        end
 
         # POST /api/v1/admin/food_items
         def create
           result = @food_item_service.create_item(food_item_params)
 
           if result[:success]
-            render_resource_success(result[:food_item], FoodItemSerializer, result[:message], status: :created)
+            render_resource_success(result[:food_item], FoodItemAdminSerializer, result[:message], status: :created)
           else
             render_validation_errors(result[:food_item], message: result[:message])
           end
@@ -23,7 +28,7 @@ module Api
           result = @food_item_service.update_item(@food_item, food_item_params)
 
           if result[:success]
-            render_resource_success(result[:food_item], FoodItemSerializer, result[:message])
+            render_resource_success(result[:food_item], FoodItemAdminSerializer, result[:message])
           else
             render_validation_errors(result[:food_item], message: result[:message])
           end
@@ -34,7 +39,7 @@ module Api
           result = @food_item_service.delete_item(@food_item)
 
           if result[:success]
-            render_resource_success(result[:food_item], FoodItemSerializer, result[:message])
+            render_resource_success(result[:food_item], FoodItemAdminSerializer, result[:message])
           else
             render_validation_errors(result[:food_item], message: result[:message])
           end
@@ -42,12 +47,10 @@ module Api
 
         # PATCH /api/v1/admin/food_items/:id/reactivate
         def reactivate
-          @food_item = FoodItem.unscoped.find(params[:id])
-
           if @food_item.update(deleted_at: nil)
-            render_updated_resource(@food_item, FoodItemSerializer, message: "#{@food_item.name} has been reactivated!")
+            render_resource_success(@food_item, FoodItemAdminSerializer, "Food item reactivated successfully")
           else
-            render_error_message("Failed to reactivate item.")
+            render_error_message("Failed to reactivate item.", status: :unprocessable_entity)
           end
         end
 
@@ -60,7 +63,7 @@ module Api
           def set_food_item
             @food_item = FoodItem.find_by(id: params[:id])
             unless @food_item
-              render json: { message: "Food item not found", code: "not_found" }, status: :not_found
+              render_error_message("Food item not found", status: :not_found)
             end
           end
 

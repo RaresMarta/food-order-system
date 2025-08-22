@@ -5,7 +5,7 @@ module Api
         # GET /api/v1/users/all
         def index
           users = User.all
-          render_success(UserSerializer.new(users).serialize)
+          render_success({ users: UserSerializer.new(users).as_json })
         end
       end
     end

@@ -3,6 +3,14 @@ class CartService
     @user = user
   end
 
+  def items
+    @user.cart_items.includes(:food_item)
+  end
+
+  def cart_total
+    @user.cart_items.includes(:food_item).sum(&:subtotal)
+  end
+
   def add_item(food_item_id)
     food_item = FoodItem.find_by(id: food_item_id)
     return { success: false, message: "Food item not found." } unless food_item
@@ -62,9 +70,5 @@ class CartService
     else
       { success: false, message: "No items could be added from this order." }
     end
-  end
-
-  def cart_total
-    @user.cart_items.includes(:food_item).sum(&:subtotal)
   end
 end

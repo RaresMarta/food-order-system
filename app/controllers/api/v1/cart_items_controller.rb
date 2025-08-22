@@ -8,7 +8,7 @@ module Api
 
       # GET /api/v1/cart_items
       def index
-        @cart_items = current_user.cart_items.includes(:food_item)
+        @cart_items = @cart_service.items
         @total = @cart_service.cart_total
 
         render_success({

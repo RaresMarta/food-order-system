@@ -7,16 +7,16 @@ module Api
       def create
         user = User.new(user_params)
         if user.save
-          render json: UserSerializer.new(user).serialize, status: :created
+          render_success({ user: UserSerializer.new(user).as_json }, status: :created)
         else
-          render json: { ok: false, errors: user.errors.full_messages }, status: :unprocessable_entity
+          render_error_message(user.errors.full_messages, status: :unprocessable_entity)
         end
       end
 
       # GET /api/v1/users/me
       def show
         user = User.find(doorkeeper_token.resource_owner_id)
-        render json: UserSerializer.new(user).serialize, status: :ok
+        render_success({ user: UserSerializer.new(user).as_json })
       end
 
       private

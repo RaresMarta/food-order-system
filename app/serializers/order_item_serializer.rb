@@ -9,12 +9,5 @@ class OrderItemSerializer < ApplicationSerializer
     oi.subtotal.to_f
   end
 
-  attribute :food_item do |oi|
-    fi = oi.food_item
-    {
-      id: fi.id,
-      name: fi.name,
-      price: fi.price.to_f
-    }
-  end
+  has_one :food_item
 end

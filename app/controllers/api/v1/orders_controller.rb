@@ -10,7 +10,7 @@ module Api
         @orders = current_user.orders.includes(order_items: :food_item).recent
 
         render_success({
-          orders: @orders.map { |order| OrderSerializer.new(order).as_json }
+          orders: OrderSerializer.new(@orders).as_json
         })
       end
 
