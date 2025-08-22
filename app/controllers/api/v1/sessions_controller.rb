@@ -1,41 +1,36 @@
 module Api
   module V1
     class SessionsController < BaseController
+      include Api::V1::SessionsControllerDoc
+
       skip_before_action :doorkeeper_authorize!, only: [:create]
 
       # POST /api/v1/users/login
       def create
-        user = User.find_for_authentication(email: sign_in_params[:email].to_s.strip.downcase)
+        result = SessionService.new.login(sign_in_params[:email], sign_in_params[:password])
 
-        unless user&.valid_password?(sign_in_params[:password]) && user.active_for_authentication?
-          return render_error_message(
-            I18n.t("devise.failure.invalid", authentication_keys: :email),
-            status: :unauthorized
+        if result[:success]
+          render_success(
+            {
+              user: UserSerializer.new(result[:user], params: { include_tokens: result[:tokens] }).as_json
+            },
+            message: result[:message],
+            status: :created
           )
+        else
+          render_error_message(result[:message], status: :unauthorized)
         end
-
-        tokens = TokenIssuer.new(user).call
-
-        render_success(
-          {
-            user: UserSerializer.new(user, params: { include_tokens: tokens }).as_json
-          },
-          message: "Logged in",
-          status: :created
-        )
       end
 
       # DELETE /api/v1/users/logout
       def destroy
         token = doorkeeper_token || Doorkeeper::AccessToken.by_token(bearer_token)
-        return render_error_message("invalid_token", status: :unprocessable_entity) if token.nil?
+        result = SessionService.new.logout(token)
 
-        if token.revoked?
-          render_success({ revoked: true }, message: "already_revoked")
+        if result[:success]
+          render_success({ revoked: result[:revoked] }, message: result[:message])
         else
-          token.revoke
-          Doorkeeper::AccessToken.where(previous_refresh_token: token.refresh_token).update_all(revoked_at: Time.current)
-          render_success({ revoked: true }, message: "Logged out")
+          render_error_message(result[:message], status: :unprocessable_entity)
         end
       end
 
@@ -43,11 +38,6 @@ module Api
 
       def sign_in_params
         params.require(:user).permit(:email, :password)
-      end
-
-      def bearer_token
-        auth = request.headers["Authorization"].to_s
-        auth.start_with?("Bearer ") ? auth.split(" ").last : nil
       end
     end
   end

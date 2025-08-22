@@ -13,5 +13,7 @@ module FoodOrderSystem
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    config.paths.add 'doc', eager_load: true
   end
 end

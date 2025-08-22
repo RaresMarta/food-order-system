@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   use_doorkeeper
 
   root "food_items#index"
+  apipie
 
   # API routes
   namespace :api, defaults: { format: :json } do

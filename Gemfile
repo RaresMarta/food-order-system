@@ -46,6 +46,9 @@ gem "bootsnap", require: false
 gem "kamal", require: false
 gem "thruster", require: false
 
+# Documentation
+gem 'apipie-rails'
+
 group :development do
   gem "web-console"
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
